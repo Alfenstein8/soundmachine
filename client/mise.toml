@@ -1,0 +1,3 @@
+[tools]
+black = "latest"
+uv = "0.9.5"
