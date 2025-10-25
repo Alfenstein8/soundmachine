@@ -19,7 +19,6 @@ class Launchpad:
         s = self.samples[p.x][p.y]
 
         if s is not None:
-            print(s)
             s.toggle()
             if s.playing():
                 light.setLight(point, light.Color.GREEN)

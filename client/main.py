@@ -18,6 +18,8 @@ def loadSamples(pad: Launchpad, samplePaths: list[str]):
                 return
 
 
+
+
 def main():
     pygame.mixer.init()
     lp = launchpadSetup.getLaunchpad()
@@ -30,6 +32,7 @@ def main():
     pad = Launchpad()
 
     loadSamples(pad, samplePaths)
+
 
 
     try:
