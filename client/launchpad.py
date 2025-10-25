@@ -11,6 +11,7 @@ class Launchpad:
 
     def addSample(self, sample: Sample, point: SamplePoint):
         self.samples[point.x][point.y] = sample
+        light.setLight(toLpPoint(point), light.Color.BLUE)
 
     def onPress(self, point: LpPoint):
         p = toSamplePoint(point)
@@ -20,5 +21,8 @@ class Launchpad:
         if s is not None:
             print(s)
             s.toggle()
-            light.setLight(point,light.Color.GREEN)
+            if s.playing():
+                light.setLight(point, light.Color.GREEN)
+            else:
+                light.setLight(point,light.Color.BLUE)
 
