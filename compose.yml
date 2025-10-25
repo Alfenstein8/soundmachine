@@ -1,0 +1,6 @@
+
+services:
+  server:
+    build: server
+  client:
+    build: client
