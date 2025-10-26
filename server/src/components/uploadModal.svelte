@@ -36,7 +36,7 @@
 {#if $showUploadModal}
 	<Modal>
 		<h2>Upload Audio File</h2>
-		<input type="file" id="fileInput" bind:this={fileInput} onchange={changePlaceholder} />
+		<input type="file" accept="audio/*" id="fileInput" bind:this={fileInput} onchange={changePlaceholder} />
 		<input type="text" id="nameInput" placeholder="Enter file name" bind:value={fileName} />
 		<br />
 		<button id="uploadButton" onclick={handeUpload}>Upload</button>
