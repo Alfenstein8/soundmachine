@@ -18,8 +18,7 @@ COPY package.json bun.lock /temp/prod/
 RUN cd /temp/prod && bun install --frozen-lockfile --production
 
 COPY . .
+RUN bun -b run build
 
-# run the app
-USER bun
-EXPOSE 3000/tcp
-ENTRYPOINT [ "bun", "run", "dev" ]
+EXPOSE 3000
+ENTRYPOINT [ "bun", "-b", "run", "build/index.js" ]
