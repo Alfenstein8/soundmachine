@@ -9,7 +9,6 @@ ApiSlot = namedtuple("ApiSlot", ["id", "sampleId"])
 
 def syncSamples(samples: list[ApiSample]):
     for sample in samples:
-        print(sample)
         data = getSampleFile(sample.id)
         saveSample(sample.id, data)
 

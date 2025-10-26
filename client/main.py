@@ -5,21 +5,19 @@ from sample import Sample
 import input
 from point import SamplePoint
 import light
-from sync import sync
+from sync import ApiSample, ApiSlot, sync
 from storage import SAMPLE_DIR
 
 
-def loadSamples(pad: Launchpad, samplePaths: list[str]):
-    for y in range(8):
-        for x in range(8):
-            index = y * 8 + x
-            if index < len(samplePaths):
-                sample = Sample(samplePaths[index])
-                pad.addSample(sample, SamplePoint(x, y))
-            else:
-                return
-
-
+def loadSamples(pad: Launchpad, slots: list[ApiSlot]):
+    for index, slotInfo in enumerate(slots):
+        if slotInfo.sampleId is None:
+            continue
+        y = index // 8
+        x = index % 8
+        print(f"Loading sample {slotInfo.sampleId} at ({x}, {y})")
+        sample = Sample(SAMPLE_DIR + f"/{slotInfo.sampleId}.wav")
+        pad.addSample(sample, SamplePoint(x, y))
 
 
 def main():
@@ -29,16 +27,9 @@ def main():
 
     slots, samples = sync()
 
-    samplePaths: list[str] = []
-    for sample in samples:
-        samplePaths.append(SAMPLE_DIR + sample.id + ".wav")
-
-
     pad = Launchpad()
 
-    loadSamples(pad, samplePaths)
-
-
+    loadSamples(pad, slots)
 
     try:
         input.run(lp)

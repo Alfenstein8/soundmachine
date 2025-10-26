@@ -27,7 +27,5 @@ def saveSample(id: str, data: bytes):
     try:
         with open(wavPath, "wb") as f:
             f.write(data)
-        print(f"Successfully saved sample: {wavPath}")
-
     except IOError as e:
         print(f"Error writing file {wavPath}: {e}")
