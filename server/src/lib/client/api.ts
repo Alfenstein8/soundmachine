@@ -21,3 +21,28 @@ export const placeSample = (sampleId: string, slotId: string) => {
     }
   });
 };
+
+export const uploadSample = async (file: File, name: string) => {
+  const formData = new FormData();
+  formData.append('audio', file);
+  formData.append('name', name);
+  const response = await fetch('/api/sample', {
+    method: 'POST',
+    body: formData
+  });
+  if (!response.ok) {
+    throw new Error('Failed to upload sample.');
+  }
+};
+
+export const removeSampleFromSlot = async (slotId: string) => {
+  fetch(`/api/slot/${slotId}`, {
+    method: 'POST'
+  }).then((response) => {
+    if (response.ok) {
+      location.reload();
+    } else {
+      throw new Error('Failed to remove sample from slot.');
+    }
+  });
+};

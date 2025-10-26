@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { showUploadModal } from '$stores/globals';
+	import * as api from '$lib/client/api';
 	import Modal from '$comp/modal.svelte';
 
 	let fileInput: HTMLInputElement;
@@ -13,18 +14,13 @@
 
 		if (files && files.length > 0) {
 			const file = files[0];
-			const formData = new FormData();
-			formData.append('audio', file);
-			formData.append('name', trueFileName);
-			const response = await fetch('/api/sample', {
-				method: 'POST',
-				body: formData
-			});
-			if (response.ok) {
-				location.reload();
-			} else {
+			try {
+				await api.uploadSample(file, trueFileName);
+			} catch (error) {
+				console.error('Error uploading file:', error);
 				alert('File upload failed.');
 			}
+			location.reload();
 		}
 		console.log('Uploading file:', trueFileName);
 	};
