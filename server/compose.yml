@@ -1,0 +1,12 @@
+
+services:
+  app:
+      build:
+        context: .
+        dockerFile: Dockerfile
+      container_name: soundmachine
+      image: soundmachine:latest
+      ports:
+        - "3000:5500"
+      volumes:
+        - ./database:/usr/src/app/database

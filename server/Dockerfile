@@ -19,5 +19,6 @@ RUN bun install --frozen-lockfile
 COPY . .
 RUN bun -b run build
 
+RUN chmod +x run.sh
 EXPOSE 3000
-ENTRYPOINT [ "bun", "-b", "run", "build/index.js" ]
+ENTRYPOINT [ "./run.sh" ]
