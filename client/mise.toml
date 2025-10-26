@@ -9,3 +9,6 @@ uv = "0.9.5"
 [tasks.start]
 description = "Start the program"
 run = "uv run main.py"
+
+[env]
+SERVER_URL="http://localhost:5173"

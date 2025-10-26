@@ -5,6 +5,8 @@ from sample import Sample
 import input
 from point import SamplePoint
 import light
+from sync import sync
+from storage import SAMPLE_DIR
 
 
 def loadSamples(pad: Launchpad, samplePaths: list[str]):
@@ -24,11 +26,14 @@ def main():
     pygame.mixer.init()
     lp = launchpadSetup.getLaunchpad()
     light.init(lp)
-    samplePaths = [
-        "samples/drum1.wav",
-        "samples/drum2.wav",
-        "samples/drum3.wav",
-    ]
+
+    slots, samples = sync()
+
+    samplePaths: list[str] = []
+    for sample in samples:
+        samplePaths.append(SAMPLE_DIR + sample.id + ".wav")
+
+
     pad = Launchpad()
 
     loadSamples(pad, samplePaths)
