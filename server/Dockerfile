@@ -13,9 +13,8 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 
 # install with --production (exclude devDependencies)
-RUN mkdir -p /temp/prod
-COPY package.json bun.lock /temp/prod/
-RUN cd /temp/prod && bun install --frozen-lockfile
+COPY package.json bun.lock ./
+RUN bun install --frozen-lockfile
 
 COPY . .
 RUN bun -b run build
