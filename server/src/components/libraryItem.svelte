@@ -1,8 +1,10 @@
 <script lang="ts">
 	import type { SampleSelect } from '$schema';
-	import { editSampleModal, placeSample } from '$stores/globals';
+	import { selectedSample, placeSample } from '$stores/globals';
+	import LibraryModal from './libraryModal.svelte';
 
 	const { sample }: { sample: SampleSelect } = $props();
+	let dialog: HTMLDialogElement;
 </script>
 
 <div class="sample-item">
@@ -11,8 +13,15 @@
 		<source src={`/api/sample/${sample.id}`} type="audio/wav" />
 		Your browser does not support the audio element.
 	</audio>
-	<button class="btn" onclick={() => ($editSampleModal = sample)}>Edit</button>
+	<button
+		class="btn"
+		onclick={() => {
+			$selectedSample = sample;
+			dialog.showModal();
+		}}>Edit</button
+	>
 	<button class="btn" onclick={() => ($placeSample = sample)}> Place </button>
+	<LibraryModal bind:dialog />
 </div>
 
 <style>

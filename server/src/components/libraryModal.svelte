@@ -1,12 +1,14 @@
 <script lang="ts">
 	import Modal from '$comp/modal.svelte';
-	import { editSampleModal } from '$stores/globals';
+	import { selectedSample } from '$stores/globals';
 	import * as api from '$lib/client/api';
 
+	let { dialog = $bindable() }: { dialog: HTMLDialogElement } = $props();
+
 	const handleDelete = async () => {
-		if ($editSampleModal == null) return;
+		if ($selectedSample == null) return;
 		try {
-			await api.deleteSample($editSampleModal.id);
+			await api.deleteSample($selectedSample.id);
 			location.reload();
 		} catch (error) {
 			console.error('Error deleting sample:', error);
@@ -15,9 +17,7 @@
 	};
 </script>
 
-{#if $editSampleModal != null}
-	<Modal onClose={() => ($editSampleModal = null)}>
-		<h1>Edit Sample</h1>
-		<button class="btn" onclick={handleDelete}>Delete</button>
-	</Modal>
-{/if}
+<Modal bind:dialog>
+	<h1>Edit Sample</h1>
+	<button class="btn" onclick={handleDelete}>Delete</button>
+</Modal>

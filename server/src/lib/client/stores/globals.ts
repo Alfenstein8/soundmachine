@@ -7,6 +7,5 @@ export const samples: Writable<SampleSelect[]> = writable([]);
 
 export const placeSample: Writable<SampleSelect | null> = writable(null);
 
-export const editPadModal: Writable<SlotSelect | null> = writable(null);
-export const showUploadModal = writable(false);
-export const editSampleModal: Writable<SampleSelect | null> = writable(null);
+export const selectedSlot: Writable<SlotSelect | null> = writable(null);
+export const selectedSample: Writable<SampleSelect | null> = writable(null);

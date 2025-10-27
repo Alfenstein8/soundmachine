@@ -1,10 +1,11 @@
 <script lang="ts">
-	import { showUploadModal } from '$stores/globals';
 	import * as api from '$lib/client/api';
 	import Modal from '$comp/modal.svelte';
 
+	let { dialog = $bindable() }: { dialog: HTMLDialogElement } = $props();
+
 	let fileInput: HTMLInputElement;
-	let fileName: string;
+	let fileName: string = $state("");
 	const fileNameInput = (): HTMLInputElement | null => document.querySelector('#nameInput');
 	const fileNameDisplay = (): HTMLInputElement | null => document.querySelector('#fileNameDisplay');
 
@@ -38,28 +39,32 @@
 	};
 </script>
 
-{#if $showUploadModal}
-	<Modal onClose={() => ($showUploadModal = false)}>
-		<div id="content">
-			<h2>Upload Audio File</h2>
-			<div id="fileNameDisplay">No file selected</div>
-			<input
-				type="file"
-				accept="audio/*"
-				id="fileInput"
-				name="fileInput"
-				bind:this={fileInput}
-				onchange={changePlaceholder}
-				hidden
-			/>
-			<label for="fileInput" class="btn" id="fileUploadButton">Select</label>
+<Modal bind:dialog>
+	<div id="content">
+		<h2>Upload Audio File</h2>
+		<div id="fileNameDisplay">No file selected</div>
+		<input
+			type="file"
+			accept="audio/*"
+			id="fileInput"
+			name="fileInput"
+			bind:this={fileInput}
+			onchange={changePlaceholder}
+			hidden
+		/>
+		<label for="fileInput" class="btn" id="fileUploadButton">Select</label>
 
-			<input type="text" id="nameInput" class="textInput" placeholder="Enter file name" bind:value={fileName} />
-			<br />
-			<button id="uploadButton" class="btn" onclick={handeUpload}>Upload</button>
-		</div>
-	</Modal>
-{/if}
+		<input
+			type="text"
+			id="nameInput"
+			class="textInput"
+			placeholder="Enter file name"
+			bind:value={fileName}
+		/>
+		<br />
+		<button id="uploadButton" class="btn" onclick={handeUpload}>Upload</button>
+	</div>
+</Modal>
 
 <style>
 	#content {

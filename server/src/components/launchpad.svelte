@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { SlotSelect } from '$schema';
-	import { slots, samples, placeSample, editPadModal } from '$stores/globals';
+	import { slots, samples, placeSample, selectedSlot } from '$stores/globals';
 	import * as api from '$lib/client/api';
 
 	const getSampleName = (slot: SlotSelect) => {
@@ -12,7 +12,7 @@
 			api.placeSample($placeSample.id, slot.id.toString());
 			$placeSample = null;
 		} else if (slot.sampleId !== null) {
-			$editPadModal = slot;
+			$selectedSlot = slot;
 		}
 	};
 </script>
@@ -20,7 +20,10 @@
 <div id="launchpadContainer">
 	<div id="launchpad">
 		{#each $slots as slot (slot.id)}
-			<button class="pad bg-primary" onclick={() => handlePadClick(slot)}>
+			<button
+				class="pad h-16 w-24 rounded-sm bg-base-300 text-base-content hover:bg-base-200"
+				onclick={() => handlePadClick(slot)}
+			>
 				{#if slot.sampleId !== null}
 					{getSampleName(slot)}
 				{/if}
@@ -48,20 +51,10 @@
 		height: fit-content;
 	}
 	.pad {
-		border: none;
-		border-radius: 8px;
-		font-size: 1rem;
 		cursor: pointer;
-		transition: background-color 0.3s ease;
 		padding: 0px;
-		width: 6rem;
-		height: 4rem;
 		text-align: center;
 		text-overflow: ellipsis;
 		overflow: hidden;
-	}
-
-	.pad:hover {
-		background-color: #3a3f4b;
 	}
 </style>
