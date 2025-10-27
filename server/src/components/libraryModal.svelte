@@ -1,9 +1,7 @@
 <script lang="ts">
 	import Modal from '$comp/modal.svelte';
-	import { selectedSample } from '$stores/globals';
+	import { selectedSample, libraryModal } from '$stores/globals';
 	import * as api from '$lib/client/api';
-
-	let { dialog = $bindable() }: { dialog: HTMLDialogElement } = $props();
 
 	const handleDelete = async () => {
 		if ($selectedSample == null) return;
@@ -17,7 +15,7 @@
 	};
 </script>
 
-<Modal bind:dialog>
+<Modal bind:dialog={$libraryModal}>
 	<h1>Edit Sample</h1>
 	<button class="btn" onclick={handleDelete}>Delete</button>
 </Modal>

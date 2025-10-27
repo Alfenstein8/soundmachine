@@ -1,8 +1,7 @@
 <script lang="ts">
 	import Modal from '$comp/modal.svelte';
-	import { selectedSlot } from '$stores/globals';
+	import { padModal, selectedSlot } from '$stores/globals';
 	import * as api from '$lib/client/api';
-	let dialog: HTMLDialogElement;
 
 	const handleRemove = async () => {
 		if ($selectedSlot) {
@@ -16,6 +15,6 @@
 	};
 </script>
 
-<Modal bind:dialog>
+<Modal bind:dialog={$padModal}>
 	<button onclick={handleRemove}> Remove </button>
 </Modal>

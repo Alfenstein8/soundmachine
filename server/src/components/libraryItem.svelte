@@ -1,10 +1,8 @@
 <script lang="ts">
 	import type { SampleSelect } from '$schema';
-	import { selectedSample, placeSample } from '$stores/globals';
-	import LibraryModal from './libraryModal.svelte';
+	import { selectedSample, placeSample, libraryModal } from '$stores/globals';
 
 	const { sample }: { sample: SampleSelect } = $props();
-	let dialog: HTMLDialogElement;
 </script>
 
 <div class="sample-item">
@@ -17,11 +15,10 @@
 		class="btn"
 		onclick={() => {
 			$selectedSample = sample;
-			dialog.showModal();
+			$libraryModal.showModal();
 		}}>Edit</button
 	>
 	<button class="btn" onclick={() => ($placeSample = sample)}> Place </button>
-	<LibraryModal bind:dialog />
 </div>
 
 <style>

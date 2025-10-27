@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { SlotSelect } from '$schema';
-	import { slots, samples, placeSample, selectedSlot } from '$stores/globals';
+	import { slots, samples, placeSample, selectedSlot, padModal } from '$stores/globals';
 	import * as api from '$lib/client/api';
 
 	const getSampleName = (slot: SlotSelect) => {
@@ -13,6 +13,7 @@
 			$placeSample = null;
 		} else if (slot.sampleId !== null) {
 			$selectedSlot = slot;
+			$padModal.showModal()
 		}
 	};
 </script>

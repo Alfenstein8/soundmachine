@@ -1,11 +1,11 @@
 <script lang="ts">
 	import UploadModal from '$comp/uploadModal.svelte';
-	let dialog: HTMLDialogElement;
+	import { uploadModal } from '$stores/globals';
 </script>
 
 <div id="uploadButton">
-	<button class="btn btn-primary" onclick={() => dialog.showModal()}>Upload File</button>
-	<UploadModal bind:dialog />
+	<button class="btn btn-primary" onclick={() => $uploadModal.showModal()}>Upload File</button>
+	<UploadModal />
 </div>
 
 <style>

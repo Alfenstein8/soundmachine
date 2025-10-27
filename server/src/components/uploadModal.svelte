@@ -1,11 +1,10 @@
 <script lang="ts">
 	import * as api from '$lib/client/api';
 	import Modal from '$comp/modal.svelte';
-
-	let { dialog = $bindable() }: { dialog: HTMLDialogElement } = $props();
+	import { uploadModal } from '$stores/globals';
 
 	let fileInput: HTMLInputElement;
-	let fileName: string = $state("");
+	let fileName: string = $state('');
 	const fileNameInput = (): HTMLInputElement | null => document.querySelector('#nameInput');
 	const fileNameDisplay = (): HTMLInputElement | null => document.querySelector('#fileNameDisplay');
 
@@ -39,7 +38,7 @@
 	};
 </script>
 
-<Modal bind:dialog>
+<Modal bind:dialog={$uploadModal}>
 	<div id="content">
 		<h2>Upload Audio File</h2>
 		<div id="fileNameDisplay">No file selected</div>
