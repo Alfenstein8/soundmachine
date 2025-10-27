@@ -20,7 +20,7 @@
 <div id="launchpadContainer">
 	<div id="launchpad">
 		{#each $slots as slot (slot.id)}
-			<button class="pad" onclick={() => handlePadClick(slot)}>
+			<button class="pad bg-primary" onclick={() => handlePadClick(slot)}>
 				{#if slot.sampleId !== null}
 					{getSampleName(slot)}
 				{/if}
@@ -48,8 +48,6 @@
 		height: fit-content;
 	}
 	.pad {
-		background-color: #282c34;
-		color: white;
 		border: none;
 		border-radius: 8px;
 		font-size: 1rem;

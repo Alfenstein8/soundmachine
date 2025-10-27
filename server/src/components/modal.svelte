@@ -1,10 +1,17 @@
 <script lang="ts">
-	const { children } = $props();
+	import type { Snippet } from 'svelte';
+	import CloseButton from './closeButton.svelte';
+	const { children, onClose = () => {} }: { children: Snippet; onClose?: () => void } = $props();
 </script>
 
 <div id="background">
 	<div id="modal">
-		{@render children()}
+		<div id="header">
+			<CloseButton onClick={onClose} />
+		</div>
+		<div id="content">
+			{@render children()}
+		</div>
 	</div>
 </div>
 
@@ -24,9 +31,22 @@
 
 	#modal {
 		background-color: white;
-		padding: 20px;
 		border-radius: 8px;
 		text-align: center;
 		box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+		display: flex;
+		flex-direction: column;
+	}
+
+	#header {
+		display: flex;
+		justify-content: flex-end;
+		padding: 0.5rem;
+		height: fit-content;
+		width: 100%;
+	}
+
+	#content {
+		padding: 0rem 1rem 1rem 1rem;
 	}
 </style>

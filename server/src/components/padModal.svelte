@@ -16,8 +16,7 @@
 </script>
 
 {#if $editPadModal !== null}
-	<Modal>
+	<Modal onClose={() => ($editPadModal = null)}>
 		<button onclick={handleRemove}> Remove </button>
-		<button onclick={() => ($editPadModal = null)}> Close </button>
 	</Modal>
 {/if}
