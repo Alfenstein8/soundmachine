@@ -45,6 +45,7 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"@lucide/svelte": "^0.548.0"
+		"@lucide/svelte": "^0.548.0",
+		"bun-ffmpeg": "^0.2.2"
 	}
 }

@@ -40,16 +40,13 @@ export const POST = async ({ request }: RequestEvent) => {
 
 		saveSample(newSampleId, audioFile);
 	} catch (e) {
-		// Log the error and return a 500 status
 		console.error('Error processing audio upload:', e);
-		// Clean up the DB entry if the file save failed (optional, but good practice)
 		if (newSampleId) {
 			await db.delete(samples).where(eq(samples.id, newSampleId));
 		}
 		return error(500, { message: 'Failed to save audio file.' });
 	}
 
-	// 8. Return success response with the new ID
 	return json({
 		message: 'Added sample and saved audio',
 		id: newSampleId
