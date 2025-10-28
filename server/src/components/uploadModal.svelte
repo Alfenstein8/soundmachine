@@ -6,7 +6,6 @@
 	let fileInput: HTMLInputElement;
 	let fileName: string = $state('');
 	const fileNameInput = (): HTMLInputElement | null => document.querySelector('#nameInput');
-	const fileNameDisplay = (): HTMLInputElement | null => document.querySelector('#fileNameDisplay');
 
 	const handeUpload = async () => {
 		const files = fileInput.files;
@@ -31,37 +30,31 @@
 		if (input) {
 			input.placeholder = fileInput.files?.[0]?.name || 'Enter file name';
 		}
-		const display = fileNameDisplay();
-		if (display) {
-			display.textContent = fileInput.files?.[0]?.name || 'No file selected';
-		}
 	};
 </script>
 
 <Modal bind:dialog={$uploadModal}>
 	<div id="content">
 		<h2>Upload Audio File</h2>
-		<div id="fileNameDisplay">No file selected</div>
 		<input
 			type="file"
 			accept="audio/*"
 			id="fileInput"
+			class="file-input"
 			name="fileInput"
 			bind:this={fileInput}
 			onchange={changePlaceholder}
-			hidden
 		/>
-		<label for="fileInput" class="btn" id="fileUploadButton">Select</label>
 
 		<input
 			type="text"
 			id="nameInput"
-			class="textInput"
+			class="textInput input"
 			placeholder="Enter file name"
 			bind:value={fileName}
 		/>
 		<br />
-		<button id="uploadButton" class="btn" onclick={handeUpload}>Upload</button>
+		<button id="uploadButton" class="btn btn-primary" onclick={handeUpload}>Upload</button>
 	</div>
 </Modal>
 
@@ -71,9 +64,6 @@
 		flex-direction: column;
 		align-items: center;
 		gap: 1rem;
-	}
-	#fileNameDisplay {
-		font-style: italic;
 	}
 	#nameInput {
 		margin-top: 0.5rem;
