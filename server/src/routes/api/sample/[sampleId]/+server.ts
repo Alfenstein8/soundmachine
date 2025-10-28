@@ -1,5 +1,8 @@
 import type { RequestEvent } from './$types';
 import { getSample, deleteSample } from '$lib/server/services/storage';
+import { db } from '$lib/server/db';
+import { samples } from '$schema';
+import { eq } from 'drizzle-orm';
 
 export async function GET({ params }: RequestEvent) {
 	let file: ArrayBuffer;
@@ -26,4 +29,15 @@ export const DELETE = async ({ params }: RequestEvent) => {
 		console.error('Error deleting audio file:', e);
 		return new Response('Failed to delete audio file.', { status: 500 });
 	}
+};
+
+export const PATCH = async ({ params, request }: RequestEvent) => {
+	const data = await request.json();
+
+	try {
+		await db.update(samples).set({ name: data.name }).where(eq(samples.id, params.sampleId));
+	} catch {
+		return new Response('Failed to update sample metadata.', { status: 500 });
+	}
+	return new Response(null, { status: 204 });
 };

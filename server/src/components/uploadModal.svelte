@@ -33,9 +33,8 @@
 	};
 </script>
 
-<Modal bind:dialog={$uploadModal}>
+<Modal bind:dialog={$uploadModal} title="Upload Audio Sample">
 	<div id="content">
-		<h2>Upload Audio File</h2>
 		<input
 			type="file"
 			accept="audio/*"

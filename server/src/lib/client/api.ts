@@ -1,3 +1,5 @@
+import type { SampleSelect } from '$schema';
+
 export const deleteSample = async (id: string) => {
   const response = await fetch(`/api/sample/${id}`, {
     method: 'DELETE'
@@ -45,4 +47,17 @@ export const removeSampleFromSlot = async (slotId: string) => {
       throw new Error('Failed to remove sample from slot.');
     }
   });
+};
+
+export const updateSampleMetadata = async (sample: SampleSelect) => {
+  const response = await fetch(`/api/sample/${sample.id}`, {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(sample)
+  });
+  if (!response.ok) {
+    throw new Error('Failed to update sample metadata.');
+  }
 };

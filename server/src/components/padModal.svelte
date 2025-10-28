@@ -15,6 +15,6 @@
 	};
 </script>
 
-<Modal bind:dialog={$padModal}>
-	<button onclick={handleRemove}> Remove </button>
+<Modal bind:dialog={$padModal} title="Edit Pad">
+	<button onclick={handleRemove} class="btn btn-warning"> Remove </button>
 </Modal>

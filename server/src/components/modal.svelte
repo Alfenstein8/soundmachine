@@ -1,12 +1,23 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import CloseButton from './closeButton.svelte';
-	let { children, dialog = $bindable() }: { children?: Snippet; dialog: HTMLDialogElement } = $props();
+	let {
+		children,
+		dialog = $bindable(),
+		title
+	}: { children?: Snippet; dialog: HTMLDialogElement; title?: string } = $props();
 </script>
 
 <dialog bind:this={dialog} class="modal">
-	<div class="modal-box">
-		<CloseButton onClick={() => dialog.close()} />
+	<div class="modal-box flex justify-center flex-col">
+		<div class="btn absolute top-2 right-2 btn-circle btn-ghost btn-sm">
+			<CloseButton onClick={() => dialog.close()} />
+		</div>
+		{#if title}
+			<div class="m-4 flex justify-center">
+				<h2 class="text-lg font-bold">{title}</h2>
+			</div>
+		{/if}
 		{@render children?.()}
 	</div>
 

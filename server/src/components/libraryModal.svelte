@@ -2,6 +2,9 @@
 	import Modal from '$comp/modal.svelte';
 	import { selectedSample, libraryModal } from '$stores/globals';
 	import * as api from '$lib/client/api';
+	import type { SampleSelect } from '$schema';
+
+	let nameInput: string;
 
 	const handleDelete = async () => {
 		if ($selectedSample == null) return;
@@ -13,9 +16,25 @@
 			alert('Failed to delete sample.');
 		}
 	};
+
+	const handleApply = async () => {
+		if ($selectedSample == null) return;
+		try {
+			const sample: SampleSelect = { ...$selectedSample };
+			sample.name = nameInput;
+			await api.updateSampleMetadata(sample);
+			location.reload();
+		} catch (error) {
+			console.error('Error updating sample:', error);
+			alert('Failed to update sample.');
+		}
+	};
 </script>
 
-<Modal bind:dialog={$libraryModal}>
-	<h1>Edit Sample</h1>
-	<button class="btn" onclick={handleDelete}>Delete</button>
+<Modal bind:dialog={$libraryModal} title="Edit Sample">
+	<input type="text" class="textInput input mb-4 w-full" bind:value={nameInput} />
+	<div class="grid grid-cols-2 gap-4">
+		<button class="btn btn-primary" onclick={handleApply}>Apply</button>
+		<button class="btn btn-warning" onclick={handleDelete}>Delete</button>
+	</div>
 </Modal>

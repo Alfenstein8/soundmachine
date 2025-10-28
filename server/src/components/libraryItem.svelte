@@ -24,7 +24,7 @@
 	let value: number = $state(0);
 </script>
 
-<div class="sample-item rounded-box bg-base-100">
+<div class={"sample-item rounded-box bg-base-100" + ($selectedSample?.id ? "btn-primary" : "" )}>
 	<p>{sample.name}</p>
 	<progress class="progress progress-primary" {value} {max}></progress>
 	<audio bind:this={audioElement} loop ontimeupdate={handleAudioChange}>
