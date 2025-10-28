@@ -22,7 +22,7 @@
 	<div id="launchpad">
 		{#each $slots as slot (slot.id)}
 			<button
-				class="pad h-16 w-24 rounded-sm bg-base-300 text-base-content hover:bg-base-200"
+				class="pad xl:h-16 xl:w-24 h-12 w-20 rounded-sm bg-base-100 text-base-content hover:bg-base-200"
 				onclick={() => handlePadClick(slot)}
 			>
 				{#if slot.sampleId !== null}

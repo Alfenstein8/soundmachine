@@ -12,21 +12,12 @@
 	$samples = data.samples;
 </script>
 
-<ChooseTheme />
 <LibraryModal />
 <UploadModal />
 <PadModal />
 
-<div id="split">
+<ChooseTheme />
+<div id="split" class="w-full h-full grid grid-rows-[1fr, 1fr]">
 	<Launchpad />
 	<Library samples={data.samples} />
 </div>
-
-<style>
-	#split {
-		display: grid;
-		grid-template-rows: 1fr 1fr;
-		width: 100%;
-		height: 100%;
-	}
-</style>

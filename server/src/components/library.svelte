@@ -6,19 +6,10 @@
 	const { samples }: { samples: SampleSelect[] } = $props();
 </script>
 
-<div id="library">
+<div id="library" class="overflow-y-scroll flex gap-4 flex-wrap justify-center-safe">
 	{#each samples as sample (sample.id)}
 		<LibraryItem {sample} />
 	{/each}
 
 	<UploadButton />
 </div>
-
-<style>
-	#library {
-		display: flex;
-		flex-wrap: wrap;
-		gap: 1rem;
-		overflow-y: scroll;
-	}
-</style>
