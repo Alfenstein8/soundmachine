@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { SlotSelect } from '$schema';
-	import { slots, samples, placeSample, selectedSlot, padModal } from '$stores/globals';
+	import { slots, samples, selectedSample, selectedSlot, padModal } from '$stores/globals';
 	import * as api from '$lib/client/api';
 
 	const getSampleName = (slot: SlotSelect) => {
@@ -8,12 +8,12 @@
 	};
 
 	const handlePadClick = (slot: SlotSelect) => {
-		if ($placeSample !== null) {
-			api.placeSample($placeSample.id, slot.id.toString());
-			$placeSample = null;
+		if ($selectedSample !== null) {
+			api.placeSample($selectedSample.id, slot.id.toString());
+			$selectedSample = null;
 		} else if (slot.sampleId !== null) {
 			$selectedSlot = slot;
-			$padModal.showModal()
+			$padModal.showModal();
 		}
 	};
 </script>
@@ -22,7 +22,7 @@
 	<div id="launchpad">
 		{#each $slots as slot (slot.id)}
 			<button
-				class="pad xl:h-16 xl:w-24 h-12 w-20 rounded-sm bg-base-100 text-base-content hover:bg-base-200"
+				class="pad h-12 w-20 rounded-sm bg-base-100 text-base-content hover:bg-base-200 xl:h-16 xl:w-24"
 				onclick={() => handlePadClick(slot)}
 			>
 				{#if slot.sampleId !== null}

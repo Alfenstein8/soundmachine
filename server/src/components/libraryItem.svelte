@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { SampleSelect } from '$schema';
-	import { selectedSample, placeSample, libraryModal } from '$stores/globals';
+	import { selectedSample, libraryModal } from '$stores/globals';
 	import { CircleStop, PlayIcon } from '@lucide/svelte';
 
 	const { sample }: { sample: SampleSelect } = $props();
@@ -24,8 +24,8 @@
 	let value: number = $state(0);
 </script>
 
-<div class={"sample-item rounded-box bg-base-100" + ($selectedSample?.id ? "btn-primary" : "" )}>
-	<p>{sample.name}</p>
+<div class="sample-item rounded-box bg-base-100 p-4 {$selectedSample?.id === sample.id ? 'border-2 border-primary' : ''}">
+	<p class="text-nowrap overflow-hidden text-ellipsis">{sample.name}</p>
 	<progress class="progress progress-primary" {value} {max}></progress>
 	<audio bind:this={audioElement} loop ontimeupdate={handleAudioChange}>
 		<source src={`/api/sample/${sample.id}`} type="audio/wav" />
@@ -48,13 +48,12 @@
 				<CircleStop color="var(--color-primary)" />
 			</div>
 		</label>
-		<button class="btn btn-outline" onclick={() => ($placeSample = sample)}> Place </button>
+		<button class="btn btn-outline" onclick={() => ($selectedSample = sample)}> Select</button>
 	</div>
 </div>
 
 <style>
 	.sample-item {
-		padding: 1rem;
 		text-align: center;
 		width: 15rem;
 		height: fit-content;

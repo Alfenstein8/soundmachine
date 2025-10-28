@@ -6,6 +6,10 @@
 
 	let nameInput: string;
 
+	selectedSample.subscribe((newSample) => {
+		nameInput = newSample ? newSample.name : '';
+	});
+
 	const handleDelete = async () => {
 		if ($selectedSample == null) return;
 		try {
@@ -32,7 +36,7 @@
 </script>
 
 <Modal bind:dialog={$libraryModal} title="Edit Sample">
-	<input type="text" class="textInput input mb-4 w-full" bind:value={nameInput} />
+	<input type="text" class="mb-4 w-full textInput input" bind:value={nameInput} />
 	<div class="grid grid-cols-2 gap-4">
 		<button class="btn btn-primary" onclick={handleApply}>Apply</button>
 		<button class="btn btn-warning" onclick={handleDelete}>Delete</button>

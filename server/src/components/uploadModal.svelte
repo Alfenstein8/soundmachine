@@ -2,15 +2,17 @@
 	import * as api from '$lib/client/api';
 	import Modal from '$comp/modal.svelte';
 	import { uploadModal } from '$stores/globals';
+	import { onMount } from 'svelte';
 
 	let fileInput: HTMLInputElement;
 	let fileName: string = $state('');
+	let namePlaceholder: string = $state('Enter file name');
 	const fileNameInput = (): HTMLInputElement | null => document.querySelector('#nameInput');
 
 	const handeUpload = async () => {
 		const files = fileInput.files;
 
-		const trueFileName = fileName || fileNameInput()?.placeholder || 'untitled';
+		const trueFileName = fileName || namePlaceholder || 'untitled';
 
 		if (files && files.length > 0) {
 			const file = files[0];
@@ -28,9 +30,13 @@
 	const changePlaceholder = () => {
 		const input = fileNameInput();
 		if (input) {
-			input.placeholder = fileInput.files?.[0]?.name || 'Enter file name';
+			namePlaceholder = fileInput.files?.[0]?.name || 'Enter file name';
 		}
 	};
+
+	onMount(() => {
+		changePlaceholder();
+	});
 </script>
 
 <Modal bind:dialog={$uploadModal} title="Upload Audio Sample">
@@ -49,7 +55,7 @@
 			type="text"
 			id="nameInput"
 			class="textInput input"
-			placeholder="Enter file name"
+			placeholder={namePlaceholder}
 			bind:value={fileName}
 		/>
 		<br />

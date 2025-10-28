@@ -73,9 +73,6 @@ export const deleteSample = async (id: string) => {
 		throw new Error('Failed to delete sample record from database');
 	}
 	deleteFile(`${samplesPath}/${id}.wav`);
-	try {
-		deleteFile(`${originalsPath}/${id}`);
-	} catch {
-		console.log('No original file to delete');
-	}
+	deleteFile(`${originalsPath}/${id}`);
+	deleteFile(`${streamsPath}/${id}.mp3`);
 };
