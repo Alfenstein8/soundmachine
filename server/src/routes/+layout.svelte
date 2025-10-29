@@ -10,7 +10,7 @@
 	<link rel="icon" href={favicon} />
 </svelte:head>
 
-<div data-theme={$theme} class="h-fit bg-transparent">>
+<div data-theme={$theme} class="h-fit bg-transparent">
 {@render children?.()}
 </div>
 
