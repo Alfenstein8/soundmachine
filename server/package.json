@@ -46,6 +46,7 @@
 	"type": "module",
 	"dependencies": {
 		"@lucide/svelte": "^0.548.0",
-		"bun-ffmpeg": "^0.2.2"
+		"bun-ffmpeg": "^0.2.2",
+		"fuse.js": "^7.1.0"
 	}
 }
