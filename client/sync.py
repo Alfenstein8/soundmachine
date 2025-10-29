@@ -17,7 +17,7 @@ def sync():
     url = os.getenv("SERVER_URL")
     if url is None:
         print("SERVER_URL not found")
-        url = "http://localhost:5173"
+        return
     sync = url + "/api/sync"
     response = requests.get(sync)
     json = response.json()
@@ -39,7 +39,8 @@ def sync():
 def getSampleFile(id: str) -> bytes:
     url = os.getenv("SERVER_URL")
     if url is None:
-        url = "http://localhost:5173"
+        print("SERVER_URL not found")
+        url=""
     sampleUrl = url + "/api/sample/" + id
     response = requests.get(sampleUrl)
     return response.content
