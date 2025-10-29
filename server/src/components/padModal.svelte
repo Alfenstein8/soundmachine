@@ -29,9 +29,13 @@
 </script>
 
 <Modal bind:dialog={$padModal} title="Edit Pad">
-	<input type="color" bind:value={colorInput} />
-	<div class="grid grid-cols-2 gap-4">
-		<button class="btn btn-primary" onclick={handleApply}>Apply</button>
-		<button class="btn btn-warning" onclick={handleRemove}> Remove </button>
+	<div class="flex flex-col gap-4">
+		<div class="flex justify-center ">
+			<input type="color" class="border-none rounded-full w-16 h-16" bind:value={colorInput} />
+		</div>
+		<div class="grid grid-cols-2 gap-4">
+			<button class="btn btn-primary" onclick={handleApply}>Apply</button>
+			<button class="btn btn-warning" onclick={handleRemove}> Remove </button>
+		</div>
 	</div>
 </Modal>

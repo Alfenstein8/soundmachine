@@ -8,7 +8,9 @@
 	let bpmInput: number | undefined = $state();
 
 	selectedSample.subscribe((newSample) => {
-		nameInput = newSample ? newSample.name : '';
+		if (!newSample) return;
+		nameInput = newSample.name;
+		bpmInput = newSample.bpm ? newSample.bpm : undefined;
 	});
 
 	const handleDelete = async () => {
