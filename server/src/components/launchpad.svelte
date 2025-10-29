@@ -22,8 +22,11 @@
 	<div id="launchpad" class="gap-1 sm:gap-2.5">
 		{#each $slots as slot (slot.id)}
 			<button
-				class="pad text-base-content hover:bg-base-200 h-7 w-10 rounded-sm sm:h-12 sm:w-20 xl:h-16 xl:w-24"
-				style="background-color: {slot.color ? slot.color : 'var(--color-base-100)'}"
+				class="pad h-7 w-10 rounded-sm text-base-content hover:bg-base-200 sm:h-12 sm:w-20 xl:h-16 xl:w-24 {$selectedSample?.id ===
+				slot.sampleId
+					? 'selected'
+					: ''}"
+				style="background-color: {slot.color ? slot.color : 'var(--color-base-100)'}; "
 				onclick={() => handlePadClick(slot)}
 			>
 				{#if slot.sampleId !== null}
@@ -57,5 +60,9 @@
 		text-align: center;
 		text-overflow: ellipsis;
 		overflow: hidden;
+	}
+
+	.selected {
+		border: 3px solid var(--color-primary);
 	}
 </style>
