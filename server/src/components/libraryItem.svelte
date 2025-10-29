@@ -1,7 +1,8 @@
 <script lang="ts">
 	import type { SampleSelect } from '$schema';
 	import { selectedSample, libraryModal } from '$stores/globals';
-	import { CircleStop, PlayIcon } from '@lucide/svelte';
+	import CircleStop from '@lucide/svelte/icons/circle-stop';
+	import PlayIcon from '@lucide/svelte/icons/play';
 
 	const { sample }: { sample: SampleSelect } = $props();
 	let audioElement: HTMLAudioElement;

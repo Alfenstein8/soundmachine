@@ -1,4 +1,4 @@
-import type { SampleSelect } from '$schema';
+import type { SampleInsert, SampleSelect } from '$schema';
 
 export const deleteSample = async (id: string) => {
   const response = await fetch(`/api/sample/${id}`, {
@@ -24,10 +24,10 @@ export const placeSample = (sampleId: string, slotId: string) => {
   });
 };
 
-export const uploadSample = async (file: File, name: string) => {
+export const uploadSample = async (file: File, sampleData: SampleInsert) => {
   const formData = new FormData();
   formData.append('audio', file);
-  formData.append('name', name);
+  formData.append('data', JSON.stringify(sampleData));
   const response = await fetch('/api/sample', {
     method: 'POST',
     body: formData

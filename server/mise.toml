@@ -1,2 +1,2 @@
 [tools]
-node = "25"
+bun = "latest"

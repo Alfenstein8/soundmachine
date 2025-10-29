@@ -3,9 +3,11 @@
 	import Modal from '$comp/modal.svelte';
 	import { uploadModal } from '$stores/globals';
 	import { onMount } from 'svelte';
+	import type { SampleInsert } from '$schema';
 
 	let fileInput: HTMLInputElement;
-	let fileName: string = $state('');
+	let fileName = $state('');
+	let bpm: number | null = $state(null);
 	let namePlaceholder: string = $state('Enter file name');
 	const fileNameInput = (): HTMLInputElement | null => document.querySelector('#nameInput');
 
@@ -13,11 +15,15 @@
 		const files = fileInput.files;
 
 		const trueFileName = fileName || namePlaceholder || 'untitled';
+		const newSample: SampleInsert = {
+			name: trueFileName,
+			bpm: bpm || undefined
+		};
 
 		if (files && files.length > 0) {
 			const file = files[0];
 			try {
-				await api.uploadSample(file, trueFileName);
+				await api.uploadSample(file, newSample);
 			} catch (error) {
 				console.error('Error uploading file:', error);
 				alert('File upload failed.');
@@ -51,13 +57,24 @@
 			onchange={changePlaceholder}
 		/>
 
-		<input
-			type="text"
-			id="nameInput"
-			class="textInput input"
-			placeholder={namePlaceholder}
-			bind:value={fileName}
-		/>
+		<div class="flex gap-2">
+			<input
+				type="text"
+				id="nameInput"
+				name="nameInput"
+				class="textInput input"
+				placeholder={namePlaceholder}
+				bind:value={fileName}
+			/>
+			<input
+				type="number"
+				id="bpmInput"
+				name="bpmInput"
+				class="textInput input"
+				placeholder="BPM"
+				bind:value={bpm}
+			/>
+		</div>
 		<br />
 		<button id="uploadButton" class="btn btn-primary" onclick={handeUpload}>Upload</button>
 	</div>
@@ -69,11 +86,6 @@
 		flex-direction: column;
 		align-items: center;
 		gap: 1rem;
-	}
-	#nameInput {
-		margin-top: 0.5rem;
-		padding: 0.5rem;
-		width: 80%;
 	}
 	#uploadButton {
 		margin-top: 1rem;
