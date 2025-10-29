@@ -49,7 +49,7 @@
 	<div id="content">
 		<input
 			type="file"
-			accept="audio/*"
+			accept="audio/*, .wav, .mp3, .ogg, .flac, .aac, .m4a"
 			id="fileInput"
 			class="file-input"
 			name="fileInput"
