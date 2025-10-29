@@ -16,6 +16,7 @@ def syncSamples(samples: list[ApiSample]):
 def sync():
     url = os.getenv("SERVER_URL")
     if url is None:
+        print("SERVER_URL not found")
         url = "http://localhost:5173"
     sync = url + "/api/sync"
     response = requests.get(sync)
