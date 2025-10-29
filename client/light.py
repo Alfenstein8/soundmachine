@@ -18,7 +18,6 @@ def init(_lp: LaunchpadPro):
     lp = _lp
     lp.LedAllOn(0)
 
-def setLight(point: LpPoint, color: Color):
+def setLight(point: LpPoint, color: tuple[int, int, int]):
     if lp is not None:
-        c = color.value
-        lp.LedCtrlXY(point.x, point.y, c[0], c[1], c[2])
+        lp.LedCtrlXY(point.x, point.y, color[0], color[1], color[2])

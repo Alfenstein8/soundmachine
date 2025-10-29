@@ -2,8 +2,10 @@ import pygame
 
 
 class Sample:
-    def __init__(self, sample_path, loop=True):
+    def __init__(self, sample_path, loop=True, color: tuple[int, int, int] = (0, 0, 0)):
         self.audio = pygame.mixer.Sound(sample_path)
+        self.color = color
+
         self.loop = loop
 
     def playing(self) -> bool:

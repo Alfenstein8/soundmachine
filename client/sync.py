@@ -5,7 +5,7 @@ from storage import saveSample
 from collections import namedtuple
 
 ApiSample = namedtuple("ApiSample", ["id", "name"])
-ApiSlot = namedtuple("ApiSlot", ["id", "sampleId"])
+ApiSlot = namedtuple("ApiSlot", ["id", "sampleId", "color"])
 
 def syncSamples(samples: list[ApiSample]):
     for sample in samples:
@@ -23,7 +23,7 @@ def sync():
     slotsDict = json["slots"]
     slots: list[ApiSlot] = []
     for s in slotsDict:
-        slot = ApiSlot(s["id"], s["sampleId"])
+        slot = ApiSlot(s["id"], s["sampleId"], s["color"])
         slots.append(slot)
 
     samplesDict = json["samples"]
