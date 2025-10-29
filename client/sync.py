@@ -17,7 +17,7 @@ def sync():
     url = os.getenv("SERVER_URL")
     if url is None:
         print("SERVER_URL not found")
-        return
+        url=""
     sync = url + "/api/sync"
     response = requests.get(sync)
     json = response.json()
