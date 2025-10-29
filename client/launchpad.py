@@ -54,7 +54,7 @@ class Launchpad:
 
     def handleControlButton(self, point):
         button: ControlButton = self.controlButtons.get((point.x, point.y), lambda: None)
-        if button:
+        if button is not None:
             button.func()
 
     def syncButton(self):
