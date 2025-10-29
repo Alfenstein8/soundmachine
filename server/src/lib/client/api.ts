@@ -1,4 +1,4 @@
-import type { SampleInsert, SampleSelect } from '$schema';
+import type { SampleInsert, SampleSelect, TagSelect } from '$schema';
 
 export const deleteSample = async (id: string) => {
   const response = await fetch(`/api/sample/${id}`, {
@@ -61,3 +61,15 @@ export const updateSampleMetadata = async (sample: SampleSelect) => {
     throw new Error('Failed to update sample metadata.');
   }
 };
+
+
+export const getSampleTags = async (sampleId: string) => {
+  const res = await fetch(`/api/sample/${sampleId}/tags`, {
+    method: 'GET'
+  });
+
+  if (!res.ok) {
+    throw new Error('Failed to fetch sample tags.');
+  }
+  return res.json() as Promise<TagSelect[]>;
+}

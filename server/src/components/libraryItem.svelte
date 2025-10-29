@@ -1,10 +1,13 @@
 <script lang="ts">
-	import type { SampleSelect } from '$schema';
+	import type { SampleSelect, TagSelect } from '$schema';
 	import { selectedSample, libraryModal } from '$stores/globals';
 	import CircleStop from '@lucide/svelte/icons/circle-stop';
 	import PlayIcon from '@lucide/svelte/icons/play';
+	import * as api from '$lib/client/api';
+	import { onMount } from 'svelte';
 
 	const { sample }: { sample: SampleSelect } = $props();
+	let tags: TagSelect[] = $state([]);
 	let audioElement: HTMLAudioElement;
 	let playButton: HTMLInputElement;
 
@@ -21,11 +24,24 @@
 		max = audioElement.duration;
 		value = audioElement.currentTime;
 	};
-	let max: number = $state(100);
-	let value: number = $state(0);
+	let max = $state(100);
+	let value = $state(0);
+
+	onMount(async ()=> {
+	    tags = await api.getSampleTags(sample.id);
+	  });
 </script>
 
 <div class="sample-item rounded-box bg-base-100 p-4 {$selectedSample?.id === sample.id ? 'border-2 border-primary' : ''}">
+	<div id="tags" class="mb-2 flex justify-end m-0 h-4">
+		{#if sample.bpm}
+			<span class="badge badge-outline mr-1">{sample.bpm} BPM</span>
+		{/if}
+		{#each tags as tag (tag.name)}
+			<span class="badge badge-outline mr-1">{tag.name}</span>
+		{/each}
+
+	</div>
 	<p class="text-nowrap overflow-hidden text-ellipsis">{sample.name}</p>
 	<progress class="progress progress-primary" {value} {max}></progress>
 	<audio bind:this={audioElement} loop ontimeupdate={handleAudioChange}>
