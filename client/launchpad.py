@@ -52,10 +52,10 @@ class Launchpad:
             else:
                 light.setLight(point, s.color)
 
-    def handleControlButton(self, point):
-        button: ControlButton = self.controlButtons.get((point.x, point.y), lambda: None)
-        if button is not None:
-            button.func()
+    def handleControlButton(self, point: LpPoint):
+        p = (point.x, point.y)
+        if p in self.controlButtons:
+           self.controlButtons.get((point.x, point.y), lambda: None).func()
 
     def syncButton(self):
         self.reset()
