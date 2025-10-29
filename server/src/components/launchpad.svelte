@@ -19,10 +19,10 @@
 </script>
 
 <div id="launchpadContainer">
-	<div id="launchpad">
+	<div id="launchpad" class="gap-1 sm:gap-2.5">
 		{#each $slots as slot (slot.id)}
 			<button
-				class="pad h-12 w-20 rounded-sm bg-base-100 text-base-content hover:bg-base-200 xl:h-16 xl:w-24"
+				class="pad h-7 w-10 sm:h-12 sm:w-20 rounded-sm bg-base-100 text-base-content hover:bg-base-200 xl:h-16 xl:w-24"
 				onclick={() => handlePadClick(slot)}
 			>
 				{#if slot.sampleId !== null}
@@ -47,7 +47,6 @@
 		display: grid;
 		grid-template-columns: repeat(8, 1fr);
 		grid-template-rows: repeat(8, 1fr);
-		gap: 10px;
 		width: fit-content;
 		height: fit-content;
 	}

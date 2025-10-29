@@ -10,7 +10,7 @@
 	<link rel="icon" href={favicon} />
 </svelte:head>
 
-<div data-theme={$theme} class="w-full h-full bg-base-300">>
+<div data-theme={$theme} class="h-fit bg-transparent">>
 {@render children?.()}
 </div>
 
@@ -22,6 +22,8 @@
 			-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans',
 			'Helvetica Neue', sans-serif;
 		height: 100%;
-		overflow: hidden;
+		overflow-x: hidden;
+		box-sizing: border-box;
+		background-color: var(--color-base-300);
 	}
 </style>

@@ -28,7 +28,7 @@
 			type="text"
 			placeholder="Search samples..."
 			bind:value={searchTerm}
-			class="input mb-4 h-10 w-100 border border-base-300 p-2 text-center"
+			class="input mb-4 h-10 sm:w-100 w-[80%] border border-base-300 p-2 text-center"
 		/>
 	</div>
 	<div class="flex flex-wrap justify-center-safe gap-4 overflow-y-scroll">

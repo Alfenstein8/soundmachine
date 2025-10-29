@@ -17,7 +17,7 @@
 <PadModal />
 
 <ChooseTheme />
-<div id="split" class="w-full h-full flex flex-col">
+<div id="split" class="flex flex-col">
 	<Launchpad />
 	<Library samples={data.samples} />
 </div>
