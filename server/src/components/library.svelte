@@ -3,6 +3,7 @@
 	import UploadButton from './uploadButton.svelte';
 	import LibraryItem from './libraryItem.svelte';
 	import Fuse from 'fuse.js';
+	import { searchTerm } from '$stores/globals';
 
 	const { samples }: { samples: SampleSelect[] } = $props();
 
@@ -11,14 +12,13 @@
 
 		findAllMatches: true
 	});
-	let searchTerm = $state('');
 
 	let results = $derived(() => {
-		if (searchTerm.trim() === '') {
+		if ($searchTerm.trim() === '') {
 			return samples.map((sample, index) => ({ item: sample, refIndex: index }));
 		}
 
-		return fuse.search(searchTerm);
+		return fuse.search($searchTerm);
 	});
 </script>
 
@@ -27,7 +27,7 @@
 		<input
 			type="text"
 			placeholder="Search samples..."
-			bind:value={searchTerm}
+			bind:value={$searchTerm}
 			class="input mb-4 h-10 sm:w-100 w-[80%] border border-base-300 p-2 text-center"
 		/>
 	</div>
