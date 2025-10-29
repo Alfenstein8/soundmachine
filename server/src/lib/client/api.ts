@@ -1,28 +1,35 @@
-import type { SampleInsert, SampleSelect, TagSelect } from '$schema';
+import type { SampleInsert, SlotInsert, TagSelect } from '$schema';
 
 export const deleteSample = async (id: string) => {
   const response = await fetch(`/api/sample/${id}`, {
     method: 'DELETE'
   });
-  if (response.ok) {
-    location.reload();
-  } else {
+  if (!response.ok) {
     alert('Failed to delete sample.');
   }
+    location.reload();
 };
 
-export const placeSample = (sampleId: string, slotId: string) => {
-  fetch(`/api/sample/${sampleId}/place`, {
-    method: 'POST',
-    body: slotId
+export const updateSlot = async (slotId: number, slot: SlotInsert) => {
+  fetch(`/api/slot/${slotId}`, {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(slot)
   }).then((response) => {
-    if (response.ok) {
-      location.reload();
-    } else {
-      alert('Failed to place sample in slot.');
+    if (!response.ok) {
+      throw new Error('Failed to update slot.');
     }
+    location.reload();
   });
 };
+
+export const placeSample = async (sampleId: string, slotId: number) =>
+  updateSlot(slotId, { sampleId });
+
+export const removeSampleFromSlot = async (slotId: number) =>
+  updateSlot(slotId, { sampleId: null });
 
 export const uploadSample = async (file: File, sampleData: SampleInsert) => {
   const formData = new FormData();
@@ -35,18 +42,7 @@ export const uploadSample = async (file: File, sampleData: SampleInsert) => {
   if (!response.ok) {
     throw new Error('Failed to upload sample.');
   }
-};
-
-export const removeSampleFromSlot = async (slotId: string) => {
-  fetch(`/api/slot/${slotId}`, {
-    method: 'POST'
-  }).then((response) => {
-    if (response.ok) {
-      location.reload();
-    } else {
-      throw new Error('Failed to remove sample from slot.');
-    }
-  });
+  location.reload();
 };
 
 export const updateSampleMetadata = async (sampleId: string, sample: SampleInsert) => {
@@ -60,8 +56,8 @@ export const updateSampleMetadata = async (sampleId: string, sample: SampleInser
   if (!response.ok) {
     throw new Error('Failed to update sample metadata.');
   }
+  location.reload();
 };
-
 
 export const getSampleTags = async (sampleId: string) => {
   const res = await fetch(`/api/sample/${sampleId}/tags`, {
@@ -72,4 +68,4 @@ export const getSampleTags = async (sampleId: string) => {
     throw new Error('Failed to fetch sample tags.');
   }
   return res.json() as Promise<TagSelect[]>;
-}
+};

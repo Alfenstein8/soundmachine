@@ -9,7 +9,7 @@
 
 	const handlePadClick = (slot: SlotSelect) => {
 		if ($selectedSample !== null) {
-			api.placeSample($selectedSample.id, slot.id.toString());
+			api.placeSample($selectedSample.id, slot.id);
 			$selectedSample = null;
 		} else if (slot.sampleId !== null) {
 			$selectedSlot = slot;
@@ -22,7 +22,8 @@
 	<div id="launchpad" class="gap-1 sm:gap-2.5">
 		{#each $slots as slot (slot.id)}
 			<button
-				class="pad h-7 w-10 sm:h-12 sm:w-20 rounded-sm bg-base-100 text-base-content hover:bg-base-200 xl:h-16 xl:w-24"
+				class="pad text-base-content hover:bg-base-200 h-7 w-10 rounded-sm sm:h-12 sm:w-20 xl:h-16 xl:w-24"
+				style="background-color: {slot.color ? slot.color : 'var(--color-base-100)'}"
 				onclick={() => handlePadClick(slot)}
 			>
 				{#if slot.sampleId !== null}
