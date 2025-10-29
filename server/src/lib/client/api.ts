@@ -7,7 +7,7 @@ export const deleteSample = async (id: string) => {
   if (!response.ok) {
     alert('Failed to delete sample.');
   }
-    location.reload();
+  location.reload();
 };
 
 export const updateSlot = async (slotId: number, slot: SlotInsert) => {
@@ -25,12 +25,12 @@ export const updateSlot = async (slotId: number, slot: SlotInsert) => {
   });
 };
 
-export const placeSample = async (sampleId: string, slotId: number) =>{
-  updateSlot(slotId, { sampleId });
-}
+export const placeSample = async (sampleId: string, slotId: number) => {
+  updateSlot(slotId, { sampleId, color: '#102457' });
+};
 
 export const removeSampleFromSlot = async (slotId: number) =>
-  updateSlot(slotId, { sampleId: null , color: null});
+  updateSlot(slotId, { sampleId: null, color: null });
 
 export const uploadSample = async (file: File, sampleData: SampleInsert) => {
   const formData = new FormData();
