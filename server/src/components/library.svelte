@@ -9,7 +9,7 @@
 	const { samples }: { samples: SampleSelect[] } = $props();
 
 	const fuse = new Fuse(samples, {
-		keys: ['name'],
+		keys: ['name', "bpm"],
 
 		findAllMatches: true
 	});
