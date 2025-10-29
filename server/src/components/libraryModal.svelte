@@ -2,9 +2,10 @@
 	import Modal from '$comp/modal.svelte';
 	import { selectedSample, libraryModal } from '$stores/globals';
 	import * as api from '$lib/client/api';
-	import type { SampleSelect } from '$schema';
+	import type { SampleInsert } from '$schema';
 
-	let nameInput: string;
+	let nameInput: string = $state("");
+	let bpmInput: number | undefined = $state();
 
 	selectedSample.subscribe((newSample) => {
 		nameInput = newSample ? newSample.name : '';
@@ -24,9 +25,8 @@
 	const handleApply = async () => {
 		if ($selectedSample == null) return;
 		try {
-			const sample: SampleSelect = { ...$selectedSample };
-			sample.name = nameInput;
-			await api.updateSampleMetadata(sample);
+			const sample: SampleInsert = { name: nameInput, bpm: bpmInput };
+			await api.updateSampleMetadata($selectedSample.id, sample);
 			location.reload();
 		} catch (error) {
 			console.error('Error updating sample:', error);
@@ -36,7 +36,11 @@
 </script>
 
 <Modal bind:dialog={$libraryModal} title="Edit Sample">
+	<div class="flex">
 	<input type="text" class="mb-4 w-full textInput input" bind:value={nameInput} />
+	<input type="number" class="mb-4 w-full textInput input" bind:value={bpmInput} />
+
+	</div>
 	<div class="grid grid-cols-2 gap-4">
 		<button class="btn btn-primary" onclick={handleApply}>Apply</button>
 		<button class="btn btn-warning" onclick={handleDelete}>Delete</button>

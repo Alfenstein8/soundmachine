@@ -49,8 +49,8 @@ export const removeSampleFromSlot = async (slotId: string) => {
   });
 };
 
-export const updateSampleMetadata = async (sample: SampleSelect) => {
-  const response = await fetch(`/api/sample/${sample.id}`, {
+export const updateSampleMetadata = async (sampleId: string, sample: SampleInsert) => {
+  const response = await fetch(`/api/sample/${sampleId}`, {
     method: 'PATCH',
     headers: {
       'Content-Type': 'application/json'
