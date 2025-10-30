@@ -18,6 +18,7 @@ class Launchpad:
     def __init__(self):
         onPress.connect(self.onPress)
         self.controlButtons = self.setControlButtons()
+        self.samples: list[Sample] = []
         self.setControlButtonColors()
         self.reset()
 
@@ -27,10 +28,14 @@ class Launchpad:
 
 
     def reset(self):
-        self.samples: list[list[Sample | None]] = [[None] * 8 for _ in range(8)]
+        for s in self.samples:
+            s.stop()
+        self.samples = []
+        self.samplesGrid: list[list[Sample | None]] = [[None] * 8 for _ in range(8)]
 
     def addSample(self, sample: Sample, point: SamplePoint):
-        self.samples[point.x][point.y] = sample
+        self.samplesGrid[point.x][point.y] = sample
+        self.samples.append(sample)
         light.setLight(toLpPoint(point), sample.color)
 
     def onPress(self, point: LpPoint):
@@ -43,7 +48,7 @@ class Launchpad:
 
     def handleSampleButton(self, point):
         p = toSamplePoint(point)
-        s = self.samples[p.x][p.y]
+        s = self.samplesGrid[p.x][p.y]
 
         if s is not None:
             s.toggle()

@@ -1,14 +1,18 @@
+import time
 import pygame
 import launchpadSetup
 from launchpad import Launchpad
 import input
 import light
-from sync import sync
+from sync import ApiSample, ApiSlot, sync
+
 
 def init():
     pad = Launchpad()
     slots, samples = sync()
+
     pad.loadSamples(slots, samples)
+
 
 def main():
     pygame.mixer.init()
