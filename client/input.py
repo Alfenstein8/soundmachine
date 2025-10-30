@@ -9,7 +9,6 @@ onRelease = Signal()
 def run(lp: launchpad.LaunchpadPro):
     while True:
         button_state = lp.ButtonStateXY()
-
         if button_state:
             x, y, state = button_state
 

@@ -32,6 +32,8 @@ class Launchpad:
             s.stop()
         self.samples = []
         self.samplesGrid: list[list[Sample | None]] = [[None] * 8 for _ in range(8)]
+        light.setAll(0)
+        self.setControlButtonColors()
 
     def addSample(self, sample: Sample, point: SamplePoint):
         self.samplesGrid[point.x][point.y] = sample

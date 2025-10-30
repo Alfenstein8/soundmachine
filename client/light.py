@@ -45,7 +45,7 @@ def setAll(color: int):
 
     if lp is not None:
         # lp.LedCtrlString("je",2,255)
-        lp.LedCtrlFlashByCode(5)
+        lp.LedAllOn(color)
 
 
 def setStatus(status: Status):

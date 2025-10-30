@@ -43,6 +43,7 @@ def sync():
     synced = False
     slots: list[ApiSlot] = []
     samples: list[ApiSample] = []
+    print("asf")
     while not synced:
         try:
             light.setStatus(light.Status.SYNCING)
