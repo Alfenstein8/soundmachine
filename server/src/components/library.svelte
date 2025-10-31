@@ -15,17 +15,13 @@
 	});
 
 	let results: FuseResult<SampleSelect>[] = $state([]);
-	let searchInput = $state("")
 
 	searchTerm.subscribe((v) => {
-		console.log(v);
 		if (v.trim() === '') {
 			results = samples.map((sample, index) => ({ item: sample, refIndex: index }));
 		} else {
 			results = fuse.search(v);
 		}
-		searchInput = v;
-		console.log(results)
 	});
 </script>
 
@@ -34,14 +30,14 @@
 		<input
 			type="text"
 			placeholder="Search samples..."
-			bind:value={searchInput}
-			onchange={()=> (searchTerm.set(searchInput))}
+			bind:value={$searchTerm}
 			class="input join-item mb-4 h-10 w-[80%] border border-base-300 p-2 text-center sm:w-100"
 		/>
-		<p>{$searchTerm}</p>
+		{#if navigator.userAgent.search("Firefox") > -1}
 		<button class="btn join-item" onclick={() => ($searchTerm = '')}>
 			<X />
 		</button>
+		{/if}
 	</div>
 	<div class="flex overflow-y-scroll flex-wrap gap-4 justify-center-safe">
 		{#each results as result (result.item.id)}

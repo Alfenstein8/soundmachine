@@ -40,13 +40,6 @@ def app_process():
                     lp.Close()  # Important: try to close gracefully
             except Exception as close_err:
                 print(f"Error during graceful Close: {close_err}")
-
-            lp = None  # Set lp to None to trigger a reconnect on the next iteration
-            print(
-                f"Waiting {RECONNECT_DELAY} seconds before attempting to reconnect..."
-            )
-            time.sleep(RECONNECT_DELAY)
-            print("\nExiting Drum Pad. Cleaning up...")
     except KeyboardInterrupt:
             exit(CLEAN_EXIT_CODE)
     except SystemExit:
