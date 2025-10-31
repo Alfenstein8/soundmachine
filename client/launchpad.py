@@ -82,7 +82,6 @@ class Launchpad:
                 continue
             y = index // 8
             x = index % 8
-            print(f"Loading sample {slotInfo.sampleId} at ({x}, {y})")
             sample = Sample(SAMPLE_DIR + f"/{slotInfo.sampleId}.wav")
             if slotInfo.color is not None:
                 sample.color = hexToRgb(slotInfo.color)

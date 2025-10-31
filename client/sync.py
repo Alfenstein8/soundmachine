@@ -3,7 +3,7 @@ import requests
 import asyncio
 import os
 import light
-from storage import saveSample
+from storage import fileExists, saveSample
 from collections import namedtuple
 
 ApiSample = namedtuple("ApiSample", ["id", "name"])
@@ -12,6 +12,8 @@ ApiSlot = namedtuple("ApiSlot", ["id", "sampleId", "color"])
 
 def syncSamples(samples: list[ApiSample]):
     for sample in samples:
+        if fileExists(sample.id):
+            continue
         data = getSampleFile(sample.id)
         saveSample(sample.id, data)
 
@@ -43,7 +45,6 @@ def sync():
     synced = False
     slots: list[ApiSlot] = []
     samples: list[ApiSample] = []
-    print("asf")
     while not synced:
         try:
             light.setStatus(light.Status.SYNCING)
@@ -62,6 +63,7 @@ def getSampleFile(id: str) -> bytes:
     if url is None:
         print("SERVER_URL not found")
         url = ""
+    print(f"Downloading sample {id}")
     sampleUrl = url + "/api/sample/" + id
     response = requests.get(sampleUrl)
     return response.content

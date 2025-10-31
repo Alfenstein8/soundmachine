@@ -1,4 +1,5 @@
 import  os
+from os.path import exists
 SAMPLE_DIR = "./samples/"
 
 def saveSample(id: str, data: bytes):
@@ -29,3 +30,13 @@ def saveSample(id: str, data: bytes):
             f.write(data)
     except IOError as e:
         print(f"Error writing file {wavPath}: {e}")
+
+def fileExists(id: str) -> bool:
+    """
+    Checks if a sample file with the given ID exists in the samples directory.
+    Args:
+      id (str): The unique identifier for the file (used as the filename).
+    Returns:
+      bool: True if the file exists, False otherwise.
+    """
+    return exists(os.path.join(SAMPLE_DIR, id + ".wav"))
