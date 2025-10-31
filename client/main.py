@@ -20,16 +20,16 @@ def init():
 
 def app_process():
     try:
-        pygame.mixer.init()
         lp = None
 
         if lp is None:
             lp = launchpadSetup.getLaunchpad()
             if lp is None:
-                print("Tryingh to connect to launchpad")
+                print("Trying to connect to launchpad")
                 exit(1)
 
         try:
+            pygame.mixer.init()
             light.init(lp)
             init()
             input.run(lp)
