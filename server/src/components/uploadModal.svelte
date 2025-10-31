@@ -33,15 +33,32 @@
 		console.log('Uploading file:', trueFileName);
 	};
 
-	const changePlaceholder = () => {
+	const fileUpdated = () => {
 		const input = fileNameInput();
+		const file = fileInput.files?.[0];
+
 		if (input) {
-			namePlaceholder = fileInput.files?.[0]?.name || 'Enter file name';
+			namePlaceholder = file?.name || 'Enter file name';
+		}
+
+		const extractedBpm = file ? extractBpmFromFileName(file.name) : null;
+		if (extractedBpm !== null) {
+			bpm = extractedBpm;
 		}
 	};
 
+	const extractBpmFromFileName = (fileName: string): number | null => {
+		const bpmMatch = fileName.match(/[0-9]+(?=.?bpm)/i);
+		console.log(bpm);
+		console.log(fileName);
+		if (bpmMatch && bpmMatch[0]) {
+			return parseInt(bpmMatch[0], 10);
+		}
+		return null;
+	};
+
 	onMount(() => {
-		changePlaceholder();
+		fileUpdated();
 	});
 </script>
 
@@ -54,7 +71,7 @@
 			class="file-input"
 			name="fileInput"
 			bind:this={fileInput}
-			onchange={changePlaceholder}
+			onchange={fileUpdated}
 		/>
 
 		<div class="flex gap-2">

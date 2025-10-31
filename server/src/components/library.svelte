@@ -5,6 +5,7 @@
 	import Fuse, { type FuseResult } from 'fuse.js';
 	import { searchTerm } from '$stores/globals';
 	import X from '@lucide/svelte/icons/x';
+	import { isFirefox } from '$lib/client/utils';
 
 	const { samples }: { samples: SampleSelect[] } = $props();
 
@@ -33,7 +34,7 @@
 			bind:value={$searchTerm}
 			class="input join-item mb-4 h-10 w-[80%] border border-base-300 p-2 text-center sm:w-100"
 		/>
-		{#if navigator.userAgent.search("Firefox") > -1}
+		{#if isFirefox()}
 		<button class="btn join-item" onclick={() => ($searchTerm = '')}>
 			<X />
 		</button>
