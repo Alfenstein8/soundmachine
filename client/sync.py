@@ -42,6 +42,7 @@ def performSync():
 
 
 def sync():
+    print("Starting sync...")
     synced = False
     slots: list[ApiSlot] = []
     samples: list[ApiSample] = []

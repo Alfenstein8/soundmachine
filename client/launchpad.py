@@ -26,7 +26,6 @@ class Launchpad:
         for (x, y), button in self.controlButtons.items():
             light.setLight(LpPoint(x, y), button.color)
 
-
     def reset(self):
         for s in self.samples:
             s.stop()
@@ -71,7 +70,7 @@ class Launchpad:
 
     def setControlButtons(self):
         dics: Dict = {
-                (0, 0): ControlButton(light.Color.RED.value, self.syncButton)
+                (9, 8): ControlButton(light.Color.OFF.value, self.syncButton)
         }
         return dics
 
