@@ -11,7 +11,11 @@ export const PATCH = async ({ params, request }: RequestEvent) => {
     return new Response('Invalid slot ID', { status: 400 });
   }
 
-  await db.update(slots).set(slot).where(eq(slots.id, slotId));
+  try {
+    await db.update(slots).set(slot).where(eq(slots.id, slotId));
+  } catch {
+    return new Response('Failed to update slot', { status: 500 });
+  }
 
   return new Response(null, { status: 204 });
 };

@@ -7,18 +7,16 @@
 	let nameInput: string = $state('');
 	let bpmInput: number | undefined = $state();
 	let tagInput: string = $state('Add tag');
+	let primaryTagInput: string = $state('Select tag');
 
 	let sampleTags: TagSelect[] = $state([]);
 
 	selectedSample.subscribe(async (newSample) => {
 		if (!newSample) return;
-		sampleTags = await api.getSampleTags(newSample.id);
-	});
-
-	selectedSample.subscribe((newSample) => {
-		if (!newSample) return;
 		nameInput = newSample.name;
 		bpmInput = newSample.bpm ? newSample.bpm : undefined;
+		primaryTagInput = newSample.primaryTagName ? newSample.primaryTagName : 'Select tag';
+		sampleTags = await api.getSampleTags(newSample.id);
 	});
 
 	const handleDelete = async () => {
@@ -37,7 +35,15 @@
 		try {
 			const sample: SampleInsert = { name: nameInput, bpm: bpmInput };
 			await api.updateSampleMetadata($selectedSample.id, sample);
-			await api.updateSampleTags($selectedSample.id, sampleTags.map((t) => t.name));
+
+			const newPrimaryTagName = sampleTags.find((t) => t.name === primaryTagInput)
+				? primaryTagInput
+				: null;
+			await api.updateSampleTags(
+				$selectedSample.id,
+				sampleTags.map((t) => t.name),
+				newPrimaryTagName
+			);
 			location.reload();
 		} catch (error) {
 			console.error('Error updating sample:', error);
@@ -86,6 +92,15 @@
 				{/each}
 			</select>
 		</div>
+	</fieldset>
+	<fieldset class="mb-2 fieldset">
+		<legend class="fieldset-legend">Primary Tag</legend>
+		<select class="badge badge-outline" bind:value={primaryTagInput}>
+			<option disabled selected>Select tag</option>
+			{#each sampleTags as tag (tag.name)}
+				<option>{tag.name}</option>
+			{/each}
+		</select>
 	</fieldset>
 	<div class="grid grid-cols-2 gap-4">
 		<button class="btn btn-primary" onclick={handleApply}>Apply</button>

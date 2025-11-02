@@ -1,16 +1,25 @@
 <script lang="ts">
 	import type { SlotSelect } from '$schema';
-	import { slots, samples, selectedSample, selectedSlot, padModal } from '$stores/globals';
+	import { slots, samples, selectedSample, selectedSlot, padModal, tags } from '$stores/globals';
 	import * as api from '$lib/client/api';
+	import { syncSlots } from '$lib/client/sync';
 
 	const getSampleName = (slot: SlotSelect) => {
 		return $samples.find((s) => s.id === slot.sampleId)?.name || 'Unknown';
 	};
 
-	const handlePadClick = (slot: SlotSelect) => {
+	const handlePadClick = async (slot: SlotSelect) => {
 		if ($selectedSample !== null) {
-			api.placeSample($selectedSample.id, slot.id);
-			$selectedSample = null;
+			const tagColor = $tags.find((t) => t.name === $selectedSample?.primaryTagName)
+				?.color || undefined;
+			try {
+				await api.placeSample($selectedSample.id, slot.id, tagColor);
+				$selectedSample = null;
+				await syncSlots();
+			} catch (error) {
+				console.error('Error placing sample:', error);
+				alert('Failed to place sample.');
+			}
 		} else if (slot.sampleId !== null) {
 			$selectedSlot = slot;
 			$padModal.showModal();

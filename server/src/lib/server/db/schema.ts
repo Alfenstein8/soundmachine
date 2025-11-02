@@ -6,7 +6,8 @@ export const samples = sqliteTable('samples', {
 		.primaryKey()
 		.$defaultFn(() => crypto.randomUUID()),
 	name: text('name').notNull(),
-	bpm: integer('bpm')
+	bpm: integer('bpm'),
+	primaryTagName: text('primary_tag_name').references(() => tags.name)
 });
 
 export const samplesRelations = relations(samples, ({ many }) => ({

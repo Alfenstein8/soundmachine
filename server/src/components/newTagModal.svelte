@@ -10,6 +10,7 @@
 		api.createTag({ name: tagName, color: tagColor });
 
 		$newTagModal.close();
+		location.reload();
 	};
 </script>
 

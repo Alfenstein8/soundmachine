@@ -1,4 +1,4 @@
-import type { SampleInsert, SlotInsert, TagInsert, TagSelect } from '$schema';
+import type { SampleInsert, SampleSelect, SlotInsert, SlotSelect, TagInsert, TagSelect } from '$schema';
 
 export const deleteSample = async (id: string) => {
   const response = await fetch(`/api/sample/${id}`, {
@@ -23,9 +23,8 @@ export const updateSlot = async (slotId: number, slot: SlotInsert) => {
   });
 };
 
-export const placeSample = async (sampleId: string, slotId: number) => {
-  updateSlot(slotId, { sampleId, color: '#102457' });
-};
+export const placeSample = async (sampleId: string, slotId: number, color = "#102457") =>
+  updateSlot(slotId, { sampleId, color });
 
 export const removeSampleFromSlot = async (slotId: number) =>
   updateSlot(slotId, { sampleId: null, color: null });
@@ -82,16 +81,49 @@ export const createTag = async (tag: TagInsert) => {
 
 }
 
-export const updateSampleTags = async (sampleId: string, tags: string[]) => {
+export const updateSampleTags = async (sampleId: string, tagNames: string[], primaryTagName: string | null) => {
+  const requestBody: { tagNames: string[], primaryTagName: string | null } = { tagNames, primaryTagName };
   const response = await fetch(`/api/sample/${sampleId}/tags`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify(tags)
+    body: JSON.stringify(requestBody)
   });
   if (!response.ok) {
     throw new Error('Failed to create tag.');
   }
 
+}
+
+export const getAllTags = async () => {
+  const res = await fetch('/api/tags', {
+    method: 'GET'
+  });
+  if (!res.ok) {
+    throw new Error('Failed to fetch tags.');
+  }
+  return res.json() as Promise<TagSelect[]>;
+}
+
+export const getAllSamples = async () => {
+  const res = await fetch('/api/sample', {
+    method: 'GET'
+  });
+
+  if (!res.ok) {
+    throw new Error('Failed to fetch samples.');
+  }
+  return res.json() as Promise<SampleSelect[]>;
+}
+
+export const getAllSlots = async () => {
+  const res = await fetch('/api/slot', {
+    method: 'GET'
+  });
+
+  if (!res.ok) {
+    throw new Error('Failed to fetch slots.');
+  }
+  return res.json() as Promise<SlotSelect[]>;
 }

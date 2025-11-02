@@ -3,6 +3,7 @@
 	import { padModal, samples, searchTerm, selectedSlot } from '$stores/globals';
 	import * as api from '$lib/client/api';
 	import type { SlotInsert } from '$schema';
+	import { syncSlots } from '$lib/client/sync';
 	let colorInput: string | undefined = $state();
 
 	selectedSlot.subscribe((newSlot) => {
@@ -14,6 +15,8 @@
 		if (!$selectedSlot) return;
 		try {
 			await api.removeSampleFromSlot($selectedSlot.id);
+			await syncSlots();
+			$padModal.close();
 		} catch {
 			alert('Failed to remove sample from slot.');
 		}
@@ -26,7 +29,9 @@
 			color: colorInput
 		};
 		try {
-			api.updateSlot($selectedSlot.id, slotPatch);
+			await api.updateSlot($selectedSlot.id, slotPatch);
+			await syncSlots();
+			$padModal.close();
 		} catch {
 			alert('Failed to update slot.');
 		}

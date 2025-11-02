@@ -37,16 +37,6 @@
 		? 'border-2 border-primary'
 		: ''}"
 >
-	<div id="tags" class="m-0 mb-2 flex h-4 justify-end">
-		{#if sample.bpm}
-			<span class="mr-1 badge badge-outline">{sample.bpm} BPM</span>
-		{/if}
-		{#each tags as tag (tag.name)}
-			<span class="mr-1 badge badge-outline" style="border-color: {tag.color}; color: {tag.color};"
-				>{tag.name}</span
-			>
-		{/each}
-	</div>
 	<p class="overflow-hidden text-nowrap text-ellipsis">{sample.name}</p>
 	<progress class="progress progress-primary" {value} {max}></progress>
 	<audio bind:this={audioElement} loop ontimeupdate={handleAudioChange}>
@@ -72,17 +62,22 @@
 		</label>
 		<button class="btn btn-outline" onclick={() => ($selectedSample = sample)}> Select</button>
 	</div>
+	<div class="mb-2"></div>
+	<div class="flex justify-start h-fit w-full flex-wrap gap-y-2">
+		{#if sample.bpm}
+			<span class="mr-1 badge badge-outline w-fit box-border text-nowrap">{sample.bpm} BPM</span>
+		{/if}
+		{#each tags as tag (tag.name)}
+			<span class="mr-1 badge badge-outline" style="border-color: {tag.color}; color: {tag.color};"
+				>{tag.name}</span
+			>
+		{/each}
+	</div>
 </div>
 
 <style>
 	.sample-item {
 		text-align: center;
 		width: 15rem;
-		height: fit-content;
-	}
-
-	audio {
-		width: 100%;
-		margin-top: 0.5rem;
 	}
 </style>
