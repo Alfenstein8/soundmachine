@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { SampleSelect, TagSelect } from '$schema';
 	import { selectedSample, libraryModal, tags, tagAttachments } from '$stores/globals';
+	import Dot from '@lucide/svelte/icons/dot';
 	import CircleStop from '@lucide/svelte/icons/circle-stop';
 	import PlayIcon from '@lucide/svelte/icons/play';
 
@@ -30,7 +31,6 @@
 			.map((ta) => $tags.find((t) => t.name === ta.tagName)) // Map to tag objects
 			.filter((t): t is TagSelect => t !== undefined) // Filter out undefined tags
 	);
-
 </script>
 
 <div
@@ -73,8 +73,8 @@
 			<span class="mr-1 box-border badge w-fit badge-outline text-nowrap">{sample.bpm} BPM</span>
 		{/if}
 		{#each sampleTags as tag (tag.name)}
-			<span class="mr-1 badge badge-outline" style="border-color: {tag.color}; color: {tag.color};"
-				>{tag.name}</span
+			<span class="mr-1 badge badge-outline {tag.name === sample.primaryTagName ? "border-b-4":""}" style="border-color: {tag.color}; color: {tag.color};">
+				{tag.name}</span
 			>
 		{/each}
 	</div>
