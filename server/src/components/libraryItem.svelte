@@ -27,22 +27,27 @@
 	let max = $state(100);
 	let value = $state(0);
 
-	onMount(async ()=> {
-	    tags = await api.getSampleTags(sample.id);
-	  });
+	onMount(async () => {
+		tags = await api.getSampleTags(sample.id);
+	});
 </script>
 
-<div class="sample-item rounded-box bg-base-100 p-4 {$selectedSample?.id === sample.id ? 'border-2 border-primary' : ''}">
-	<div id="tags" class="mb-2 flex justify-end m-0 h-4">
+<div
+	class="sample-item rounded-box bg-base-100 p-4 {$selectedSample?.id === sample.id
+		? 'border-2 border-primary'
+		: ''}"
+>
+	<div id="tags" class="m-0 mb-2 flex h-4 justify-end">
 		{#if sample.bpm}
-			<span class="badge badge-outline mr-1">{sample.bpm} BPM</span>
+			<span class="mr-1 badge badge-outline">{sample.bpm} BPM</span>
 		{/if}
 		{#each tags as tag (tag.name)}
-			<span class="badge badge-outline mr-1">{tag.name}</span>
+			<span class="mr-1 badge badge-outline" style="border-color: {tag.color}; color: {tag.color};"
+				>{tag.name}</span
+			>
 		{/each}
-
 	</div>
-	<p class="text-nowrap overflow-hidden text-ellipsis">{sample.name}</p>
+	<p class="overflow-hidden text-nowrap text-ellipsis">{sample.name}</p>
 	<progress class="progress progress-primary" {value} {max}></progress>
 	<audio bind:this={audioElement} loop ontimeupdate={handleAudioChange}>
 		<source src={`/api/sample/${sample.id}`} type="audio/wav" />

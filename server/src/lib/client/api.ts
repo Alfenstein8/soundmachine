@@ -1,4 +1,4 @@
-import type { SampleInsert, SlotInsert, TagSelect } from '$schema';
+import type { SampleInsert, SlotInsert, TagInsert, TagSelect } from '$schema';
 
 export const deleteSample = async (id: string) => {
   const response = await fetch(`/api/sample/${id}`, {
@@ -7,7 +7,6 @@ export const deleteSample = async (id: string) => {
   if (!response.ok) {
     alert('Failed to delete sample.');
   }
-  location.reload();
 };
 
 export const updateSlot = async (slotId: number, slot: SlotInsert) => {
@@ -21,7 +20,6 @@ export const updateSlot = async (slotId: number, slot: SlotInsert) => {
     if (!response.ok) {
       throw new Error('Failed to update slot.');
     }
-    location.reload();
   });
 };
 
@@ -43,7 +41,6 @@ export const uploadSample = async (file: File, sampleData: SampleInsert) => {
   if (!response.ok) {
     throw new Error('Failed to upload sample.');
   }
-  location.reload();
 };
 
 export const updateSampleMetadata = async (sampleId: string, sample: SampleInsert) => {
@@ -57,7 +54,6 @@ export const updateSampleMetadata = async (sampleId: string, sample: SampleInser
   if (!response.ok) {
     throw new Error('Failed to update sample metadata.');
   }
-  location.reload();
 };
 
 export const getSampleTags = async (sampleId: string) => {
@@ -70,3 +66,32 @@ export const getSampleTags = async (sampleId: string) => {
   }
   return res.json() as Promise<TagSelect[]>;
 };
+
+export const createTag = async (tag: TagInsert) => {
+
+  const response = await fetch('/api/tags', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(tag)
+  });
+  if (!response.ok) {
+    throw new Error('Failed to create tag.');
+  }
+
+}
+
+export const updateSampleTags = async (sampleId: string, tags: string[]) => {
+  const response = await fetch(`/api/sample/${sampleId}/tags`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(tags)
+  });
+  if (!response.ok) {
+    throw new Error('Failed to create tag.');
+  }
+
+}
