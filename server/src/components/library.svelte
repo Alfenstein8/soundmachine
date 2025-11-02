@@ -50,14 +50,16 @@
 		{/if}
 	</div>
 	<div class="mt-4 flex flex-wrap justify-center-safe gap-1">
-		<button
-			class="badge badge-outline"
-			onclick={() => {
-				$removeTagModal.showModal();
-			}}
-		>
-			<Minus />
-		</button>
+		{#if $tags.length > 0}
+			<button
+				class="badge badge-outline"
+				onclick={() => {
+					$removeTagModal.showModal();
+				}}
+			>
+				<Minus />
+			</button>
+		{/if}
 		{#each $tags as tag (tag.name)}
 			<span class="m-0 badge badge-outline" style="border-color: {tag.color}; color: {tag.color};"
 				>{tag.name}</span

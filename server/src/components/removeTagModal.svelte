@@ -2,6 +2,7 @@
 	import { removeTagModal, tags } from '$stores/globals';
 	import Modal from './modal.svelte';
 	import * as api from '$lib/client/api';
+	import { syncTagAttachments, syncTags } from '$lib/client/sync';
 
 	let removeTagName = $state('');
 
@@ -12,6 +13,7 @@
 		}
 		try {
 			api.deleteTag(removeTagName);
+			await Promise.all([syncTags(), syncTagAttachments()]);
 			$removeTagModal.close();
 		} catch (error) {
 			console.error('Error deleting tag:', error);
