@@ -12,7 +12,7 @@
 			return;
 		}
 		try {
-			api.deleteTag(removeTagName);
+			await api.deleteTag(removeTagName);
 			await Promise.all([syncTags(), syncTagAttachments()]);
 			$removeTagModal.close();
 		} catch (error) {
