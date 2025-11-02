@@ -21,5 +21,5 @@
 <!-- <ChooseTheme /> -->
 <div id="split" class="flex flex-col">
 	<Launchpad />
-	<Library samples={data.samples} />
+	<Library />
 </div>

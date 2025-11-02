@@ -3,14 +3,12 @@
 	import UploadButton from './uploadButton.svelte';
 	import LibraryItem from './libraryItem.svelte';
 	import Fuse, { type FuseResult } from 'fuse.js';
-	import { newTagModal, searchTerm, tags } from '$stores/globals';
+	import { newTagModal, samples, searchTerm, tags } from '$stores/globals';
 	import X from '@lucide/svelte/icons/x';
 	import { isFirefox } from '$lib/client/utils';
 	import Plus from '@lucide/svelte/icons/plus';
 
-	const { samples }: { samples: SampleSelect[] } = $props();
-
-	const fuse = new Fuse(samples, {
+	const fuse = new Fuse($samples, {
 		keys: ['name', 'bpm'],
 
 		findAllMatches: true
@@ -18,12 +16,23 @@
 
 	let results: FuseResult<SampleSelect>[] = $state([]);
 
-	searchTerm.subscribe((v) => {
+	const updateResults = (v: string) => {
 		if (v.trim() === '') {
-			results = samples.map((sample, index) => ({ item: sample, refIndex: index }));
+			results = $samples.map((sample, index) => ({ item: sample, refIndex: index }));
 		} else {
 			results = fuse.search(v);
 		}
+	};
+
+	samples.subscribe(() => {
+		// Recreate fuse index when samples change
+		fuse.setCollection($samples);
+		// Re-run search to update results
+		updateResults($searchTerm);
+	});
+
+	searchTerm.subscribe((v) => {
+		updateResults(v);
 	});
 </script>
 
