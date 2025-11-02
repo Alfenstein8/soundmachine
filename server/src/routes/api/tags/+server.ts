@@ -1,5 +1,5 @@
 import { db } from '$lib/server/db';
-import { tags, type TagSelect } from '$schema';
+import { samples, tags, tagsToSamples, type TagSelect } from '$schema';
 import type { RequestEvent } from './$types';
 
 export const GET = async () => {
@@ -35,7 +35,9 @@ export const POST = async ({ request }: RequestEvent) => {
 
 export const DELETE = async () => {
   try {
+    await db.delete(tagsToSamples);
     await db.delete(tags);
+    await db.update(samples).set({primaryTagName: null});
   } catch {
     return new Response('Failed to delete tags', { status: 500 });
   }

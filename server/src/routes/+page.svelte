@@ -6,6 +6,7 @@
 	import UploadModal from '$comp/uploadModal.svelte';
 	import PadModal from '$comp/padModal.svelte';
 	import NewTagModal from '$comp/newTagModal.svelte';
+	import RemoveTagModal from '$comp/removeTagModal.svelte';
 	let { data } = $props();
 
 	$slots = data.slots;
@@ -18,6 +19,7 @@
 <UploadModal />
 <PadModal />
 <NewTagModal />
+<RemoveTagModal />
 
 <!-- <ChooseTheme /> -->
 <div id="split" class="flex flex-col">

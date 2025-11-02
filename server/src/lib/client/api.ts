@@ -78,6 +78,19 @@ export const createTag = async (tag: TagInsert) => {
   if (!response.ok) {
     throw new Error('Failed to create tag.');
   }
+}
+
+export const deleteTag = async (tagName: string) => {
+
+  const response = await fetch(`/api/tags/${tagName}`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+  });
+  if (!response.ok) {
+    throw new Error('Failed to delete tag.');
+  }
 
 }
 

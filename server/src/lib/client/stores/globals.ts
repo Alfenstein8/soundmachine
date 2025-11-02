@@ -15,3 +15,4 @@ export const libraryModal: Writable<HTMLDialogElement> = writable();
 export const uploadModal: Writable<HTMLDialogElement> = writable();
 export const padModal: Writable<HTMLDialogElement> = writable();
 export const newTagModal: Writable<HTMLDialogElement> = writable();
+export const removeTagModal: Writable<HTMLDialogElement> = writable();

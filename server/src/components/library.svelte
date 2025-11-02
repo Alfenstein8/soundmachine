@@ -3,10 +3,11 @@
 	import UploadButton from './uploadButton.svelte';
 	import LibraryItem from './libraryItem.svelte';
 	import Fuse, { type FuseResult } from 'fuse.js';
-	import { newTagModal, samples, searchTerm, tags } from '$stores/globals';
+	import { newTagModal, removeTagModal, samples, searchTerm, tags } from '$stores/globals';
 	import X from '@lucide/svelte/icons/x';
 	import { isFirefox } from '$lib/client/utils';
 	import Plus from '@lucide/svelte/icons/plus';
+	import Minus from '@lucide/svelte/icons/minus';
 
 	const fuse = new Fuse($samples, {
 		keys: ['name', 'bpm'],
@@ -48,9 +49,17 @@
 			</button>
 		{/if}
 	</div>
-	<div class="mt-4 flex flex-wrap justify-center-safe">
+	<div class="mt-4 flex flex-wrap justify-center-safe gap-1">
+		<button
+			class="badge badge-outline"
+			onclick={() => {
+				$removeTagModal.showModal();
+			}}
+		>
+			<Minus />
+		</button>
 		{#each $tags as tag (tag.name)}
-			<span class="mr-1 badge badge-outline" style="border-color: {tag.color}; color: {tag.color};"
+			<span class="m-0 badge badge-outline" style="border-color: {tag.color}; color: {tag.color};"
 				>{tag.name}</span
 			>
 		{/each}
