@@ -3,7 +3,7 @@
 	import { selectedSample, libraryModal, tags } from '$stores/globals';
 	import * as api from '$lib/client/api';
 	import type { SampleInsert, TagSelect } from '$schema';
-	import { syncSamples } from '$lib/client/sync';
+	import { syncSamples, syncSlots } from '$lib/client/sync';
 
 	let nameInput: string = $state('');
 	let bpmInput: number | undefined = $state();
@@ -24,7 +24,7 @@
 		if ($selectedSample == null) return;
 		try {
 			await api.deleteSample($selectedSample.id);
-			await syncSamples();
+			await Promise.all([syncSamples(), syncSlots()]);
 			$libraryModal.close();
 		} catch (error) {
 			console.error('Error deleting sample:', error);

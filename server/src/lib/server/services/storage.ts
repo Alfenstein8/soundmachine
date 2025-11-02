@@ -67,7 +67,7 @@ const deleteFile = (filePath: string) => {
 
 export const deleteSample = async (id: string) => {
 	try {
-		await db.update(slots).set({ sampleId: null }).where(eq(slots.sampleId, id));
+		await db.update(slots).set({ sampleId: null, color: null }).where(eq(slots.sampleId, id));
 		await db.delete(samples).where(eq(samples.id, id));
 	} catch {
 		throw new Error('Failed to delete sample record from database');

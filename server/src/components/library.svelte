@@ -25,9 +25,7 @@
 	};
 
 	samples.subscribe(() => {
-		// Recreate fuse index when samples change
 		fuse.setCollection($samples);
-		// Re-run search to update results
 		updateResults($searchTerm);
 	});
 
