@@ -26,9 +26,9 @@
 
 	const sampleTags: TagSelect[] = $derived(
 		$tagAttachments
-			.filter((ta) => ta.sampleId === sample.id)
-			.map((ta) => $tags.find((t) => t.name === ta.tagName))
-			.filter((t): t is TagSelect => t !== undefined)
+			.filter((ta) => ta.sampleId === sample.id) // Get attachments for this sample
+			.map((ta) => $tags.find((t) => t.name === ta.tagName)) // Map to tag objects
+			.filter((t): t is TagSelect => t !== undefined) // Filter out undefined tags
 	);
 
 </script>
