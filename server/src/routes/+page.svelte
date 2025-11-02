@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Library from '$comp/library.svelte';
 	import Launchpad from '$comp/launchpad.svelte';
-	import { samples, slots, tags } from '$stores/globals.js';
+	import { samples, slots, tagAttachments, tags } from '$stores/globals.js';
 	import LibraryModal from '$comp/libraryModal.svelte';
 	import UploadModal from '$comp/uploadModal.svelte';
 	import PadModal from '$comp/padModal.svelte';
@@ -11,6 +11,7 @@
 	$slots = data.slots;
 	$samples = data.samples;
 	$tags = data.tags;
+	$tagAttachments = data.tagAttachments;
 </script>
 
 <LibraryModal />

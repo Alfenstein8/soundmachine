@@ -3,7 +3,7 @@
 	import { selectedSample, libraryModal, tags } from '$stores/globals';
 	import * as api from '$lib/client/api';
 	import type { SampleInsert, TagSelect } from '$schema';
-	import { syncSamples, syncSlots } from '$lib/client/sync';
+	import { syncSamples, syncSlots, syncTagAttachments } from '$lib/client/sync';
 
 	let nameInput: string = $state('');
 	let bpmInput: number | undefined = $state();
@@ -46,7 +46,8 @@
 				sampleTags.map((t) => t.name),
 				newPrimaryTagName
 			);
-			location.reload();
+			await Promise.all([syncSamples(), syncTagAttachments()]);
+			$libraryModal.close();
 		} catch (error) {
 			console.error('Error updating sample:', error);
 			alert('Failed to update sample.');

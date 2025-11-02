@@ -1,4 +1,4 @@
-import type { SampleInsert, SampleSelect, SlotInsert, SlotSelect, TagInsert, TagSelect } from '$schema';
+import type { SampleInsert, SampleSelect, SlotInsert, SlotSelect, tagAttachmentSelect, TagInsert, TagSelect } from '$schema';
 
 export const deleteSample = async (id: string) => {
   const response = await fetch(`/api/sample/${id}`, {
@@ -126,4 +126,15 @@ export const getAllSlots = async () => {
     throw new Error('Failed to fetch slots.');
   }
   return res.json() as Promise<SlotSelect[]>;
+}
+
+export const getAllTagAttachments = async () => {
+  const res = await fetch('/api/tagAttachments', {
+    method: 'GET'
+  });
+
+  if (!res.ok) {
+    throw new Error('Failed to fetch tagAttachments.');
+  }
+  return res.json() as Promise<tagAttachmentSelect[]>;
 }

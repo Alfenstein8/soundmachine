@@ -1,8 +1,8 @@
-import { tags, samples, slots } from "$stores/globals"
+import { tags, samples, slots, tagAttachments } from "$stores/globals"
 import * as api from "$lib/client/api"
 
 export const syncClient = async () => {
-  await Promise.all([syncTags(), syncSamples(), syncSlots()]);
+  await Promise.all([syncTags(), syncSamples(), syncSlots(), syncTagAttachments()]);
 }
 
 export const syncTags = async () => {
@@ -21,5 +21,11 @@ export const syncSlots = async () => {
   const newSlots = await api.getAllSlots();
   slots.set(newSlots)
   console.log("Synced Slots");
+}
 
+
+export const syncTagAttachments = async () => {
+  const newTagAttachments = await api.getAllTagAttachments();
+  tagAttachments.set(newTagAttachments);
+  console.log("Synced TagAttachments");
 }

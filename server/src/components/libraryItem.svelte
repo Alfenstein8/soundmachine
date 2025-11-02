@@ -1,13 +1,10 @@
 <script lang="ts">
 	import type { SampleSelect, TagSelect } from '$schema';
-	import { selectedSample, libraryModal } from '$stores/globals';
+	import { selectedSample, libraryModal, tags, tagAttachments } from '$stores/globals';
 	import CircleStop from '@lucide/svelte/icons/circle-stop';
 	import PlayIcon from '@lucide/svelte/icons/play';
-	import * as api from '$lib/client/api';
-	import { onMount } from 'svelte';
 
 	const { sample }: { sample: SampleSelect } = $props();
-	let tags: TagSelect[] = $state([]);
 	let audioElement: HTMLAudioElement;
 	let playButton: HTMLInputElement;
 
@@ -27,9 +24,13 @@
 	let max = $state(100);
 	let value = $state(0);
 
-	onMount(async () => {
-		tags = await api.getSampleTags(sample.id);
-	});
+	const sampleTags: TagSelect[] = $derived(
+		$tagAttachments
+			.filter((ta) => ta.sampleId === sample.id)
+			.map((ta) => $tags.find((t) => t.name === ta.tagName))
+			.filter((t): t is TagSelect => t !== undefined)
+	);
+
 </script>
 
 <div
@@ -67,11 +68,11 @@
 		{/if}
 	</div>
 	<div class="mb-2"></div>
-	<div class="flex justify-start h-fit w-full flex-wrap gap-y-2">
+	<div class="flex h-fit w-full flex-wrap justify-start gap-y-2">
 		{#if sample.bpm}
-			<span class="mr-1 badge badge-outline w-fit box-border text-nowrap">{sample.bpm} BPM</span>
+			<span class="mr-1 box-border badge w-fit badge-outline text-nowrap">{sample.bpm} BPM</span>
 		{/if}
-		{#each tags as tag (tag.name)}
+		{#each sampleTags as tag (tag.name)}
 			<span class="mr-1 badge badge-outline" style="border-color: {tag.color}; color: {tag.color};"
 				>{tag.name}</span
 			>

@@ -50,3 +50,5 @@ export const tagsToSamples = sqliteTable(
 	(t) => [primaryKey({ columns: [t.tagName, t.sampleId] })]
 );
 
+export type tagAttachmentSelect = typeof tagsToSamples.$inferSelect;
+export type tagAttachmentInsert = typeof tagsToSamples.$inferInsert;
