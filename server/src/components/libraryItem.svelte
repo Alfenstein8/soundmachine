@@ -60,7 +60,11 @@
 				<CircleStop color="var(--color-primary)" />
 			</div>
 		</label>
-		<button class="btn btn-outline" onclick={() => ($selectedSample = sample)}> Select</button>
+		{#if $selectedSample && $selectedSample.id === sample.id}
+			<button class="btn btn-outline" onclick={() => ($selectedSample = null)}>Deselect</button>
+		{:else}
+			<button class="btn btn-outline" onclick={() => ($selectedSample = sample)}>Select</button>
+		{/if}
 	</div>
 	<div class="mb-2"></div>
 	<div class="flex justify-start h-fit w-full flex-wrap gap-y-2">
