@@ -1,6 +1,6 @@
 import { db } from '$lib/server/db';
 import type { RequestEvent } from './$types';
-import { samples, type SampleInsert } from '$lib/server/db/schema';
+import { samples, type SampleInsert, type SampleSelect } from '$lib/server/db/schema';
 import { json, error } from '@sveltejs/kit';
 import { eq } from 'drizzle-orm';
 import { saveSample } from '$lib/server/services/storage';
@@ -36,7 +36,7 @@ const getAudioFile = (formData: FormData) => {
 export const POST = async ({ request }: RequestEvent) => {
   let audioFile: File;
   let sampleData: SampleInsert;
-  let newSampleId: string | null = null;
+  let newSample: SampleSelect | null = null;
 
   try {
     const formData = await request.formData();
@@ -45,23 +45,20 @@ export const POST = async ({ request }: RequestEvent) => {
     sampleData = getSampleData(formData);
 
     const res = await db.insert(samples).values(sampleData).returning();
-    newSampleId = res[0].id;
+    newSample = res[0];
 
     audioFile = getAudioFile(formData);
 
-    saveSample(newSampleId, audioFile);
+    saveSample(newSample.id, audioFile);
   } catch (e) {
     console.error('Error processing audio upload:', e);
-    if (newSampleId) {
-      await db.delete(samples).where(eq(samples.id, newSampleId));
+    if (newSample?.id) {
+      await db.delete(samples).where(eq(samples.id, newSample.id));
     }
     return error(500, { message: 'Failed to save audio file.' });
   }
 
-  return json({
-    message: 'Added sample and saved audio',
-    id: newSampleId
-  });
+  return json(newSample);
 };
 
 export const GET = async () => {

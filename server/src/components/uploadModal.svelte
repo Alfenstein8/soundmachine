@@ -3,7 +3,8 @@
 	import Modal from '$comp/modal.svelte';
 	import { uploadModal } from '$stores/globals';
 	import { onMount } from 'svelte';
-	import type { SampleInsert } from '$schema';
+	import type { SampleInsert, TagSelect } from '$schema';
+	import TagApply from './tagApply.svelte';
 
 	let fileInput: HTMLInputElement;
 	let fileName = $state('');
@@ -11,19 +12,28 @@
 	let namePlaceholder: string = $state('Enter file name');
 	const fileNameInput = (): HTMLInputElement | null => document.querySelector('#nameInput');
 
+	let sampleTags: TagSelect[] = $state([]);
+	let primaryTagName: string = $state('Select tag');
+
 	const handeUpload = async () => {
 		const files = fileInput.files;
 
 		const trueFileName = fileName || namePlaceholder || 'untitled';
 		const newSample: SampleInsert = {
 			name: trueFileName,
-			bpm: bpm || undefined
+			bpm: bpm || undefined,
 		};
 
 		if (files && files.length > 0) {
 			const file = files[0];
 			try {
-				await api.uploadSample(file, newSample);
+				const resSample  = await api.uploadSample(file, newSample);
+
+				await api.updateSampleTags(
+					resSample.id,
+					sampleTags.map((t) => t.name),
+					sampleTags.find((t) => t.name === primaryTagName) ? primaryTagName : null
+				);
 			} catch (error) {
 				console.error('Error uploading file:', error);
 				alert('File upload failed.');
@@ -92,9 +102,10 @@
 				bind:value={bpm}
 			/>
 		</div>
+	</div>
+		<TagApply bind:sampleTags bind:primaryTagName/>
 		<br />
 		<button id="uploadButton" class="btn btn-primary" onclick={handeUpload}>Upload</button>
-	</div>
 </Modal>
 
 <style>

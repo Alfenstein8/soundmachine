@@ -40,6 +40,8 @@ export const uploadSample = async (file: File, sampleData: SampleInsert) => {
   if (!response.ok) {
     throw new Error('Failed to upload sample.');
   }
+
+  return response.json() as Promise<SampleSelect>;
 };
 
 export const updateSampleMetadata = async (sampleId: string, sample: SampleInsert) => {
