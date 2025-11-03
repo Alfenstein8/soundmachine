@@ -1,13 +1,15 @@
 <script lang="ts">
 	import type { SampleSelect } from '$lib/server/db/schema';
-	import UploadButton from './uploadButton.svelte';
+	import UploadButton from '$comp/uploadButton.svelte';
 	import LibraryItem from './libraryItem.svelte';
 	import Fuse, { type FuseResult } from 'fuse.js';
-	import { newTagModal, removeTagModal, samples, searchTerm, tags } from '$stores/globals';
+	import { newTagModal, editTagModal, samples, searchTerm, tags } from '$stores/globals';
 	import X from '@lucide/svelte/icons/x';
 	import { isFirefox, sampleTags } from '$lib/client/utils';
 	import Plus from '@lucide/svelte/icons/plus';
-	import Minus from '@lucide/svelte/icons/minus';
+	import Tag from '@lucide/svelte/icons/tag';
+	import TagSelectComp from './tagSelect.svelte';
+	import type { TagSelect } from '$lib/server/db/schema';
 
 	const fuse = new Fuse($samples, {
 		keys: ['name', 'bpm'],
@@ -17,27 +19,18 @@
 
 	let results: FuseResult<SampleSelect>[] = $state([]);
 
-	let tagFilters: string[] = $state([]);
+	let selectedTags: TagSelect[] = $state([]);
 
 	let searchCollection: SampleSelect[] = $samples;
 
-	const toggleTagFilter = (tagName: string) => {
-		if (tagFilters.includes(tagName)) {
-			tagFilters = tagFilters.filter((t) => t !== tagName);
-		} else {
-			tagFilters.push(tagName);
-		}
-
-		if (tagFilters.length === 0) {
-			searchCollection = $samples;
-			updateResults($searchTerm);
-			return;
-		}
-		searchCollection = $samples.filter((sample) => tagFilters.every(t=>sampleTags(sample.id).some(st=> t === st.name)));
-		updateResults($searchTerm);
-	};
-
 	const updateResults = (v: string) => {
+		if (selectedTags.length === 0) {
+			searchCollection = $samples;
+		} else {
+			searchCollection = $samples.filter((sample) =>
+				selectedTags.every((t) => sampleTags(sample.id).some((st) => t.name === st.name))
+			);
+		}
 		if (v.trim() === '') {
 			results = searchCollection.map((sample, index) => ({ item: sample, refIndex: index }));
 		} else {
@@ -57,12 +50,12 @@
 </script>
 
 <div class="flex flex-col">
-	<div class="flex w-full join justify-center-safe">
+	<div class="join justify-center-safe flex w-full">
 		<input
 			type="text"
 			placeholder="Search samples..."
 			bind:value={$searchTerm}
-			class="input join-item h-10 w-[80%] border border-base-300 p-2 text-center sm:w-100"
+			class="input join-item border-base-300 sm:w-100 h-10 w-[80%] border p-2 text-center"
 		/>
 		{#if isFirefox()}
 			<button class="btn join-item" onclick={() => ($searchTerm = '')}>
@@ -70,24 +63,18 @@
 			</button>
 		{/if}
 	</div>
-	<div class="flex flex-wrap gap-1 mt-4 justify-center-safe">
+	<div class="justify-center-safe mt-4 flex flex-wrap items-center gap-1">
 		{#if $tags.length > 0}
 			<button
-				class="badge badge-outline"
+				class="btn btn-circle btn-ghost"
 				onclick={() => {
-					$removeTagModal.showModal();
+					$editTagModal.showModal();
 				}}
 			>
-				<Minus />
+				<Tag />
 			</button>
 		{/if}
-		{#each $tags as tag (tag.name)}
-			<button
-				class="m-0 badge {tagFilters.includes(tag.name) ? 'badge-outline' : 'badge-ghost'}"
-				style="{ tagFilters.includes(tag.name) ? `border-color: ${tag.color};` : ""} color: {tag.color};"
-				onclick={() => toggleTagFilter(tag.name)}>{tag.name}</button
-			>
-		{/each}
+		<TagSelectComp tags={$tags} bind:selectedTags ontoggle={() => updateResults($searchTerm)} />
 		<button
 			class="badge badge-outline"
 			onclick={() => {
@@ -98,7 +85,7 @@
 		</button>
 	</div>
 	<br class="mb-4" />
-	<div class="flex overflow-y-scroll flex-wrap gap-4 justify-center-safe">
+	<div class="justify-center-safe flex flex-wrap gap-4 overflow-y-scroll">
 		{#each results as result (result.item.id)}
 			<LibraryItem sample={result.item} />
 		{/each}

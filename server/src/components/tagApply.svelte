@@ -2,10 +2,12 @@
 	import type { TagSelect } from '$schema';
 	import { tags } from '$stores/globals';
 
-	let { primaryTagName = $bindable(), sampleTags = $bindable() }: { primaryTagName?: string, sampleTags: TagSelect[] } = $props();
+	let {
+		primaryTagName = $bindable(),
+		sampleTags = $bindable()
+	}: { primaryTagName?: string; sampleTags: TagSelect[] } = $props();
 
 	let tagInput: string = $state('Add tag');
-
 
 	const handleTagAdd = () => {
 		const tagToAdd = $tags.find((t) => t.name === tagInput);

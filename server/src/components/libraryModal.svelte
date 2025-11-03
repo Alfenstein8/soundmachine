@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Modal from '$comp/modal.svelte';
-	import { selectedSample, libraryModal, tags } from '$stores/globals';
+	import { selectedSample, libraryModal } from '$stores/globals';
 	import * as api from '$lib/client/api';
 	import type { SampleInsert, TagSelect } from '$schema';
 	import { syncSamples, syncSlots, syncTagAttachments } from '$lib/client/sync';
@@ -8,7 +8,7 @@
 
 	let nameInput: string = $state('');
 	let bpmInput: number | undefined = $state();
-	let primaryTagName: string = $state('Select tag');
+	let primaryTagName = $state('Select tag');
 	let sampleTags: TagSelect[] = $state([]);
 
 	selectedSample.subscribe(async (newSample) => {

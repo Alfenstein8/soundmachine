@@ -1,4 +1,12 @@
-import type { SampleInsert, SampleSelect, SlotInsert, SlotSelect, tagAttachmentSelect, TagInsert, TagSelect } from '$schema';
+import type {
+  SampleInsert,
+  SampleSelect,
+  SlotInsert,
+  SlotSelect,
+  tagAttachmentSelect,
+  TagInsert,
+  TagSelect
+} from '$schema';
 
 export const deleteSample = async (id: string) => {
   const response = await fetch(`/api/sample/${id}`, {
@@ -23,7 +31,7 @@ export const updateSlot = async (slotId: number, slot: SlotInsert) => {
   });
 };
 
-export const placeSample = async (sampleId: string, slotId: number, color = "#102457") =>
+export const placeSample = async (sampleId: string, slotId: number, color = '#102457') =>
   updateSlot(slotId, { sampleId, color });
 
 export const removeSampleFromSlot = async (slotId: number) =>
@@ -69,7 +77,6 @@ export const getSampleTags = async (sampleId: string) => {
 };
 
 export const createTag = async (tag: TagInsert) => {
-
   const response = await fetch('/api/tags', {
     method: 'POST',
     headers: {
@@ -80,24 +87,29 @@ export const createTag = async (tag: TagInsert) => {
   if (!response.ok) {
     throw new Error('Failed to create tag.');
   }
-}
+};
 
 export const deleteTag = async (tagName: string) => {
-
   const response = await fetch(`/api/tags/${tagName}`, {
     method: 'DELETE',
     headers: {
       'Content-Type': 'application/json'
-    },
+    }
   });
   if (!response.ok) {
     throw new Error('Failed to delete tag.');
   }
+};
 
-}
-
-export const updateSampleTags = async (sampleId: string, tagNames: string[], primaryTagName: string | null) => {
-  const requestBody: { tagNames: string[], primaryTagName: string | null } = { tagNames, primaryTagName };
+export const updateSampleTags = async (
+  sampleId: string,
+  tagNames: string[],
+  primaryTagName: string | null
+) => {
+  const requestBody: { tagNames: string[]; primaryTagName: string | null } = {
+    tagNames,
+    primaryTagName
+  };
   const response = await fetch(`/api/sample/${sampleId}/tags`, {
     method: 'POST',
     headers: {
@@ -108,8 +120,7 @@ export const updateSampleTags = async (sampleId: string, tagNames: string[], pri
   if (!response.ok) {
     throw new Error('Failed to create tag.');
   }
-
-}
+};
 
 export const getAllTags = async () => {
   const res = await fetch('/api/tags', {
@@ -119,7 +130,7 @@ export const getAllTags = async () => {
     throw new Error('Failed to fetch tags.');
   }
   return res.json() as Promise<TagSelect[]>;
-}
+};
 
 export const getAllSamples = async () => {
   const res = await fetch('/api/sample', {
@@ -130,7 +141,7 @@ export const getAllSamples = async () => {
     throw new Error('Failed to fetch samples.');
   }
   return res.json() as Promise<SampleSelect[]>;
-}
+};
 
 export const getAllSlots = async () => {
   const res = await fetch('/api/slot', {
@@ -141,7 +152,7 @@ export const getAllSlots = async () => {
     throw new Error('Failed to fetch slots.');
   }
   return res.json() as Promise<SlotSelect[]>;
-}
+};
 
 export const getAllTagAttachments = async () => {
   const res = await fetch('/api/tagAttachments', {
@@ -152,4 +163,15 @@ export const getAllTagAttachments = async () => {
     throw new Error('Failed to fetch tagAttachments.');
   }
   return res.json() as Promise<tagAttachmentSelect[]>;
-}
+};
+
+export const updateTag = async (tagName: string, newTag: TagInsert) => {
+  const res = await fetch(`/api/tags/${tagName}`, {
+    method: 'PATCH',
+    body: JSON.stringify(newTag)
+  });
+
+  if (!res.ok) {
+    throw new Error('Failed to update tag.');
+  }
+};
