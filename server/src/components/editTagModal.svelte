@@ -53,7 +53,7 @@
 
 <Modal bind:dialog={$editTagModal} title="Remove Tag">
 	<div class="flex flex-col gap-4">
-		<div class="flex w-full justify-center">
+		<div class="flex w-full justify-center flex-wrap gap-y-2">
 			<TagSelectComp tags={$tags} bind:selectedTags multiSelect={false} ontoggle={handleToggle} />
 		</div>
 		<div class="flex items-center justify-center gap-4">
