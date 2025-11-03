@@ -5,7 +5,7 @@
 	import Fuse, { type FuseResult } from 'fuse.js';
 	import { newTagModal, removeTagModal, samples, searchTerm, tags } from '$stores/globals';
 	import X from '@lucide/svelte/icons/x';
-	import { isFirefox } from '$lib/client/utils';
+	import { isFirefox, sampleTags } from '$lib/client/utils';
 	import Plus from '@lucide/svelte/icons/plus';
 	import Minus from '@lucide/svelte/icons/minus';
 
@@ -17,16 +17,37 @@
 
 	let results: FuseResult<SampleSelect>[] = $state([]);
 
+	let tagFilters: string[] = $state([]);
+
+	let searchCollection: SampleSelect[] = $samples;
+
+	const toggleTagFilter = (tagName: string) => {
+		if (tagFilters.includes(tagName)) {
+			tagFilters = tagFilters.filter((t) => t !== tagName);
+		} else {
+			tagFilters.push(tagName);
+		}
+
+		if (tagFilters.length === 0) {
+			searchCollection = $samples;
+			updateResults($searchTerm);
+			return;
+		}
+		searchCollection = $samples.filter((sample) => tagFilters.every(t=>sampleTags(sample.id).some(st=> t === st.name)));
+		updateResults($searchTerm);
+	};
+
 	const updateResults = (v: string) => {
 		if (v.trim() === '') {
-			results = $samples.map((sample, index) => ({ item: sample, refIndex: index }));
+			results = searchCollection.map((sample, index) => ({ item: sample, refIndex: index }));
 		} else {
+			fuse.setCollection(searchCollection);
 			results = fuse.search(v);
 		}
 	};
 
 	samples.subscribe(() => {
-		fuse.setCollection($samples);
+		searchCollection = $samples;
 		updateResults($searchTerm);
 	});
 
@@ -36,7 +57,7 @@
 </script>
 
 <div class="flex flex-col">
-	<div class="join flex w-full justify-center-safe">
+	<div class="flex w-full join justify-center-safe">
 		<input
 			type="text"
 			placeholder="Search samples..."
@@ -49,7 +70,7 @@
 			</button>
 		{/if}
 	</div>
-	<div class="mt-4 flex flex-wrap justify-center-safe gap-1">
+	<div class="flex flex-wrap gap-1 mt-4 justify-center-safe">
 		{#if $tags.length > 0}
 			<button
 				class="badge badge-outline"
@@ -61,8 +82,10 @@
 			</button>
 		{/if}
 		{#each $tags as tag (tag.name)}
-			<span class="m-0 badge badge-outline" style="border-color: {tag.color}; color: {tag.color};"
-				>{tag.name}</span
+			<button
+				class="m-0 badge {tagFilters.includes(tag.name) ? 'badge-outline' : 'badge-ghost'}"
+				style="{ tagFilters.includes(tag.name) ? `border-color: ${tag.color};` : ""} color: {tag.color};"
+				onclick={() => toggleTagFilter(tag.name)}>{tag.name}</button
 			>
 		{/each}
 		<button
@@ -75,7 +98,7 @@
 		</button>
 	</div>
 	<br class="mb-4" />
-	<div class="flex flex-wrap justify-center-safe gap-4 overflow-y-scroll">
+	<div class="flex overflow-y-scroll flex-wrap gap-4 justify-center-safe">
 		{#each results as result (result.item.id)}
 			<LibraryItem sample={result.item} />
 		{/each}
