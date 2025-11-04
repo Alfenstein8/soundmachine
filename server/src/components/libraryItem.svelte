@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { getColorByCode } from '$lib/colors';
 	import type { SampleSelect, TagSelect } from '$schema';
 	import { selectedSample, libraryModal, tags, tagAttachments } from '$stores/globals';
 	import CircleStop from '@lucide/svelte/icons/circle-stop';
@@ -71,7 +72,10 @@
 			<span class="mr-1 box-border badge w-fit badge-outline text-nowrap">{sample.bpm} BPM</span>
 		{/if}
 		{#each sampleTags as tag (tag.name)}
-			<span class="mr-1 badge badge-outline {tag.name === sample.primaryTagName ? "border-b-4":""}" style="border-color: {tag.color}; color: {tag.color};">
+			<span
+				class="mr-1 badge badge-outline {tag.name === sample.primaryTagName ? 'border-b-4' : ''}"
+				style="border-color: {getColorByCode(tag.color)}; color: {getColorByCode(tag.color)};"
+			>
 				{tag.name}</span
 			>
 		{/each}

@@ -16,3 +16,6 @@ export const uploadModal: Writable<HTMLDialogElement> = writable();
 export const padModal: Writable<HTMLDialogElement> = writable();
 export const newTagModal: Writable<HTMLDialogElement> = writable();
 export const editTagModal: Writable<HTMLDialogElement> = writable();
+export const colorModal: Writable<HTMLDialogElement> = writable();
+
+export const selectedColor: Writable<[number, string] | null> = writable(null);

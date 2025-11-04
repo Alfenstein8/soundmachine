@@ -1,15 +1,14 @@
 <script lang="ts">
-	import { editTagModal, tags } from '$stores/globals';
+	import { editTagModal, selectedColor, tags } from '$stores/globals';
 	import Modal from './modal.svelte';
 	import * as api from '$lib/client/api';
-	import { syncSamples, syncSlots, syncTagAttachments, syncTags } from '$lib/client/sync';
+	import { syncSamples, syncTagAttachments, syncTags } from '$lib/client/sync';
 	import TagSelectComp from './tagSelect.svelte';
 	import type { TagInsert, TagSelect } from '$schema';
 	import TagInfo from './tagInfo.svelte';
 
 	let selectedTags: TagSelect[] = $state([]);
 	let tagName = $state('');
-	let tagColor = $state('');
 
 	const handleDelete = async () => {
 		if (selectedTags.length === 0) {
@@ -34,7 +33,7 @@
 		try {
 			const newTag: TagInsert = {
 				name: tagName,
-				color: tagColor
+				color: $selectedColor?.[0]
 			};
 			await api.updateTag(selectedTags[0].name, newTag);
 			await Promise.all([syncSamples(), syncTags(), syncTagAttachments()]);
@@ -46,18 +45,17 @@
 	};
 
 	const handleToggle = (tag: TagSelect) => {
-		tagColor = tag.color ?? '';
 		tagName = tag.name;
 	};
 </script>
 
 <Modal bind:dialog={$editTagModal} title="Remove Tag">
 	<div class="flex flex-col gap-4">
-		<div class="flex w-full justify-center flex-wrap gap-y-2">
+		<div class="flex w-full flex-wrap justify-center gap-y-2">
 			<TagSelectComp tags={$tags} bind:selectedTags multiSelect={false} ontoggle={handleToggle} />
 		</div>
 		<div class="flex items-center justify-center gap-4">
-			<TagInfo bind:tagName bind:tagColor />
+			<TagInfo bind:tagName />
 		</div>
 		<div class="grid grid-cols-2 gap-4">
 			<button class="btn btn-primary" onclick={handleApply}>Apply</button>

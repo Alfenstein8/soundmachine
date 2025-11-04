@@ -31,7 +31,7 @@ export const updateSlot = async (slotId: number, slot: SlotInsert) => {
   });
 };
 
-export const placeSample = async (sampleId: string, slotId: number, color = '#102457') =>
+export const placeSample = async (sampleId: string, slotId: number, color = 5) =>
   updateSlot(slotId, { sampleId, color });
 
 export const removeSampleFromSlot = async (slotId: number) =>

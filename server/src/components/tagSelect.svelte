@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { getColorByCode } from '$lib/colors';
 	import type { TagSelect } from '$schema';
 
 	let {
@@ -30,12 +31,12 @@
 
 {#each tags as tag (tag.name)}
 	<button
-		class="badge m-0 {selectedTags.find((t) => t.name === tag.name)
+		class="m-0 badge {selectedTags.find((t) => t.name === tag.name)
 			? 'badge-outline'
 			: 'badge-ghost'}"
 		style="{selectedTags.find((t) => tag.name === t.name)
-			? `border-color: ${tag.color};`
-			: ''} color: {tag.color};"
+			? `border-color: ${getColorByCode(tag.color)};`
+			: ''} color: {getColorByCode(tag.color)};"
 		onclick={() => toggle(tag)}>{tag.name}</button
 	>
 {/each}

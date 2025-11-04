@@ -7,6 +7,7 @@
 	import PadModal from '$comp/padModal.svelte';
 	import NewTagModal from '$comp/newTagModal.svelte';
 	import EditTagModal from '$comp/editTagModal.svelte';
+	import ColorModal from '$comp/colorModal.svelte';
 	let { data } = $props();
 
 	$slots = data.slots;
@@ -20,6 +21,7 @@
 <PadModal />
 <NewTagModal />
 <EditTagModal />
+<ColorModal />
 
 <!-- <ChooseTheme /> -->
 <div id="split" class="flex flex-col">

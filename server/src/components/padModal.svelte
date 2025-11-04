@@ -1,14 +1,15 @@
 <script lang="ts">
 	import Modal from '$comp/modal.svelte';
-	import { padModal, samples, searchTerm, selectedSlot } from '$stores/globals';
+	import { padModal, samples, searchTerm, selectedColor, selectedSlot } from '$stores/globals';
 	import * as api from '$lib/client/api';
 	import type { SlotInsert } from '$schema';
 	import { syncSlots } from '$lib/client/sync';
-	let colorInput: string | undefined = $state();
+	import ColorPicker from './colorPicker.svelte';
+	import { colors } from '$lib/colors';
 
 	selectedSlot.subscribe((newSlot) => {
 		if (!newSlot) return;
-		colorInput = newSlot.color || '#ffffff';
+		$selectedColor = newSlot?.color ? colors.getPairByKey(newSlot.color) ?? null : null;
 	});
 
 	const handleRemove = async () => {
@@ -26,7 +27,7 @@
 	const handleApply = async () => {
 		if (!$selectedSlot) return;
 		const slotPatch: SlotInsert = {
-			color: colorInput
+			color: $selectedColor?.[0]
 		};
 		try {
 			await api.updateSlot($selectedSlot.id, slotPatch);
@@ -47,7 +48,7 @@
 <Modal bind:dialog={$padModal} title="Edit Pad">
 	<div class="flex flex-col gap-4">
 		<div class="flex justify-center">
-			<input type="color" class="h-16 w-16 rounded-full border-none" bind:value={colorInput} />
+			<ColorPicker />
 		</div>
 		<div class="grid grid-cols-3 gap-4">
 			<button class="btn btn-primary" onclick={handleApply}>Apply</button>
