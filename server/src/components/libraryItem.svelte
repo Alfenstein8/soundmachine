@@ -1,7 +1,6 @@
 <script lang="ts">
 	import type { SampleSelect, TagSelect } from '$schema';
 	import { selectedSample, libraryModal, tags, tagAttachments } from '$stores/globals';
-	import Dot from '@lucide/svelte/icons/dot';
 	import CircleStop from '@lucide/svelte/icons/circle-stop';
 	import PlayIcon from '@lucide/svelte/icons/play';
 
@@ -18,12 +17,11 @@
 		}
 	};
 
-	const handleAudioChange = () => {
-		max = audioElement.duration;
-		value = audioElement.currentTime;
-	};
-	let max = $state(100);
-	let value = $state(0);
+	let currentTime = $state(0);
+	let duration = $state(0);
+
+	let max = $derived(duration && Number.isFinite(duration) ? duration : 0);
+	let value = $derived(currentTime || 0);
 
 	const sampleTags: TagSelect[] = $derived(
 		$tagAttachments
@@ -40,7 +38,7 @@
 >
 	<p class="overflow-hidden text-nowrap text-ellipsis">{sample.name}</p>
 	<progress class="progress progress-primary" {value} {max}></progress>
-	<audio bind:this={audioElement} loop ontimeupdate={handleAudioChange}>
+	<audio bind:this={audioElement} loop bind:currentTime bind:duration preload="auto">
 		<source src={`/api/sample/${sample.id}`} type="audio/wav" />
 		Your browser does not support the audio element.
 	</audio>

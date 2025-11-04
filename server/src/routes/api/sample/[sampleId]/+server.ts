@@ -16,6 +16,7 @@ export async function GET({ params }: RequestEvent) {
 	return new Response(file, {
 		headers: {
 			'Content-Type': 'audio/wav',
+			'Content-Length': file.byteLength.toString(),
 			'Content-Disposition': `attachment; filename="sample_${params.sampleId}.wav"`
 		}
 	});
