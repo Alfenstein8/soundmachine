@@ -6,6 +6,7 @@
 	import TagSelectComp from './tagSelect.svelte';
 	import type { TagInsert, TagSelect } from '$schema';
 	import TagInfo from './tagInfo.svelte';
+	import { colors } from '$lib/colors';
 
 	let selectedTags: TagSelect[] = $state([]);
 	let tagName = $state('');
@@ -46,6 +47,7 @@
 
 	const handleToggle = (tag: TagSelect) => {
 		tagName = tag.name;
+		$selectedColor = tag.color ? colors.getPairByKey(tag.color) ?? null : null;
 	};
 </script>
 
