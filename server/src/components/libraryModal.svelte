@@ -3,7 +3,7 @@
 	import { selectedSample, libraryModal } from '$stores/globals';
 	import * as api from '$lib/client/api';
 	import type { SampleInsert, TagSelect } from '$schema';
-	import { syncSamples, syncSlots, syncTagAttachments } from '$lib/client/sync';
+	import { syncClient, syncSamples, syncSlots } from '$lib/client/sync';
 	import TagApply from './tagApply.svelte';
 
 	let nameInput: string = $state('');
@@ -45,7 +45,7 @@
 				sampleTags.map((t) => t.name),
 				newPrimaryTagName
 			);
-			await Promise.all([syncSamples(), syncTagAttachments()]);
+			await syncClient();
 			$libraryModal.close();
 		} catch (error) {
 			console.error('Error updating sample:', error);

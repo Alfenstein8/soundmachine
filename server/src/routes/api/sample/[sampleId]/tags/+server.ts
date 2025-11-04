@@ -1,5 +1,5 @@
 import { db } from '$lib/server/db';
-import { tagsToSamples, tags, type TagSelect, samples } from '$schema';
+import { tagsToSamples, tags, type TagSelect, samples, slots } from '$schema';
 import { and, eq, getTableColumns, notInArray } from 'drizzle-orm';
 import type { RequestEvent } from './$types';
 
@@ -55,6 +55,11 @@ export const POST = async ({ params, request }: RequestEvent) => {
 
     // Update primary tag
     try {
+		  if (primaryTagName) {
+			  const color = await db.select().from(tags).where(eq(tags.name, primaryTagName)).limit(1)
+
+			  await db.update(slots).set({ color: color[0].color }).where(eq(slots.sampleId, params.sampleId));
+		  }
       await db.update(samples).set({ primaryTagName }).where(eq(samples.id, params.sampleId));
     } catch {
       return new Response('Failed to update primary tag', { status: 500 });

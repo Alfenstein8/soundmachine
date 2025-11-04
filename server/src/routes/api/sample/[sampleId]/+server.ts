@@ -1,7 +1,7 @@
 import type { RequestEvent } from './$types';
 import { getSample, deleteSample } from '$lib/server/services/storage';
 import { db } from '$lib/server/db';
-import { samples, type SampleInsert } from '$schema';
+import { samples, slots, tags, type SampleInsert } from '$schema';
 import { eq } from 'drizzle-orm';
 
 export async function GET({ params }: RequestEvent) {
@@ -36,6 +36,14 @@ export const PATCH = async ({ params, request }: RequestEvent) => {
 	const data: SampleInsert = await request.json();
 
 	try {
+		if (data.primaryTagName) {
+			const color = await db.select().from(tags).where(eq(tags.name, data.primaryTagName)).limit(1);
+
+			await db
+				.update(slots)
+				.set({ color: color[0].color })
+				.where(eq(slots.sampleId, params.sampleId));
+		}
 
 		await db.update(samples).set(data).where(eq(samples.id, params.sampleId));
 	} catch {

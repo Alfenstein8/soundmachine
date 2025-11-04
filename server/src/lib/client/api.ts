@@ -35,7 +35,7 @@ export const placeSample = async (sampleId: string, slotId: number, color = 5) =
   updateSlot(slotId, { sampleId, color });
 
 export const removeSampleFromSlot = async (slotId: number) =>
-  updateSlot(slotId, { sampleId: null, color: null });
+  updateSlot(slotId, { sampleId: null, color: null, useTagColor: true });
 
 export const uploadSample = async (file: File, sampleData: SampleInsert) => {
   const formData = new FormData();

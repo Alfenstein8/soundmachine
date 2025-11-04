@@ -20,7 +20,8 @@ export type SampleInsert = typeof samples.$inferInsert;
 export const slots = sqliteTable('slots', {
 	id: integer('id').primaryKey(),
 	sampleId: text('sample_id').references(() => samples.id),
-	color: integer('color')
+	color: integer('color'),
+	useTagColor: integer({ mode: 'boolean' }).notNull().default(true)
 });
 export type SlotSelect = typeof slots.$inferSelect;
 export type SlotInsert = typeof slots.$inferInsert;

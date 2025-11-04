@@ -1,6 +1,6 @@
 import { db } from '$lib/server/db';
-import { samples, tags, tagsToSamples } from '$schema';
-import { eq } from 'drizzle-orm';
+import { samples, slots, tags, tagsToSamples } from '$schema';
+import { and, eq, inArray } from 'drizzle-orm';
 import type { RequestEvent } from './$types';
 
 export const DELETE = async ({ params }: RequestEvent) => {
@@ -23,7 +23,19 @@ export const DELETE = async ({ params }: RequestEvent) => {
 export const PATCH = async ({ params, request }: RequestEvent) => {
   try {
     const newTag = await request.json();
-    Promise.all([
+
+    const affectedSamples = await db
+      .select({ id: samples.id })
+      .from(samples)
+      .where(eq(samples.primaryTagName, params.tagName));
+    const affectedSampleIds = affectedSamples.map((s) => s.id);
+
+    await db
+      .update(slots)
+      .set({ color: newTag.color })
+      .where(and(eq(slots.useTagColor, true), inArray(slots.sampleId, affectedSampleIds)));
+
+    await Promise.all([
       await db.update(tags).set(newTag).where(eq(tags.name, params.tagName)),
       await db
         .update(tagsToSamples)
@@ -34,6 +46,7 @@ export const PATCH = async ({ params, request }: RequestEvent) => {
         .set({ primaryTagName: newTag.name })
         .where(eq(samples.primaryTagName, params.tagName))
     ]);
+
     return new Response('Tag updated', { status: 200 });
   } catch {
     return new Response('Failed to update tag', { status: 500 });

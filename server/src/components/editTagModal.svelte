@@ -2,7 +2,7 @@
 	import { editTagModal, selectedColor, tags } from '$stores/globals';
 	import Modal from './modal.svelte';
 	import * as api from '$lib/client/api';
-	import { syncSamples, syncTagAttachments, syncTags } from '$lib/client/sync';
+	import { syncClient, syncTagAttachments, syncTags } from '$lib/client/sync';
 	import TagSelectComp from './tagSelect.svelte';
 	import type { TagInsert, TagSelect } from '$schema';
 	import TagInfo from './tagInfo.svelte';
@@ -36,7 +36,7 @@
 				color: $selectedColor?.[0]
 			};
 			await api.updateTag(selectedTags[0].name, newTag);
-			await Promise.all([syncSamples(), syncTags(), syncTagAttachments()]);
+			await syncClient();
 			$editTagModal.close();
 		} catch {
 			alert('Failed to update tag.');
