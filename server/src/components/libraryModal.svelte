@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Modal from '$comp/modal.svelte';
-	import { selectedSample, libraryModal } from '$stores/globals';
+	import { selectedSample, libraryModal, samples } from '$stores/globals';
 	import * as api from '$lib/client/api';
 	import type { SampleInsert, TagSelect } from '$schema';
 	import { syncClient, syncSamples, syncSlots } from '$lib/client/sync';
@@ -46,6 +46,7 @@
 				newPrimaryTagName
 			);
 			await syncClient();
+			$selectedSample = $samples.find((s) => s.id === $selectedSample?.id) || null;
 			$libraryModal.close();
 		} catch (error) {
 			console.error('Error updating sample:', error);
