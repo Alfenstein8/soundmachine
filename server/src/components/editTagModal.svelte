@@ -34,7 +34,7 @@
 		try {
 			const newTag: TagInsert = {
 				name: tagName,
-				color: $selectedColor?.[0]
+				color: $selectedColor
 			};
 			await api.updateTag(selectedTags[0].name, newTag);
 			await syncClient();
@@ -47,7 +47,7 @@
 
 	const handleToggle = (tag: TagSelect) => {
 		tagName = tag.name;
-		$selectedColor = tag.color ? colors.getPairByKey(tag.color) ?? null : null;
+		if (tag.color) $selectedColor = tag.color;
 	};
 </script>
 

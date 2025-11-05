@@ -12,7 +12,7 @@
 				style="background-color: {c[1]};"
 				aria-label={c[1]}
 				onclick={() => {
-					$selectedColor = c;
+					$selectedColor = c[0];
 					$colorModal.close();
 				}}
 			></button>

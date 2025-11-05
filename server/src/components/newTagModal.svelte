@@ -8,7 +8,7 @@
 	let tagName = $state('');
 
 	const handeUpload = async () => {
-		await api.createTag({ name: tagName, color: $selectedColor?.[0] });
+		await api.createTag({ name: tagName, color: $selectedColor });
 
 		Promise.all([syncTags(), syncTagAttachments()]);
 		$newTagModal.close();

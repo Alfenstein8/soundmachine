@@ -5,11 +5,10 @@
 	import type { SlotInsert } from '$schema';
 	import { syncSlots } from '$lib/client/sync';
 	import ColorPicker from './colorPicker.svelte';
-	import { colors } from '$lib/colors';
 
 	selectedSlot.subscribe((newSlot) => {
 		if (!newSlot) return;
-		$selectedColor = newSlot?.color ? colors.getPairByKey(newSlot.color) ?? null : null;
+		if(newSlot?.color) $selectedColor = newSlot.color
 	});
 
 	const handleRemove = async () => {
@@ -27,7 +26,7 @@
 	const handleApply = async () => {
 		if (!$selectedSlot) return;
 		const slotPatch: SlotInsert = {
-			color: $selectedColor?.[0]
+			color: $selectedColor
 		};
 		try {
 			await api.updateSlot($selectedSlot.id, slotPatch);
