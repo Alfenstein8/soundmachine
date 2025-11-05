@@ -7,12 +7,20 @@
 	import PadModal from '$comp/padModal.svelte';
 	import EditTagModal from '$comp/editTagModal.svelte';
 	import ColorModal from '$comp/colorModal.svelte';
+	import { syncClient } from '$lib/client/sync.js';
+	import { onMount } from 'svelte';
 	let { data } = $props();
 
 	$slots = data.slots;
 	$samples = data.samples;
 	$tags = data.tags;
 	$tagAttachments = data.tagAttachments;
+
+	onMount(() => {
+		setInterval(() => {
+			syncClient();
+		}, 10000);
+	});
 </script>
 
 <LibraryModal />

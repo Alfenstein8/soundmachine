@@ -18,7 +18,7 @@ export const deleteSample = async (id: string) => {
 };
 
 export const updateSlot = async (slotId: number, slot: SlotInsert) => {
-  fetch(`/api/slot/${slotId}`, {
+  await fetch(`/api/slot/${slotId}`, {
     method: 'PATCH',
     headers: {
       'Content-Type': 'application/json'
