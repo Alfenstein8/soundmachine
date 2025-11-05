@@ -6,7 +6,6 @@
 	import TagSelectComp from './tagSelect.svelte';
 	import type { TagInsert, TagSelect } from '$schema';
 	import TagInfo from './tagInfo.svelte';
-	import { colors } from '$lib/colors';
 
 	let selectedTags: TagSelect[] = $state([]);
 	let tagName = $state('');

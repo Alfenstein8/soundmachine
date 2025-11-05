@@ -57,11 +57,9 @@
 			bind:value={$searchTerm}
 			class="input join-item border-base-300 sm:w-100 h-10 w-[80%] border p-2 text-center"
 		/>
-		{#if isFirefox()}
-			<button class="btn join-item" onclick={() => ($searchTerm = '')}>
-				<X />
-			</button>
-		{/if}
+		<button class="btn join-item" onclick={() => ($searchTerm = '')}>
+			<X />
+		</button>
 	</div>
 	<div class="justify-center-safe mt-4 flex flex-wrap items-center gap-1">
 		{#if $tags.length > 0}
