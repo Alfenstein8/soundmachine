@@ -5,7 +5,6 @@
 	import LibraryModal from '$comp/libraryModal.svelte';
 	import UploadModal from '$comp/uploadModal.svelte';
 	import PadModal from '$comp/padModal.svelte';
-	import NewTagModal from '$comp/newTagModal.svelte';
 	import EditTagModal from '$comp/editTagModal.svelte';
 	import ColorModal from '$comp/colorModal.svelte';
 	let { data } = $props();
@@ -19,7 +18,6 @@
 <LibraryModal />
 <UploadModal />
 <PadModal />
-<NewTagModal />
 <EditTagModal />
 <ColorModal />
 

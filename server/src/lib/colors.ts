@@ -31,6 +31,10 @@ class ColorMap {
     return color ? color.hex : '#FFFFFF';
   }
 
+  [Symbol.iterator]() {
+    return this.colors[Symbol.iterator]();
+  }
+
 }
 export const colors = new ColorMap();
 

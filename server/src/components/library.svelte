@@ -3,10 +3,9 @@
 	import UploadButton from '$comp/uploadButton.svelte';
 	import LibraryItem from './libraryItem.svelte';
 	import Fuse, { type FuseResult } from 'fuse.js';
-	import { newTagModal, editTagModal, samples, searchTerm, tags } from '$stores/globals';
+	import { editTagModal, samples, searchTerm, tags } from '$stores/globals';
 	import X from '@lucide/svelte/icons/x';
 	import { sampleTags } from '$lib/client/utils';
-	import Plus from '@lucide/svelte/icons/plus';
 	import Tag from '@lucide/svelte/icons/tag';
 	import TagSelectComp from './tagSelect.svelte';
 	import type { TagSelect } from '$lib/server/db/schema';

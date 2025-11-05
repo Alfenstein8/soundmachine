@@ -9,10 +9,10 @@
 		{#each colors as c (c)}
 			<button
 				class="btn btn-circle"
-				style="background-color: {c[1]};"
-				aria-label={c[1]}
+				style="background-color: {c.hex};"
+				aria-label={c.hex}
 				onclick={() => {
-					$selectedColor = c[0];
+					$selectedColor = c.code;
 					$colorModal.close();
 				}}
 			></button>

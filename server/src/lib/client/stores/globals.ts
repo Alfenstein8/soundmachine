@@ -16,7 +16,6 @@ export const searchTerm = writable('');
 export const libraryModal: Writable<HTMLDialogElement> = writable();
 export const uploadModal: Writable<HTMLDialogElement> = writable();
 export const padModal: Writable<HTMLDialogElement> = writable();
-export const newTagModal: Writable<HTMLDialogElement> = writable();
 export const editTagModal: Writable<HTMLDialogElement> = writable();
 export const colorModal: Writable<HTMLDialogElement> = writable();
 
