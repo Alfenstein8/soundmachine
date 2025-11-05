@@ -3,7 +3,6 @@
 	import { pickRandom } from '$lib/utils';
 	import { colorModal, selectedColor } from '$stores/globals';
 	$selectedColor = pickRandom(availableColorCodes);
-	$inspect($selectedColor);
 </script>
 
 <button

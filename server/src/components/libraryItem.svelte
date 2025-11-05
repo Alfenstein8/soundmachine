@@ -30,6 +30,14 @@
 			.map((ta) => $tags.find((t) => t.name === ta.tagName)) // Map to tag objects
 			.filter((t): t is TagSelect => t !== undefined) // Filter out undefined tags
 	);
+
+	const handleSelect = () => {
+		if ($selectedSample?.id === sample.id) {
+			$selectedSample = null;
+		} else {
+			$selectedSample = sample;
+		}
+	};
 </script>
 
 <div
@@ -37,13 +45,15 @@
 		? 'border-2 border-primary'
 		: ''}"
 >
-	<p class="overflow-hidden text-nowrap text-ellipsis">{sample.name}</p>
+	<button class="overflow-hidden text-nowrap text-ellipsis" onclick={handleSelect}
+		>{sample.name}</button
+	>
 	<progress class="progress progress-primary" {value} {max}></progress>
 	<audio bind:this={audioElement} loop bind:currentTime bind:duration preload="auto">
 		<source src={`/api/sample/${sample.id}`} type="audio/wav" />
 		Your browser does not support the audio element.
 	</audio>
-	<div class="mt-2 flex justify-around">
+	<div class="mt-2 grid grid-cols-3">
 		<button
 			class="btn btn-outline"
 			onclick={() => {
@@ -60,17 +70,14 @@
 				<CircleStop color="var(--color-primary)" />
 			</div>
 		</label>
-		{#if $selectedSample && $selectedSample.id === sample.id}
-			<button class="btn btn-outline" onclick={() => ($selectedSample = null)}>Deselect</button>
-		{:else}
-			<button class="btn btn-outline" onclick={() => ($selectedSample = sample)}>Select</button>
-		{/if}
+		<div class="flex items-center">
+			{#if sample.bpm}
+				<span class="mr-1 box-border badge w-fit badge-outline text-nowrap">{sample.bpm} BPM</span>
+			{/if}
+		</div>
 	</div>
 	<div class="mb-2"></div>
 	<div class="flex h-fit w-full flex-wrap justify-start gap-y-2">
-		{#if sample.bpm}
-			<span class="mr-1 box-border badge w-fit badge-outline text-nowrap">{sample.bpm} BPM</span>
-		{/if}
 		{#each sampleTags as tag (tag.name)}
 			<span
 				class="mr-1 badge badge-outline {tag.name === sample.primaryTagName ? 'border-b-4' : ''}"

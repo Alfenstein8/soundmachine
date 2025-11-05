@@ -20,6 +20,6 @@
 		<div class="flex items-center justify-center-safe gap-2">
 			<TagInfo bind:tagName/>
 		</div>
-		<button id="uploadButton" class="btn btn-primary" onclick={handeUpload}>Upload</button>
+		<button id="uploadButton" class="btn btn-primary" onclick={handeUpload}>Create</button>
 	</div>
 </Modal>
