@@ -70,6 +70,8 @@ class Launchpad:
 
     def setControlButtons(self):
         dics: Dict = {
+            (9, 6): ControlButton(light.Color.CYAN.value, light.showAllColors(False)),
+            (9, 7): ControlButton(light.Color.WHITE.value, light.showAllColors(True)),
             (9, 8): ControlButton(light.Color.OFF.value, self.syncButton),
         }
         return dics
