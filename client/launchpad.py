@@ -10,8 +10,8 @@ from utils import hexToRgb
 
 
 class ControlButton:
-    def __init__(self, color: tuple[int, int, int], func):
-        self.color = color
+    def __init__(self, color: int, func):
+        self.color: int = color
         self.func: LambdaType = func
 
 class Launchpad:
@@ -31,7 +31,7 @@ class Launchpad:
             s.stop()
         self.samples = []
         self.samplesGrid: list[list[Sample | None]] = [[None] * 8 for _ in range(8)]
-        light.setAll(0)
+        light.setAll(light.Color.OFF.value)
         self.setControlButtonColors()
 
     def addSample(self, sample: Sample, point: SamplePoint):
@@ -83,5 +83,5 @@ class Launchpad:
             x = index % 8
             sample = Sample(SAMPLE_DIR + f"/{slotInfo.sampleId}.wav")
             if slotInfo.color is not None:
-                sample.color = hexToRgb(slotInfo.color)
+                sample.color = slotInfo.color
             self.addSample(sample, SamplePoint(x, y))

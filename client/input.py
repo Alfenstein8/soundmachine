@@ -16,6 +16,5 @@ def run(lp: launchpad.LaunchpadPro):
                 onPress.emit(LpPoint(x,y))
             else:
                 onRelease.emit(LpPoint(x,y))
-                pass
 
         time.sleep(0.005)

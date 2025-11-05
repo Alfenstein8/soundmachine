@@ -4,20 +4,20 @@ from point import LpPoint
 
 
 class Color(Enum):
-    RED = (127, 0, 0)
-    GREEN = (0, 127, 0)
-    BLUE = (0, 0, 127)
-    YELLOW = (127, 127, 0)
-    PURPLE = (127, 0, 127)
-    CYAN = (0, 127, 127)
-    WHITE = (127, 127, 127)
-    OFF = (0, 0, 0)
+    RED = 5
+    GREEN = 20
+    BLUE = 45
+    YELLOW = 12
+    PURPLE = 48
+    CYAN = 32
+    WHITE = 4
+    OFF = 0
 
 
 class Status(Enum):
-    NO_INTERNET = 5  # red
-    SYNCING = 67  # blue
-    READY = 21  # green
+    NO_INTERNET = Color.RED.value
+    SYNCING = Color.BLUE.value
+    READY = Color.GREEN.value
 
 
 lp: LaunchpadPro | None = None
@@ -27,12 +27,12 @@ def init(_lp: LaunchpadPro):
     global lp
     lp = _lp
     lp.LedCtrlBpm(10)
-    lp.LedAllOn(0)
+    setAll(Color.OFF.value)
 
 
-def setLight(point: LpPoint, color: tuple[int, int, int]):
+def setLight(point: LpPoint, color: int):
     if lp is not None:
-        lp.LedCtrlXY(point.x, point.y, color[0], color[1], color[2])
+        lp.LedCtrlXYByCode(point.x, point.y, color)
 
 
 def setAll(color: int):
@@ -46,6 +46,17 @@ def setAll(color: int):
     if lp is not None:
         # lp.LedCtrlString("je",2,255)
         lp.LedAllOn(color)
+
+
+def showAllColors(secondPage: bool = False):
+    if lp is not None:
+        lp.LedCtrlRawByCode(98, 5)
+        for i in range(8):
+            for j in range(8):
+                colorCode = i * 8 + j + 64 * secondPage
+                padNumber = 81 - i * 10 + j
+
+                lp.LedCtrlRawByCode(padNumber, colorCode)
 
 
 def setStatus(status: Status):

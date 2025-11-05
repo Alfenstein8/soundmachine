@@ -56,6 +56,7 @@ def sync():
             time.sleep(5)
 
     light.setStatus(light.Status.READY)
+    print("Sync complete.")
     return slots, samples
 
 
