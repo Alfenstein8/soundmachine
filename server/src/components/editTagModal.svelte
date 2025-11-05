@@ -6,9 +6,11 @@
 	import TagSelectComp from './tagSelect.svelte';
 	import type { TagInsert, TagSelect } from '$schema';
 	import TagInfo from './tagInfo.svelte';
+	import { Plus } from '@lucide/svelte';
 
 	let selectedTags: TagSelect[] = $state([]);
 	let tagName = $state('');
+	let addTagSelected = $state(false);
 
 	const handleDelete = async () => {
 		if (selectedTags.length === 0) {
@@ -44,6 +46,13 @@
 		}
 	};
 
+	const handeCreate = async () => {
+		await api.createTag({ name: tagName, color: $selectedColor });
+
+		Promise.all([syncTags(), syncTagAttachments()]);
+		$editTagModal.close();
+	};
+
 	const handleToggle = (tag: TagSelect) => {
 		tagName = tag.name;
 		if (tag.color) $selectedColor = tag.color;
@@ -53,14 +62,24 @@
 <Modal bind:dialog={$editTagModal} title="Edit Tag">
 	<div class="flex flex-col gap-4">
 		<div class="flex w-full flex-wrap justify-center gap-y-2">
-			<TagSelectComp tags={$tags} bind:selectedTags multiSelect={false} ontoggle={handleToggle} />
+			<TagSelectComp
+				tags={$tags}
+				bind:selectedTags
+				multiSelect={false}
+				ontoggle={handleToggle}
+				bind:addTagSelected
+			/>
 		</div>
 		<div class="flex items-center justify-center gap-4">
 			<TagInfo bind:tagName />
 		</div>
-		<div class="grid grid-cols-2 gap-4">
-			<button class="btn btn-primary" onclick={handleApply}>Apply</button>
-			<button class="btn btn-warning" onclick={handleDelete}>Delete</button>
+		<div class="flex flex-row gap-4">
+			{#if addTagSelected}
+				<button class="btn btn-primary grow" onclick={handeCreate}>Create</button>
+			{:else}
+				<button class="btn btn-primary grow" onclick={handleApply}>Apply</button>
+				<button class="btn btn-warning grow" onclick={handleDelete}>Delete</button>
+			{/if}
 		</div>
 	</div>
 </Modal>

@@ -1,17 +1,22 @@
 <script lang="ts">
 	import { getColorByCode } from '$lib/colors';
 	import type { TagSelect } from '$schema';
+	import Plus from '@lucide/svelte/icons/plus';
 
 	let {
 		tags,
 		selectedTags = $bindable(),
 		ontoggle = () => {},
-		multiSelect = true
+		multiSelect = true,
+		onAddButton,
+		addTagSelected = $bindable()
 	}: {
 		tags: TagSelect[];
 		selectedTags: TagSelect[];
 		ontoggle?: (tag: TagSelect) => void;
 		multiSelect?: boolean;
+		onAddButton?: (selected: boolean) => void;
+		addTagSelected?: boolean;
 	} = $props();
 
 	const toggle = (tag: TagSelect) => {
@@ -23,9 +28,18 @@
 			} else {
 				selectedTags = [tag];
 			}
+			toggleAddTag(false);
 		}
 
 		ontoggle(tag);
+	};
+
+	const toggleAddTag = (selected = !addTagSelected) => {
+		if (addTagSelected == undefined) return;
+		selectedTags = selected ? [] : selectedTags;
+		addTagSelected = selected;
+		if (!onAddButton) return;
+		onAddButton(selected);
 	};
 </script>
 
@@ -40,3 +54,12 @@
 		onclick={() => toggle(tag)}>{tag.name}</button
 	>
 {/each}
+
+{#if onAddButton || addTagSelected != undefined}
+	<button
+		class="m-0 badge {addTagSelected ? 'badge-outline' : 'badge-ghost'}"
+		onclick={() => toggleAddTag()}
+	>
+		<Plus />
+	</button>
+{/if}
