@@ -54,7 +54,7 @@ class Launchpad:
         if s is not None:
             s.toggle()
             if s.playing():
-                light.setLight(point, light.Color.GREEN.value)
+                light.setLight(point, light.Color.PLAY.value)
             else:
                 light.setLight(point, s.color)
 

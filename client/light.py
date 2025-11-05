@@ -5,12 +5,13 @@ from point import LpPoint
 
 class Color(Enum):
     RED = 5
-    GREEN = 20
+    GREEN = 21
     BLUE = 45
-    YELLOW = 12
-    PURPLE = 48
+    YELLOW = 13
+    PURPLE = 80
     CYAN = 32
     WHITE = 4
+    PLAY = 3
     OFF = 0
 
 

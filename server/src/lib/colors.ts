@@ -55,8 +55,10 @@ const c = colors
 c.add(0, '#000000', '#FFFFFF');
 c.add(5, '#FF292B', '#FFFFFF', true);
 c.add(9, '#FF6D32', '#000000', true);
-c.add(12, '#FDFA4F', '#000000', true);
-c.add(20, '#32F846', '#000000', true);
+c.add(13, '#FDFA4F', '#000000', true);
+c.add(21, '#32F846', '#000000', true);
+c.add(101, '#065C1A', '#000000', true);
+c.add(37, '#0DB7F9', '#000000', true);
 c.add(45, '#0E33F6', '#FFFFFF', true);
-c.add(48, '#9766F7', '#000000', true);
-c.add(53, '#FF40F8', '#000000', true);
+c.add(80, '#9766F7', '#000000', true);
+c.add(95, '#FF40F8', '#000000', true);
