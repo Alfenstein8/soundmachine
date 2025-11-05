@@ -3,7 +3,7 @@ import requests
 import asyncio
 import os
 import light
-from storage import fileExists, saveSample
+from storage import deleteUnusedSamples, fileExists, saveSample
 from collections import namedtuple
 
 ApiSample = namedtuple("ApiSample", ["id", "name"])
@@ -16,7 +16,8 @@ def syncSamples(samples: list[ApiSample]):
             continue
         data = getSampleFile(sample.id)
         saveSample(sample.id, data)
-
+    usedSampleIds = [s.id for s in samples]
+    deleteUnusedSamples(usedSampleIds)
 
 def performSync():
     url = os.getenv("SERVER_URL")

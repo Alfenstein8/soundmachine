@@ -40,3 +40,51 @@ def fileExists(id: str) -> bool:
       bool: True if the file exists, False otherwise.
     """
     return exists(os.path.join(SAMPLE_DIR, id + ".wav"))
+
+def deleteSampleByFileName(fileName: str):
+    """
+    Deletes the sample file with the given ID from the samples directory.
+    Args:
+      id (str): The unique identifier for the file (used as the filename).
+    """
+    filePath = os.path.join(SAMPLE_DIR, fileName)
+    try:
+        if os.path.isfile(filePath):
+            os.remove(filePath)
+            print(f"Deleted sample file: {filePath}")
+        else:
+            print(f"Sample file does not exist: {filePath}")
+    except Exception as e:
+        print(f"Error deleting file {filePath}: {e}")
+
+def deleteSampleById(id: str):
+    """
+    Deletes the sample file with the given ID from the samples directory.
+    Args:
+      id (str): The unique identifier for the file (used as the filename).
+    """
+    deleteSampleByFileName(id + ".wav")
+
+def deleteUnusedSamples(usedSampleIds: list[str]):
+    """
+    Deletes sample files in the samples directory that are not in the usedSampleIds list.
+    Args:
+      usedSampleIds (list[str]): List of sample IDs that should be retained.
+    """
+    if not os.path.exists(SAMPLE_DIR):
+        print(f"Sample directory does not exist: {SAMPLE_DIR}")
+        return
+    for filename in os.listdir(SAMPLE_DIR):
+        sampleId = filename.rsplit(".", 1)[0]  # Remove file extension
+        if sampleId not in usedSampleIds:
+            deleteSampleByFileName(filename)
+
+def deleteAllSamples():
+    """
+    Deletes all sample files in the samples directory.
+    """
+    if not os.path.exists(SAMPLE_DIR):
+        print(f"Sample directory does not exist: {SAMPLE_DIR}")
+        return
+    for filename in os.listdir(SAMPLE_DIR):
+        deleteSampleByFileName(filename)

@@ -4,15 +4,15 @@ from point import LpPoint, toSamplePoint, SamplePoint, toLpPoint
 from input import onPress
 from sample import Sample
 import light
-from storage import SAMPLE_DIR
+from storage import SAMPLE_DIR, deleteAllSamples
 from sync import ApiSample, ApiSlot, sync
-from utils import hexToRgb
 
 
 class ControlButton:
     def __init__(self, color: int, func):
         self.color: int = color
         self.func: LambdaType = func
+
 
 class Launchpad:
     def __init__(self):
@@ -61,7 +61,7 @@ class Launchpad:
     def handleControlButton(self, point: LpPoint):
         p = (point.x, point.y)
         if p in self.controlButtons:
-           self.controlButtons.get((point.x, point.y), lambda: None).func()
+            self.controlButtons.get((point.x, point.y), lambda: None).func()
 
     def syncButton(self):
         self.reset()
@@ -70,11 +70,11 @@ class Launchpad:
 
     def setControlButtons(self):
         dics: Dict = {
-                (9, 8): ControlButton(light.Color.OFF.value, self.syncButton)
+            (9, 8): ControlButton(light.Color.OFF.value, self.syncButton),
         }
         return dics
 
-    def loadSamples(self , slots: list[ApiSlot], samples: list[ApiSample]):
+    def loadSamples(self, slots: list[ApiSlot], samples: list[ApiSample]):
         for index, slotInfo in enumerate(slots):
             apiSample = next((s for s in samples if s.id == slotInfo.sampleId), None)
             if slotInfo.sampleId is None or apiSample is None:
