@@ -69,9 +69,13 @@ class Launchpad:
         self.loadSamples(slots, samples)
 
     def setControlButtons(self):
+        def page1():
+            light.showAllColors(False)
+        def page2():
+            light.showAllColors(True)
         dics: Dict = {
-            (9, 6): ControlButton(light.Color.CYAN.value, light.showAllColors(False)),
-            (9, 7): ControlButton(light.Color.WHITE.value, light.showAllColors(True)),
+            (9, 6): ControlButton(light.Color.CYAN.value, page1),
+            (9, 7): ControlButton(light.Color.WHITE.value, page2),
             (9, 8): ControlButton(light.Color.OFF.value, self.syncButton),
         }
         return dics
