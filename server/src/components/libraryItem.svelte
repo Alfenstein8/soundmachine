@@ -45,7 +45,7 @@
 		? 'border-2 border-primary'
 		: ''}"
 >
-	<button class="overflow-hidden text-nowrap text-ellipsis" onclick={handleSelect}
+	<button class="overflow-hidden text-nowrap text-ellipsis w-full" onclick={handleSelect}
 		>{sample.name}</button
 	>
 	<progress class="progress progress-primary" {value} {max}></progress>
