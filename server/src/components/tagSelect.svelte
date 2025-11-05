@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { getColorByCode } from '$lib/colors';
+	import { colors } from '$lib/colors';
 	import type { TagSelect } from '$schema';
 	import Plus from '@lucide/svelte/icons/plus';
 
@@ -49,8 +49,8 @@
 			? 'badge-outline'
 			: 'badge-ghost'}"
 		style="{selectedTags.find((t) => tag.name === t.name)
-			? `border-color: ${getColorByCode(tag.color)};`
-			: ''} color: {getColorByCode(tag.color)};"
+			? `border-color: ${colors.getHex(tag.color)};`
+			: ''} color: {colors.getHex(tag.color)};"
 		onclick={() => toggle(tag)}>{tag.name}</button
 	>
 {/each}

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { getColorByCode } from '$lib/colors';
+	import { colors } from '$lib/colors';
 	import type { SampleSelect, TagSelect } from '$schema';
 	import { selectedSample, libraryModal, tags, tagAttachments } from '$stores/globals';
 	import CircleStop from '@lucide/svelte/icons/circle-stop';
@@ -81,7 +81,7 @@
 		{#each sampleTags as tag (tag.name)}
 			<span
 				class="mr-1 badge badge-outline {tag.name === sample.primaryTagName ? 'border-b-4' : ''}"
-				style="border-color: {getColorByCode(tag.color)}; color: {getColorByCode(tag.color)};"
+				style="border-color: {colors.getHex(tag.color)}; color: {colors.getHex(tag.color)};"
 			>
 				{tag.name}</span
 			>

@@ -1,8 +1,7 @@
 <script lang="ts">
-	import { availableColorCodes, colors } from '$lib/colors';
-	import { pickRandom } from '$lib/utils';
+	import { colors } from '$lib/colors';
 	import { colorModal, selectedColor } from '$stores/globals';
-	$selectedColor = pickRandom(availableColorCodes);
+	$selectedColor = colors.randomAvailable.code;
 </script>
 
 <button

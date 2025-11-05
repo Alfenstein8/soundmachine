@@ -5,7 +5,7 @@
 </script>
 
 <Modal bind:dialog={$colorModal}>
-	<div class="flex flex-row justify-center gap-2 align-middle">
+	<div class="flex flex-row justify-center gap-2 align-middle flex-wrap">
 		{#each colors as c (c)}
 			<button
 				class="btn btn-circle"

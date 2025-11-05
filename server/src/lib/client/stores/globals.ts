@@ -1,5 +1,4 @@
-import { availableColorCodes } from '$lib/colors';
-import { pickRandom } from '$lib/utils';
+import { colors } from '$lib/colors';
 import type { SampleSelect, SlotSelect, tagAttachmentSelect, TagSelect } from '$schema';
 import { writable, type Writable } from 'svelte/store';
 
@@ -19,4 +18,4 @@ export const padModal: Writable<HTMLDialogElement> = writable();
 export const editTagModal: Writable<HTMLDialogElement> = writable();
 export const colorModal: Writable<HTMLDialogElement> = writable();
 
-export const selectedColor: Writable<number> = writable(pickRandom(availableColorCodes));
+export const selectedColor: Writable<number> = writable(colors.randomAvailable.code);

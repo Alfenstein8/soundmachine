@@ -3,7 +3,7 @@
 	import { slots, samples, selectedSample, selectedSlot, padModal, tags } from '$stores/globals';
 	import * as api from '$lib/client/api';
 	import { syncSlots } from '$lib/client/sync';
-	import { colors, getColorByCode } from '$lib/colors';
+	import { colors } from '$lib/colors';
 
 	const getSampleName = (slot: SlotSelect) => {
 		return $samples.find((s) => s.id === slot.sampleId)?.name || 'Unknown';
@@ -36,7 +36,7 @@
 				slot.sampleId
 					? 'selected'
 					: ''}"
-				style="background-color: {slot.color ? getColorByCode(slot.color) : 'var(--color-base-100)'}; color: {slot.color ? colors.getContrast(slot.color) : "black"} "
+				style="background-color: {slot.color ? colors.getHex(slot.color) : 'var(--color-base-100)'}; color: {slot.color ? colors.getContrast(slot.color) : "black"} "
 				onclick={() => handlePadClick(slot)}
 			>
 				{#if slot.sampleId !== null}

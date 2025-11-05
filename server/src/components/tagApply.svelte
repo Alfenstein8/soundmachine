@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { getColorByCode } from '$lib/colors';
+	import { colors } from '$lib/colors';
 	import type { TagSelect } from '$schema';
 	import { tags } from '$stores/globals';
 
@@ -27,7 +27,7 @@
 		{#each sampleTags as tag (tag.name)}
 			<span
 				class="mr-1 badge badge-outline"
-				style="border-color: {getColorByCode(tag.color)}; color: {getColorByCode(tag.color)};"
+				style="border-color: {colors.getHex(tag.color)}; color: {colors.getHex(tag.color)};"
 				>{tag.name}
 				<button onclick={() => handleTagRemove(tag.name)}> &times; </button>
 			</span>
