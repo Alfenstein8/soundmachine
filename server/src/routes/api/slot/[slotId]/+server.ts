@@ -7,7 +7,7 @@ export const PATCH = async ({ params, request }: RequestEvent) => {
   const slotId = Number(params.slotId);
   const slot: SlotInsert = await request.json();
 
-  if (isNaN(slotId) || slotId <= 0 || slotId > 64 || !Number.isInteger(slotId)) {
+  if (isNaN(slotId) || slotId <= 0 || !Number.isInteger(slotId)) {
     return new Response('Invalid slot ID', { status: 400 });
   }
 

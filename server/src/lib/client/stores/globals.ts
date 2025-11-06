@@ -1,14 +1,22 @@
 import { colors } from '$lib/colors';
-import type { SampleSelect, SlotSelect, tagAttachmentSelect, TagSelect } from '$schema';
+import type {
+  LayerSelect,
+  SampleSelect,
+  SlotSelect,
+  tagAttachmentSelect,
+  TagSelect
+} from '$schema';
 import { writable, type Writable } from 'svelte/store';
 
 export const slots: Writable<SlotSelect[]> = writable([]);
 export const samples: Writable<SampleSelect[]> = writable([]);
 export const tags: Writable<TagSelect[]> = writable([]);
 export const tagAttachments: Writable<tagAttachmentSelect[]> = writable([]);
+export const layers: Writable<LayerSelect[]> = writable([]);
 
 export const selectedSlot: Writable<SlotSelect | null> = writable(null);
 export const selectedSample: Writable<SampleSelect | null> = writable(null);
+export const shownLayer: Writable<LayerSelect | null> = writable(null);
 
 export const searchTerm = writable('');
 

@@ -1,18 +1,15 @@
 import { db } from '$lib/server/db';
-import { slots } from '$lib/server/db/schema';
+import { layers, slots } from '$lib/server/db/schema';
+import { createLayer } from '$lib/server/db/utils';
 import type { ServerInit } from '@sveltejs/kit';
 
-type slotInsert = typeof slots.$inferInsert;
 export const init: ServerInit = async () => {
-	if ((await db.select().from(slots)).length === 8*8) {
-	    return;
-	  }
-	await db.delete(slots);
-	const slotsArray: slotInsert[] = [];
-	for (let i = 0; i < 8*8; i++) {
-		slotsArray.push({});
+	if ((await db.select().from(slots)).length !== 0) {
+		return;
 	}
-	await db.insert(slots).values(slotsArray);
+	await db.delete(layers);
+	await db.delete(slots);
+	await createLayer({ id: 0, name: 'Default' });
 
 	console.log('Setting slots');
 };

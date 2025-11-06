@@ -17,8 +17,18 @@ export const samplesRelations = relations(samples, ({ many }) => ({
 export type SampleSelect = typeof samples.$inferSelect;
 export type SampleInsert = typeof samples.$inferInsert;
 
+export const layers = sqliteTable('layers', {
+	id: integer('id').primaryKey(),
+	name: text('name').notNull()
+});
+
+export type LayerInsert = typeof layers.$inferInsert
+export type LayerSelect = typeof layers.$inferSelect
+
 export const slots = sqliteTable('slots', {
 	id: integer('id').primaryKey(),
+	position: integer('position').notNull(),
+	layerId: integer('layerId').notNull().references(() => layers.id),
 	sampleId: text('sample_id').references(() => samples.id),
 	color: integer('color'),
 	useTagColor: integer({ mode: 'boolean' }).notNull().default(true)

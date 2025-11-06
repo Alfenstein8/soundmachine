@@ -1,5 +1,5 @@
 import { db } from "$lib/server/db";
-import { samples, slots, tags, tagsToSamples } from "$lib/server/db/schema";
+import { layers, samples, slots, tags, tagsToSamples } from "$lib/server/db/schema";
 import type { PageServerLoad } from "./$types";
 
 export const load: PageServerLoad = async () => {
@@ -7,6 +7,7 @@ export const load: PageServerLoad = async () => {
     samples: await db.select().from(samples),
     slots: await db.select().from(slots),
     tags: await db.select().from(tags),
-    tagAttachments: await db.select().from(tagsToSamples)
+    tagAttachments: await db.select().from(tagsToSamples),
+    layers: await db.select().from(layers)
   }
 }
