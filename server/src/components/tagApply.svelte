@@ -12,8 +12,18 @@
 
 	const handleTagAdd = () => {
 		const tagToAdd = $tags.find((t) => t.name === tagInput);
-		if (!tagToAdd) return;
+		if (!tagToAdd) {
+			primaryTagName = 'Select tag';
+			return;
+		}
 		sampleTags.push(tagToAdd);
+		if (primaryTagName === 'Select tag') {
+			primaryTagName = tagToAdd.name;
+		}
+	};
+
+	const getTagColor = (tagName: string | undefined) => {
+		return colors.getHex($tags.find((t) => t.name === tagName)?.color ?? 5);
 	};
 
 	const handleTagRemove = (tagName: string) => {
@@ -44,10 +54,14 @@
 </fieldset>
 <fieldset class="mb-2 fieldset">
 	<legend class="fieldset-legend">Primary Tag</legend>
-	<select class="badge badge-outline" bind:value={primaryTagName}>
+	<select
+		class="badge badge-outline"
+		style="border-color: {getTagColor(primaryTagName)}; color: {getTagColor(primaryTagName)};"
+		bind:value={primaryTagName}
+	>
 		<option disabled selected>Select tag</option>
 		{#each sampleTags as tag (tag.name)}
-			<option>{tag.name}</option>
+			<option style="color: initial" >{tag.name}</option>
 		{/each}
 	</select>
 </fieldset>
