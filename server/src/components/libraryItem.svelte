@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { getTagHex } from '$lib/client/utils';
 	import { colors } from '$lib/colors';
+	import { showAllTagNames } from '$lib/featureFlags';
 	import type { SampleSelect, TagSelect } from '$schema';
 	import { selectedSample, libraryModal, tags, tagAttachments, slots } from '$stores/globals';
 	import CircleStop from '@lucide/svelte/icons/circle-stop';
@@ -41,25 +42,29 @@
 	};
 
 	const isUsed = (sampleId: string) => $slots.some((slot) => slot.sampleId === sampleId);
-	const sampleColor = ()=> getTagHex(sample.primaryTagName)
+	const sampleColor = () => getTagHex(sample.primaryTagName);
 
-
+	const isPrimary = (tagName: string) => tagName === sample.primaryTagName
 </script>
 
 <div
 	class="sample-item rounded-box bg-base-100 p-4 {$selectedSample?.id === sample.id
 		? 'border-2 border-primary'
-		: ''} {isUsed(sample.id) ? "border-b-4" : ""}"
-	style="{isUsed(sample.id) ? `border-color: ${sampleColor()};` : ''}"
+		: ''} {isUsed(sample.id) ? 'border-b-4' : ''}"
+	style={isUsed(sample.id) ? `border-color: ${sampleColor()};` : ''}
 >
 	<button class="w-full overflow-hidden text-nowrap text-ellipsis" onclick={handleSelect}
 		>{sample.name}</button
 	>
+
+	<!-- Audio Progress Bar -->
 	<progress class="progress progress-primary" {value} {max}></progress>
 	<audio bind:this={audioElement} loop bind:currentTime bind:duration preload="auto">
 		<source src={`/api/sample/${sample.id}`} type="audio/wav" />
 		Your browser does not support the audio element.
 	</audio>
+
+	<!-- Controls -->
 	<div class="mt-2 grid grid-cols-3">
 		<button
 			class="btn btn-outline"
@@ -68,6 +73,8 @@
 				$libraryModal.showModal();
 			}}>Edit</button
 		>
+
+		<!-- Play Button -->
 		<label class="swap">
 			<input bind:this={playButton} id="playButton" type="checkbox" onchange={togglePlay} />
 			<div class="swap-off">
@@ -87,11 +94,11 @@
 	<div class="flex h-fit w-full flex-wrap justify-start gap-y-2">
 		{#each sampleTags as tag (tag.name)}
 			<span
-				class="mr-1 badge badge-outline {tag.name === sample.primaryTagName ? 'border-b-4' : ''}"
+				class="mr-1 badge badge-outline {isPrimary(tag.name) && showAllTagNames ? 'border-b-4' : ''}"
 				style="border-color: {colors.getHex(tag.color)}; color: {colors.getHex(tag.color)};"
 			>
-				{tag.name}</span
-			>
+				{isPrimary(tag.name) || showAllTagNames ? tag.name : ''}
+			</span>
 		{/each}
 	</div>
 </div>

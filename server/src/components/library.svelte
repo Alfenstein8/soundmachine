@@ -54,7 +54,7 @@
 	});
 </script>
 
-<div class="flex flex-col">
+<div class="flex flex-col items-center">
 	<div class="join flex w-full justify-center-safe">
 		<input
 			type="text"
@@ -66,7 +66,7 @@
 			<X />
 		</button>
 	</div>
-	<div class="mt-4 flex flex-wrap items-center justify-center-safe gap-1">
+	<div class="mt-2 flex flex-wrap items-center justify-center-safe gap-1 sticky top-0 bg-base-300 z-50 w-fit rounded-box p-2">
 		{#if $tags.length > 0}
 			<button
 				class="btn btn-circle btn-ghost"

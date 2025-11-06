@@ -30,7 +30,7 @@
 <ColorModal />
 
 <!-- <ChooseTheme /> -->
-<div id="split" class="flex flex-col">
+<div id="split" class="flex flex-col mb-30">
 	<Launchpad />
 	<Library />
 </div>
