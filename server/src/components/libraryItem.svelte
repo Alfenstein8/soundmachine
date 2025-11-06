@@ -1,7 +1,8 @@
 <script lang="ts">
+	import { getTagHex } from '$lib/client/utils';
 	import { colors } from '$lib/colors';
 	import type { SampleSelect, TagSelect } from '$schema';
-	import { selectedSample, libraryModal, tags, tagAttachments } from '$stores/globals';
+	import { selectedSample, libraryModal, tags, tagAttachments, slots } from '$stores/globals';
 	import CircleStop from '@lucide/svelte/icons/circle-stop';
 	import PlayIcon from '@lucide/svelte/icons/play';
 
@@ -38,14 +39,20 @@
 			$selectedSample = sample;
 		}
 	};
+
+	const isUsed = (sampleId: string) => $slots.some((slot) => slot.sampleId === sampleId);
+	const sampleColor = ()=> getTagHex(sample.primaryTagName)
+
+
 </script>
 
 <div
 	class="sample-item rounded-box bg-base-100 p-4 {$selectedSample?.id === sample.id
 		? 'border-2 border-primary'
-		: ''}"
+		: ''} {isUsed(sample.id) ? "border-b-4" : ""}"
+	style="{isUsed(sample.id) ? `border-color: ${sampleColor()};` : ''}"
 >
-	<button class="overflow-hidden text-nowrap text-ellipsis w-full" onclick={handleSelect}
+	<button class="w-full overflow-hidden text-nowrap text-ellipsis" onclick={handleSelect}
 		>{sample.name}</button
 	>
 	<progress class="progress progress-primary" {value} {max}></progress>

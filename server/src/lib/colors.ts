@@ -53,6 +53,7 @@ export const colors = new ColorMap();
 
 const c = colors
 c.add(0, '#000000', '#FFFFFF');
+c.add(3, '#FFFFFF', '#000000');
 c.add(5, '#FF292B', '#FFFFFF', true);
 c.add(9, '#FF6D32', '#000000', true);
 c.add(13, '#FDFA4F', '#000000', true);

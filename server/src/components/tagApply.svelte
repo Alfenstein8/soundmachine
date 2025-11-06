@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { getTagHex } from '$lib/client/utils';
 	import { colors } from '$lib/colors';
 	import type { TagSelect } from '$schema';
 	import { tags } from '$stores/globals';
@@ -22,9 +23,6 @@
 		}
 	};
 
-	const getTagColor = (tagName: string | undefined) => {
-		return colors.getHex($tags.find((t) => t.name === tagName)?.color ?? 5);
-	};
 
 	const handleTagRemove = (tagName: string) => {
 		sampleTags = sampleTags.filter((t) => t.name !== tagName);
@@ -56,12 +54,12 @@
 	<legend class="fieldset-legend">Primary Tag</legend>
 	<select
 		class="badge badge-outline"
-		style="border-color: {getTagColor(primaryTagName)}; color: {getTagColor(primaryTagName)};"
+		style="border-color: {getTagHex(primaryTagName)}; color: {getTagHex(primaryTagName)};"
 		bind:value={primaryTagName}
 	>
 		<option disabled selected>Select tag</option>
 		{#each sampleTags as tag (tag.name)}
-			<option style="color: initial" >{tag.name}</option>
+			<option style="color: initial">{tag.name}</option>
 		{/each}
 	</select>
 </fieldset>
