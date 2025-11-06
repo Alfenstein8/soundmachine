@@ -9,6 +9,7 @@
 	import ColorModal from '$comp/colorModal.svelte';
 	import { syncClient } from '$lib/client/sync.js';
 	import { onMount } from 'svelte';
+	import LayersModal from '$comp/layersModal.svelte';
 	let { data } = $props();
 
 	$slots = data.slots;
@@ -29,6 +30,7 @@
 <PadModal />
 <EditTagModal />
 <ColorModal />
+<LayersModal />
 
 <!-- <ChooseTheme /> -->
 <div id="split" class="flex flex-col mb-30">

@@ -20,7 +20,7 @@ export const deleteSample = async (id: string) => {
 };
 
 export const updateSlot = async (slotId: number, slot: SlotInsert) => {
-  console.log(slot);
+	console.log(slot);
 
 	await fetch(`/api/slot/${slotId}`, {
 		method: 'PATCH',
@@ -196,5 +196,24 @@ export const createLayer = async (layer: LayerInsert) => {
 
 	if (!res.ok) {
 		throw new Error('Failed to create layer.');
+	}
+};
+
+export const updateLayer = async (layerId: number, layer: LayerInsert) => {
+	const res = await fetch(`/api/layers/${layerId}`, {
+		method: 'PATCH',
+		body: JSON.stringify(layer)
+	});
+	if (!res.ok) {
+		throw new Error('Failed to update layer.');
+	}
+};
+
+export const deleteLayer = async (layerId: number) => {
+	const res = await fetch(`/api/layers/${layerId}`, {
+		method: 'DELETE'
+	});
+	if (!res.ok) {
+		throw new Error('Failed to delete layer.');
 	}
 };

@@ -25,5 +25,6 @@ export const uploadModal: Writable<HTMLDialogElement> = writable();
 export const padModal: Writable<HTMLDialogElement> = writable();
 export const editTagModal: Writable<HTMLDialogElement> = writable();
 export const colorModal: Writable<HTMLDialogElement> = writable();
+export const layersModal: Writable<HTMLDialogElement> = writable();
 
 export const selectedColor: Writable<number> = writable(colors.randomAvailable.code);
