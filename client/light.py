@@ -10,8 +10,9 @@ class Color(Enum):
     YELLOW = 13
     PURPLE = 80
     CYAN = 32
-    WHITE = 4
+    WHITE = 3
     PLAY = 3
+    ACTIVE = 3
     OFF = 0
 
 

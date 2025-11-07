@@ -1,5 +1,5 @@
 from types import LambdaType
-from typing import Dict
+from typing import Callable, Dict
 from layer import Layer
 from point import LpPoint, toSamplePoint, SamplePoint, toLpPoint
 from input import onPress
@@ -12,7 +12,7 @@ from sync import ApiLayer, ApiSample, ApiSlot, sync
 class ControlButton:
     def __init__(self, func, color: int | None = None):
         self.color: int | None = color
-        self.func: LambdaType = func
+        self.func: Callable = func
 
 
 class Launchpad:
@@ -85,7 +85,7 @@ class Launchpad:
             (9, 7): ControlButton(page2, light.Color.WHITE.value),
             (9, 8): ControlButton(self.syncButton),
         }
-
+        # Make layer switch buttons
         i = 1
         for id in self.layers.keys():
 
@@ -97,6 +97,15 @@ class Launchpad:
             )
             i += 1
         return dics
+
+    def setLayerButtonColors(self, activeLayerId: int):
+        for id in self.layers.keys():
+            c = (
+                light.Color.YELLOW.value
+                if id != activeLayerId
+                else light.Color.ACTIVE.value
+            )
+            light.setLight(LpPoint(8, id), c)
 
     def switchLayer(self, layer: Layer):
         self.stopAllSamples()
@@ -112,6 +121,7 @@ class Launchpad:
                     light.setLight(lp, sample.color)
                 else:
                     light.setLight(lp, light.Color.OFF.value)
+        self.setLayerButtonColors(layer.id)
 
     def addSample(self, sample: Sample, point: SamplePoint, layerId: int):
         layer: Layer | None = self.layers.get(layerId)
@@ -120,7 +130,6 @@ class Launchpad:
 
         layer.set_sample(point.x, point.y, sample)
         self.allSamples.append(sample)
-
 
     def loadSamples(
         self, slots: list[ApiSlot], samples: list[ApiSample], layers: list[ApiLayer]
@@ -141,7 +150,6 @@ class Launchpad:
 
         self.controlButtons = self.genControlButtons()
         self.setControlButtonColors()
-
 
         # Determine which layer to switch to
         newCurrentLayer: Layer | None = None
