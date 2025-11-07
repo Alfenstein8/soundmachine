@@ -64,7 +64,7 @@ class Launchpad:
     def handleControlButton(self, point: LpPoint):
         p = (point.x, point.y)
         if p in self.controlButtons:
-            cb: ControlButton | None = self.controlButtons.get((point.x,point.y))
+            cb: ControlButton | None = self.controlButtons.get((point.x, point.y))
             if cb is not None:
                 cb.func()
 
@@ -81,7 +81,7 @@ class Launchpad:
             light.showAllColors(True)
 
         dics: Dict = {
-            (9, 6): ControlButton(page1,light.Color.CYAN.value),
+            (9, 6): ControlButton(page1, light.Color.CYAN.value),
             (9, 7): ControlButton(page2, light.Color.WHITE.value),
             (9, 8): ControlButton(self.syncButton),
         }
@@ -113,7 +113,6 @@ class Launchpad:
                 else:
                     light.setLight(lp, light.Color.OFF.value)
 
-
     def addSample(self, sample: Sample, point: SamplePoint, layerId: int):
         layer: Layer | None = self.layers.get(layerId)
         if layer == None:
@@ -122,11 +121,12 @@ class Launchpad:
         layer.set_sample(point.x, point.y, sample)
         self.allSamples.append(sample)
 
+
     def loadSamples(
         self, slots: list[ApiSlot], samples: list[ApiSample], layers: list[ApiLayer]
     ):
         for layerInfo in layers:
-            self.layers[layerInfo.id] = Layer()
+            self.layers[layerInfo.id] = Layer(layerInfo.id)
 
         for index, slotInfo in enumerate(slots):
             apiSample = next((s for s in samples if s.id == slotInfo.sampleId), None)
@@ -142,7 +142,14 @@ class Launchpad:
         self.controlButtons = self.genControlButtons()
         self.setControlButtonColors()
 
-        if not self.currentLayer or self.currentLayer not in self.layers.values():
-            self.switchLayer(next(iter(self.layers.values())))
-        else:
-            self.switchLayer(self.currentLayer)
+
+        # Determine which layer to switch to
+        newCurrentLayer: Layer | None = None
+        for l in self.layers.values():
+            if self.currentLayer != None and l.id == self.currentLayer.id:
+                newCurrentLayer = l
+                break
+
+        if newCurrentLayer is None:
+            newCurrentLayer = next(iter(self.layers.values()))
+        self.switchLayer(newCurrentLayer)

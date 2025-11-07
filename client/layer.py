@@ -2,7 +2,8 @@ from sample import Sample
 
 
 class Layer:
-    def __init__(self):
+    def __init__(self, id: int):
+        self.id = id
         self.grid: list[list[Sample | None]] = [[None] * 8 for _ in range(8)]
 
     def set_sample(self, x: int, y: int, sample: Sample) -> None:
