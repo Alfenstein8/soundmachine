@@ -99,13 +99,15 @@ class Launchpad:
         return dics
 
     def setLayerButtonColors(self, activeLayerId: int):
+        i: int = 1
         for id in self.layers.keys():
             c = (
                 light.Color.YELLOW.value
                 if id != activeLayerId
                 else light.Color.ACTIVE.value
             )
-            light.setLight(LpPoint(8, id), c)
+            light.setLight(LpPoint(8, i), c)
+            i+=1
 
     def switchLayer(self, layer: Layer):
         self.stopAllSamples()
