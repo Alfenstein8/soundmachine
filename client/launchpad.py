@@ -10,8 +10,8 @@ from sync import ApiLayer, ApiSample, ApiSlot, sync
 
 
 class ControlButton:
-    def __init__(self, color: int, func):
-        self.color: int = color
+    def __init__(self, func, color: int | None = None):
+        self.color: int | None = color
         self.func: LambdaType = func
 
 
@@ -26,12 +26,13 @@ class Launchpad:
 
     def setControlButtonColors(self):
         for (x, y), button in self.controlButtons.items():
-            light.setLight(LpPoint(x, y), button.color)
+            if button.color is not None:
+                light.setLight(LpPoint(x, y), button.color)
 
     def reset(self):
         self.stopAllSamples()
         self.allSamples = []
-        light.setAllSamplesColor(light.Color.OFF.value)
+        light.setAll(light.Color.OFF.value)
 
     def stopAllSamples(self):
         for s in self.allSamples:
@@ -87,9 +88,9 @@ class Launchpad:
             light.showAllColors(True)
 
         dics: Dict = {
-            (9, 6): ControlButton(light.Color.CYAN.value, page1),
-            (9, 7): ControlButton(light.Color.WHITE.value, page2),
-            (9, 8): ControlButton(light.Color.OFF.value, self.syncButton),
+            (9, 6): ControlButton(page1,light.Color.CYAN.value),
+            (9, 7): ControlButton(page2, light.Color.WHITE.value),
+            (9, 8): ControlButton(self.syncButton),
         }
 
         i = 1
@@ -99,7 +100,7 @@ class Launchpad:
                 return lambda: self.switchLayer(self.layers[layer_id])
 
             dics[(8, i)] = ControlButton(
-                light.Color.YELLOW.value, make_switch_layer_func(id)
+                make_switch_layer_func(id), light.Color.YELLOW.value
             )
             i += 1
         return dics
@@ -139,5 +140,7 @@ class Launchpad:
         self.controlButtons = self.setControlButtons()
         self.setControlButtonColors()
 
-        if self.currentLayer is None and len(self.layers) > 0:
+        if not self.currentLayer:
             self.switchLayer(next(iter(self.layers.values())))
+        else:
+            self.switchLayer(self.currentLayer)
