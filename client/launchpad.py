@@ -1,11 +1,12 @@
 from types import LambdaType
 from typing import Dict
+from layer import Layer
 from point import LpPoint, toSamplePoint, SamplePoint, toLpPoint
 from input import onPress
 from sample import Sample
 import light
-from storage import SAMPLE_DIR, deleteAllSamples
-from sync import ApiSample, ApiSlot, sync
+from storage import SAMPLE_DIR
+from sync import ApiLayer, ApiSample, ApiSlot, sync
 
 
 class ControlButton:
@@ -17,9 +18,10 @@ class ControlButton:
 class Launchpad:
     def __init__(self):
         onPress.connect(self.onPress)
-        self.controlButtons = self.setControlButtons()
-        self.samples: list[Sample] = []
-        self.setControlButtonColors()
+        self.controlButtons: Dict[tuple[int, int], ControlButton] = {}
+        self.allSamples: list[Sample] = []
+        self.currentLayer: Layer | None = None
+        self.layers: Dict[int, Layer] = {}
         self.reset()
 
     def setControlButtonColors(self):
@@ -27,17 +29,21 @@ class Launchpad:
             light.setLight(LpPoint(x, y), button.color)
 
     def reset(self):
-        for s in self.samples:
-            s.stop()
-        self.samples = []
-        self.samplesGrid: list[list[Sample | None]] = [[None] * 8 for _ in range(8)]
-        light.setAll(light.Color.OFF.value)
-        self.setControlButtonColors()
+        self.stopAllSamples()
+        self.allSamples = []
+        light.setAllSamplesColor(light.Color.OFF.value)
 
-    def addSample(self, sample: Sample, point: SamplePoint):
-        self.samplesGrid[point.x][point.y] = sample
-        self.samples.append(sample)
-        light.setLight(toLpPoint(point), sample.color)
+    def stopAllSamples(self):
+        for s in self.allSamples:
+            s.stop()
+
+    def addSample(self, sample: Sample, point: SamplePoint, layerId: int):
+        layer: Layer | None = self.layers.get(layerId)
+        if layer == None:
+            return
+
+        layer.set_sample(point.x, point.y, sample)
+        self.allSamples.append(sample)
 
     def onPress(self, point: LpPoint):
         p = toSamplePoint(point)
@@ -49,7 +55,10 @@ class Launchpad:
 
     def handleSampleButton(self, point):
         p = toSamplePoint(point)
-        s = self.samplesGrid[p.x][p.y]
+        layer = self.currentLayer
+        if layer is None:
+            return
+        s: Sample | None = layer.get_sample(p.x, p.y)
 
         if s is not None:
             s.toggle()
@@ -61,33 +70,74 @@ class Launchpad:
     def handleControlButton(self, point: LpPoint):
         p = (point.x, point.y)
         if p in self.controlButtons:
-            self.controlButtons.get((point.x, point.y), lambda: None).func()
+            cb: ControlButton | None = self.controlButtons.get((point.x,point.y))
+            if cb is not None:
+                cb.func()
 
     def syncButton(self):
         self.reset()
-        slots, samples = sync()
-        self.loadSamples(slots, samples)
+        slots, samples, layers = sync()
+        self.loadSamples(slots, samples, layers)
 
     def setControlButtons(self):
         def page1():
             light.showAllColors(False)
+
         def page2():
             light.showAllColors(True)
+
         dics: Dict = {
             (9, 6): ControlButton(light.Color.CYAN.value, page1),
             (9, 7): ControlButton(light.Color.WHITE.value, page2),
             (9, 8): ControlButton(light.Color.OFF.value, self.syncButton),
         }
+
+        i = 1
+        for id in self.layers.keys():
+
+            def make_switch_layer_func(layer_id: int):
+                return lambda: self.switchLayer(self.layers[layer_id])
+
+            dics[(8, i)] = ControlButton(
+                light.Color.YELLOW.value, make_switch_layer_func(id)
+            )
+            i += 1
         return dics
 
-    def loadSamples(self, slots: list[ApiSlot], samples: list[ApiSample]):
+    def switchLayer(self, layer: Layer):
+        self.stopAllSamples()
+        self.currentLayer = layer
+
+        grid = layer.get_grid()
+        for y in range(8):
+            for x in range(8):
+                sample = grid[y][x]
+                point = SamplePoint(x, y)
+                lp = toLpPoint(point)
+                if sample is not None:
+                    light.setLight(lp, sample.color)
+                else:
+                    light.setLight(lp, light.Color.OFF.value)
+
+    def loadSamples(
+        self, slots: list[ApiSlot], samples: list[ApiSample], layers: list[ApiLayer]
+    ):
+        for layerInfo in layers:
+            self.layers[layerInfo.id] = Layer()
+
         for index, slotInfo in enumerate(slots):
             apiSample = next((s for s in samples if s.id == slotInfo.sampleId), None)
             if slotInfo.sampleId is None or apiSample is None:
                 continue
-            y = index // 8
-            x = index % 8
+            y = slotInfo.position // 8
+            x = slotInfo.position % 8
             sample = Sample(SAMPLE_DIR + f"/{slotInfo.sampleId}.wav")
             if slotInfo.color is not None:
                 sample.color = slotInfo.color
-            self.addSample(sample, SamplePoint(x, y))
+            self.addSample(sample, SamplePoint(x, y), slotInfo.layerId)
+
+        self.controlButtons = self.setControlButtons()
+        self.setControlButtonColors()
+
+        if self.currentLayer is None and len(self.layers) > 0:
+            self.switchLayer(next(iter(self.layers.values())))

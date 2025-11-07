@@ -2,7 +2,9 @@ import pygame
 
 
 class Sample:
-    def __init__(self, sample_path, loop=True, color: int = 0):
+    def __init__(
+        self, sample_path , loop=True, color: int = 0
+    ):
         self.audio = pygame.mixer.Sound(sample_path)
         self.color = color
 

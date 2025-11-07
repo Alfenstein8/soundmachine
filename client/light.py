@@ -48,6 +48,13 @@ def setAll(color: int):
         # lp.LedCtrlString("je",2,255)
         lp.LedAllOn(color)
 
+def setAllSamplesColor(color: int):
+    if lp is not None:
+        for i in range(8):
+            for j in range(8):
+                padNumber = 81 - i * 10 + j
+                lp.LedCtrlRawByCode(padNumber, color)
+
 
 def showAllColors(secondPage: bool = False):
     if lp is not None:
