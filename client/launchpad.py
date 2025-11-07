@@ -24,27 +24,20 @@ class Launchpad:
         self.layers: Dict[int, Layer] = {}
         self.reset()
 
+    def reset(self):
+        self.stopAllSamples()
+        self.allSamples = []
+        self.layers = {}
+        light.setAll(light.Color.OFF.value)
+
     def setControlButtonColors(self):
         for (x, y), button in self.controlButtons.items():
             if button.color is not None:
                 light.setLight(LpPoint(x, y), button.color)
 
-    def reset(self):
-        self.stopAllSamples()
-        self.allSamples = []
-        light.setAll(light.Color.OFF.value)
-
     def stopAllSamples(self):
         for s in self.allSamples:
             s.stop()
-
-    def addSample(self, sample: Sample, point: SamplePoint, layerId: int):
-        layer: Layer | None = self.layers.get(layerId)
-        if layer == None:
-            return
-
-        layer.set_sample(point.x, point.y, sample)
-        self.allSamples.append(sample)
 
     def onPress(self, point: LpPoint):
         p = toSamplePoint(point)
@@ -80,7 +73,7 @@ class Launchpad:
         slots, samples, layers = sync()
         self.loadSamples(slots, samples, layers)
 
-    def setControlButtons(self):
+    def genControlButtons(self):
         def page1():
             light.showAllColors(False)
 
@@ -120,6 +113,15 @@ class Launchpad:
                 else:
                     light.setLight(lp, light.Color.OFF.value)
 
+
+    def addSample(self, sample: Sample, point: SamplePoint, layerId: int):
+        layer: Layer | None = self.layers.get(layerId)
+        if layer == None:
+            return
+
+        layer.set_sample(point.x, point.y, sample)
+        self.allSamples.append(sample)
+
     def loadSamples(
         self, slots: list[ApiSlot], samples: list[ApiSample], layers: list[ApiLayer]
     ):
@@ -137,10 +139,10 @@ class Launchpad:
                 sample.color = slotInfo.color
             self.addSample(sample, SamplePoint(x, y), slotInfo.layerId)
 
-        self.controlButtons = self.setControlButtons()
+        self.controlButtons = self.genControlButtons()
         self.setControlButtonColors()
 
-        if not self.currentLayer:
+        if not self.currentLayer or self.currentLayer not in self.layers.values():
             self.switchLayer(next(iter(self.layers.values())))
         else:
             self.switchLayer(self.currentLayer)
