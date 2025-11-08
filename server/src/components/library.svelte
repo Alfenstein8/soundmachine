@@ -81,7 +81,7 @@
 		<Filters bind:showUsed={showUsed} onchange={() => updateResults()} />
 	</div>
 	<br class="mb-4" />
-	<div class="flex flex-wrap justify-center-safe gap-4 overflow-y-scroll">
+	<div class="flex flex-wrap justify-center-safe gap-4">
 		{#each results as result (result.item.id)}
 			<LibraryItem sample={result.item} />
 		{/each}
