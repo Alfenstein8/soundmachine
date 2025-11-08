@@ -94,7 +94,7 @@
 	<div class="flex h-fit w-full flex-wrap justify-start gap-y-2">
 		{#each sampleTags as tag (tag.name)}
 			<span
-				class="mr-1 badge badge-outline {isPrimary(tag.name) && showAllTagNames ? 'border-b-4' : ''}"
+				class="mr-1 badge badge-outline {isPrimary(tag.name) && showAllTagNames ? 'border-b-4' : isPrimary(tag.name) ? '' : 'border-2'}"
 				style="border-color: {colors.getHex(tag.color)}; color: {colors.getHex(tag.color)};"
 			>
 				{isPrimary(tag.name) || showAllTagNames ? tag.name : ''}
