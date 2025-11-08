@@ -52,7 +52,7 @@
 		$editTagModal.close();
 	};
 
-	const handleToggle = (tag: TagSelect) => {
+	const handleTagToggle = (tag: TagSelect) => {
 		tagName = tag.name;
 		if (tag.color) $selectedColor = tag.color;
 	};
@@ -65,7 +65,7 @@
 				tags={$tags}
 				bind:selectedTags
 				multiSelect={false}
-				ontoggle={handleToggle}
+				ontoggle={handleTagToggle}
 				bind:addTagSelected
 			/>
 		</div>

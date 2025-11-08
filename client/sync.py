@@ -7,7 +7,7 @@ from storage import deleteUnusedSamples, fileExists, saveSample
 from collections import namedtuple
 
 ApiSample = namedtuple("ApiSample", ["id", "name"])
-ApiSlot = namedtuple("ApiSlot", ["id", "sampleId", "color", "position", "layerId"])
+ApiSlot = namedtuple("ApiSlot", ["sampleId", "color", "position", "layerId"])
 ApiLayer = namedtuple("ApiLayer", ["id"])
 
 
@@ -32,7 +32,7 @@ def performSync():
     slotsDict = json["slots"]
     slots: list[ApiSlot] = []
     for s in slotsDict:
-        slot = ApiSlot(s["id"], s["sampleId"], s["color"], s["position"], s["layerId"])
+        slot = ApiSlot(s["sampleId"], s["color"], s["position"], s["layerId"])
         slots.append(slot)
 
     samplesDict = json["samples"]

@@ -22,17 +22,22 @@ export const layers = sqliteTable('layers', {
 	name: text('name').notNull()
 });
 
-export type LayerInsert = typeof layers.$inferInsert
-export type LayerSelect = typeof layers.$inferSelect
+export type LayerInsert = typeof layers.$inferInsert;
+export type LayerSelect = typeof layers.$inferSelect;
 
-export const slots = sqliteTable('slots', {
-	id: integer('id').primaryKey(),
-	position: integer('position').notNull(),
-	layerId: integer('layerId').notNull().references(() => layers.id),
-	sampleId: text('sample_id').references(() => samples.id),
-	color: integer('color'),
-	useTagColor: integer({ mode: 'boolean' }).notNull().default(true)
-});
+export const slots = sqliteTable(
+	'slots',
+	{
+		position: integer('position').notNull(),
+		layerId: integer('layerId')
+			.notNull()
+			.references(() => layers.id),
+		sampleId: text('sample_id').notNull().references(() => samples.id),
+		color: integer('color').notNull().default(5),
+		useTagColor: integer({ mode: 'boolean' }).notNull().default(true)
+	},
+	(table) => [primaryKey({ columns: [table.layerId, table.position] })]
+);
 export type SlotSelect = typeof slots.$inferSelect;
 export type SlotInsert = typeof slots.$inferInsert;
 

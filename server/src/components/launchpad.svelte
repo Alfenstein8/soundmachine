@@ -13,7 +13,6 @@
 	import * as api from '$lib/client/api';
 	import { syncSlots } from '$lib/client/sync';
 	import { colors } from '$lib/colors';
-	import { padNumToXY, slotsInLayer } from '$lib/utils';
 	import Layers from './layers.svelte';
 
 	$shownLayer = $layers ? $layers[0] : null;
@@ -23,51 +22,63 @@
 	};
 
 	const handlePadClick = async (slot: SlotSelect) => {
-		if ($selectedSample !== null) {
+		if (slot.sampleId === null) return;
+		$selectedSlot = slot;
+		$padModal.showModal();
+	};
+
+	const handleEmptyPadClick = async (position: number) => {
+		if ($selectedSample !== null && $shownLayer !== null) {
 			const tagColor =
 				$tags.find((t) => t.name === $selectedSample?.primaryTagName)?.color || undefined;
 			try {
 				const newSlot: SlotInsert = {
-					...slot
+					position,
+					layerId: $shownLayer.id,
+					color: tagColor,
+					sampleId: $selectedSample.id
 				};
-				newSlot.sampleId = $selectedSample.id;
-				newSlot.color = tagColor;
-				await api.updateSlot(slot.id, newSlot);
+				await api.updateSlot(newSlot);
 				$selectedSample = null;
 				await syncSlots();
 			} catch (error) {
 				console.error('Error placing sample:', error);
 				alert('Failed to place sample.');
 			}
-		} else if (slot.sampleId !== null) {
-			$selectedSlot = slot;
-			$padModal.showModal();
 		}
 	};
 </script>
 
 <div id="launchpadContainer">
-	<div id="launchpad" class="grid grid-cols-8 grid-rows-8 gap-1 sm:gap-2.5">
+	<div
+		id="launchpad"
+		class="grid h-80 w-100 grid-cols-8 grid-rows-8 gap-1 sm:h-100 sm:w-150 sm:gap-2.5 lg:h-140 lg:w-200"
+	>
 		{#if $shownLayer}
-			{#each slotsInLayer($shownLayer.id, $slots) as slot (slot.id)}
-				<button
-					class="pad text-base-content hover:bg-base-200 h-7 w-10 rounded-sm sm:h-12 sm:w-20 xl:h-16 xl:w-24 {$selectedSample?.id ===
-					slot.sampleId
-						? 'selected'
-						: ''}"
-					style="background-color: {slot.color
-						? colors.getHex(slot.color)
-						: 'var(--color-base-100)'};
-					color: {slot.color ? colors.getContrast(slot.color) : 'black'};
-					grid-row: {padNumToXY(slot.position).y};
-					grid-column: {padNumToXY(slot.position).x};
-					"
-					onclick={() => handlePadClick(slot)}
-				>
-					{#if slot.sampleId !== null}
-						{getSampleName(slot)}
-					{/if}
-				</button>
+			{#each { length: 64 } as _, i (i)}
+				{@const slot = $slots.find((s) => s.position === i && s.layerId === $shownLayer.id)}
+				{#if slot}
+					<button
+						class="pad rounded-sm text-base-content hover:bg-base-200 {$selectedSample?.id ===
+						slot.sampleId
+							? 'selected'
+							: ''}"
+						style="background-color: {colors.getHex(slot.color)};
+					  color: {colors.getContrast(slot.color)};
+					  "
+						onclick={() => handlePadClick(slot)}
+					>
+						{#if slot.sampleId !== null}
+							{getSampleName(slot)}
+						{/if}
+					</button>
+				{:else}
+					<button
+						class="pad rounded-sm bg-base-100"
+						onclick={()=>handleEmptyPadClick(i)}
+						aria-label={`${i} position`}
+					></button>
+				{/if}
 			{/each}
 		{/if}
 	</div>
@@ -88,8 +99,6 @@
 		display: grid;
 		grid-template-columns: repeat(8, 1fr);
 		grid-template-rows: repeat(8, 1fr);
-		width: fit-content;
-		height: fit-content;
 	}
 	.pad {
 		cursor: pointer;

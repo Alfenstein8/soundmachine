@@ -19,24 +19,32 @@ export const deleteSample = async (id: string) => {
 	}
 };
 
-export const updateSlot = async (slotId: number, slot: SlotInsert) => {
-	console.log(slot);
-
-	await fetch(`/api/slot/${slotId}`, {
-		method: 'PATCH',
+export const updateSlot = async (slot: SlotInsert) => {
+	await fetch(`/api/layers/${slot.layerId}/${slot.position}`, {
+		method: 'PUT',
 		headers: {
 			'Content-Type': 'application/json'
 		},
 		body: JSON.stringify(slot)
 	}).then((response) => {
 		if (!response.ok) {
-			throw new Error('Failed to update slot.');
+			throw new Error(response.statusText);
 		}
 	});
 };
 
-export const removeSampleFromSlot = async (slotId: number) =>
-	updateSlot(slotId, { sampleId: null, color: null, useTagColor: true });
+export const deleteSlot = async (layerId: number, position: number) => {
+	await fetch(`/api/layers/${layerId}/${position}`, {
+		method: 'DELETE'
+	}).then((response) => {
+		if (!response.ok) {
+			throw new Error('Failed to delete slot.');
+		}
+	});
+};
+
+export const removeSampleFromSlot = async (layerId: number, position: number) =>
+	deleteSlot(layerId, position);
 
 export const uploadSample = async (file: File, sampleData: SampleInsert) => {
 	const formData = new FormData();

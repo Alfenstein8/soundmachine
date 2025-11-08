@@ -14,7 +14,7 @@
 	const handleRemove = async () => {
 		if (!$selectedSlot) return;
 		try {
-			await api.removeSampleFromSlot($selectedSlot.id);
+			await api.removeSampleFromSlot($selectedSlot.layerId, $selectedSlot.position);
 			await syncSlots();
 			$padModal.close();
 		} catch {
@@ -26,10 +26,11 @@
 	const handleApply = async () => {
 		if (!$selectedSlot) return;
 		const slotPatch: SlotInsert = {
-			color: $selectedColor
+			...$selectedSlot,
 		};
+		slotPatch.color = $selectedColor;
 		try {
-			await api.updateSlot($selectedSlot.id, slotPatch);
+			await api.updateSlot(slotPatch);
 			await syncSlots();
 			$padModal.close();
 		} catch {
