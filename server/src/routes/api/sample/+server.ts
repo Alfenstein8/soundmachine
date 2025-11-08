@@ -49,7 +49,7 @@ export const POST = async ({ request }: RequestEvent) => {
 
     audioFile = getAudioFile(formData);
 
-    saveSample(newSample.id, audioFile);
+    await saveSample(newSample.id, audioFile);
   } catch (e) {
     console.error('Error processing audio upload:', e);
     if (newSample?.id) {
