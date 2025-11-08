@@ -20,7 +20,7 @@ export type SampleInsert = typeof samples.$inferInsert;
 export const layers = sqliteTable('layers', {
 	id: integer('id').primaryKey(),
 	name: text('name').notNull(),
-	color: integer('color').notNull().default(13)
+	color: integer('color').notNull().default(8)
 });
 
 export type LayerInsert = typeof layers.$inferInsert;
