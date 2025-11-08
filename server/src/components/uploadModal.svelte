@@ -5,7 +5,7 @@
 	import { onMount } from 'svelte';
 	import type { SampleInsert, TagSelect } from '$schema';
 	import TagApply from './tagApply.svelte';
-	import { syncSamples } from '$lib/client/sync';
+	import { syncSamples, syncTagAttachments } from '$lib/client/sync';
 
 	let fileInput: HTMLInputElement;
 	let fileName = $state('');
@@ -39,7 +39,7 @@
 				console.error('Error uploading file:', error);
 				alert('File upload failed.');
 			}
-			await syncSamples()
+			await Promise.all([syncSamples(), syncTagAttachments()]);
 			$uploadModal.close();
 		}
 		console.log('Uploading file:', trueFileName);
