@@ -14,7 +14,7 @@ export const PUT = async ({ params, request }: RequestEvent) => {
     return new Response('Invalid JSON body', { status: 400 });
   }
 
-  if (isNaN(position) || position <= 0 || !Number.isInteger(position)) {
+  if (isNaN(position) || position < 0 || !Number.isInteger(position)) {
     return new Response('Invalid position', { status: 400 });
   }
 
@@ -40,6 +40,7 @@ export const PUT = async ({ params, request }: RequestEvent) => {
 export const DELETE = async ({ params }: RequestEvent) => {
   const layerId = Number(params.layerId);
   const position = Number(params.position);
+
   if (isNaN(position) || position < 0 || !Number.isInteger(position)) {
     return new Response('Invalid position', { status: 400 });
   }

@@ -66,19 +66,19 @@
 			<X />
 		</button>
 	</div>
-	<div class="mt-2 flex flex-wrap items-center justify-center-safe gap-1 sticky top-0 bg-base-300 z-50 w-fit rounded-box p-2">
-		{#if $tags.length > 0}
-			<button
-				class="btn btn-circle btn-ghost"
-				onclick={() => {
-					$editTagModal.showModal();
-				}}
-			>
-				<Tag />
-			</button>
-		{/if}
+	<div
+		class="sticky top-0 z-50 mt-2 flex w-fit flex-wrap items-center justify-center-safe gap-1 rounded-box bg-base-300 p-2"
+	>
+		<button
+			class="btn btn-circle btn-ghost"
+			onclick={() => {
+				$editTagModal.showModal();
+			}}
+		>
+			<Tag />
+		</button>
 		<TagSelectComp tags={$tags} bind:selectedTags ontoggle={() => updateResults($searchTerm)} />
-		<Filters bind:showUsed={showUsed} onchange={() => updateResults()} />
+		<Filters bind:showUsed onchange={() => updateResults()} />
 	</div>
 	<br class="mb-4" />
 	<div class="flex flex-wrap justify-center-safe gap-4">
