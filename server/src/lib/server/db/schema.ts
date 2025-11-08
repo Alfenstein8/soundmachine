@@ -19,7 +19,8 @@ export type SampleInsert = typeof samples.$inferInsert;
 
 export const layers = sqliteTable('layers', {
 	id: integer('id').primaryKey(),
-	name: text('name').notNull()
+	name: text('name').notNull(),
+	color: integer('color').notNull().default(13)
 });
 
 export type LayerInsert = typeof layers.$inferInsert;
@@ -43,7 +44,7 @@ export type SlotInsert = typeof slots.$inferInsert;
 
 export const tags = sqliteTable('tags', {
 	name: text('name').primaryKey(),
-	color: integer('color')
+	color: integer('color').notNull().default(13)
 });
 
 export type TagSelect = typeof tags.$inferSelect;

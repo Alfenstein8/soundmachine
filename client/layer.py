@@ -1,9 +1,11 @@
 from sample import Sample
+from sync import ApiLayer
 
 
 class Layer:
-    def __init__(self, id: int):
-        self.id = id
+    def __init__(self, layer: ApiLayer):
+        self.id = layer.id
+        self.color = layer.color
         self.grid: list[list[Sample | None]] = [[None] * 8 for _ in range(8)]
 
     def set_sample(self, x: int, y: int, sample: Sample) -> None:

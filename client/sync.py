@@ -8,7 +8,7 @@ from collections import namedtuple
 
 ApiSample = namedtuple("ApiSample", ["id", "name"])
 ApiSlot = namedtuple("ApiSlot", ["sampleId", "color", "position", "layerId"])
-ApiLayer = namedtuple("ApiLayer", ["id"])
+ApiLayer = namedtuple("ApiLayer", ["id", "color"])
 
 
 def syncSamples(samples: list[ApiSample]):
@@ -46,7 +46,7 @@ def performSync():
     layersDict = json["layers"]
     layers: list[ApiLayer] = []
     for l in layersDict:
-        layer = ApiLayer(l["id"])
+        layer = ApiLayer(l["id"], l["color"])
         layers.append(layer)
     return slots, samples, layers
 

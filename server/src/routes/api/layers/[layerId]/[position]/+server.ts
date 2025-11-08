@@ -1,5 +1,5 @@
 import { db } from '$lib/server/db';
-import { slots, type SlotInsert } from '$schema';
+import { layers, slots, type SlotInsert } from '$schema';
 import { and, eq } from 'drizzle-orm';
 import type { RequestEvent } from './$types';
 
@@ -19,6 +19,10 @@ export const PUT = async ({ params, request }: RequestEvent) => {
   }
 
   try {
+    const layer = await db.select().from(layers).limit(1);
+    if (layer.length === 0) {
+      return new Response('Layer not found', { status: 404 });
+    }
     await db
       .insert(slots)
       .values(slot)

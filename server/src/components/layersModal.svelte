@@ -6,6 +6,7 @@
 	import LayersSelect from './layersSelect.svelte';
 	import type { LayerSelect } from '$schema';
 	import LayersForm from './layersForm.svelte';
+	import { colors } from '$lib/colors';
 
 	let selectedLayer: LayerSelect | null = $state($shownLayer);
 	let addButtonSelected: boolean = $state(false);
@@ -22,7 +23,8 @@
 		try {
 			await api.createLayer({
 				id: $layers.reduce((max, layer) => (layer.id > max ? layer.id : max), 0) + 1,
-				name: layerName
+				name: layerName,
+				color: colors.layerColors[$layers.length].code
 			});
 			await Promise.all([await syncLayers(), await syncSlots()]);
 			checkForOne();
@@ -82,10 +84,12 @@
 		</div>
 		<div class="flex flex-row gap-4">
 			{#if addButtonSelected}
-				<button class="btn btn-primary grow" onclick={handleCreate}>Create</button>
+				<button class="btn grow btn-primary" onclick={handleCreate}>Create</button>
 			{:else}
-				<button class="btn btn-primary grow" onclick={handleApply}>Apply</button>
-				<button class="btn btn-warning grow" onclick={handleDelete}>Delete</button>
+				<button class="btn grow btn-primary" onclick={handleApply}>Apply</button>
+				{#if $layers.length > 1}
+					<button class="btn grow btn-warning" onclick={handleDelete}>Delete</button>
+				{/if}
 			{/if}
 		</div>
 	</div>

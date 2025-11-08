@@ -102,7 +102,7 @@ class Launchpad:
         i: int = 1
         for id in self.layers.keys():
             c = (
-                light.Color.YELLOW.value
+                self.layers[id].color
                 if id != activeLayerId
                 else light.Color.ACTIVE.value
             )
@@ -137,7 +137,7 @@ class Launchpad:
         self, slots: list[ApiSlot], samples: list[ApiSample], layers: list[ApiLayer]
     ):
         for layerInfo in layers:
-            self.layers[layerInfo.id] = Layer(layerInfo.id)
+            self.layers[layerInfo.id] = Layer(layerInfo)
 
         for index, slotInfo in enumerate(slots):
             apiSample = next((s for s in samples if s.id == slotInfo.sampleId), None)
