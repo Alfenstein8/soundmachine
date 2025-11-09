@@ -1,12 +1,12 @@
-import { db } from '$lib/server/db';
-import { layers, type LayerInsert } from '$schema';
+import * as db from '$db';
+import { type LayerInsert } from '$schema';
 import { json } from '@sveltejs/kit';
 import type { RequestEvent } from './$types';
-import { createLayer } from '$lib/server/db/utils';
+import { createLayer } from '$db';
 
 export const GET = async () => {
   try {
-    const allLayers = await db.select().from(layers);
+    const allLayers = await db.getAllLayers();
     return json(allLayers);
   } catch (error) {
     console.error('Error fetching layers:', error);

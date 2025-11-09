@@ -1,8 +1,8 @@
-import type { RequestEvent } from './$types';
 import { getSample, deleteSample } from '$lib/server/services/storage';
-import { db } from '$lib/server/db';
-import { samples, slots, tags, type SampleInsert } from '$schema';
-import { eq } from 'drizzle-orm';
+import * as db from '$db';
+
+import type { RequestEvent } from './$types';
+import type { SampleInsert } from '$schema';
 
 export async function GET({ params }: RequestEvent) {
 	let file: ArrayBuffer;
@@ -33,19 +33,10 @@ export const DELETE = async ({ params }: RequestEvent) => {
 };
 
 export const PATCH = async ({ params, request }: RequestEvent) => {
-	const data: SampleInsert = await request.json();
+	const sample: SampleInsert = await request.json();
 
 	try {
-		if (data.primaryTagName) {
-			const color = await db.select().from(tags).where(eq(tags.name, data.primaryTagName)).limit(1);
-
-			await db
-				.update(slots)
-				.set({ color: color[0].color })
-				.where(eq(slots.sampleId, params.sampleId));
-		}
-
-		await db.update(samples).set(data).where(eq(samples.id, params.sampleId));
+		await db.patchSample(params.sampleId, sample);
 	} catch {
 		return new Response('Failed to update sample metadata.', { status: 500 });
 	}
