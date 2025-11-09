@@ -77,7 +77,7 @@ def getSampleFile(id: str) -> bytes:
         print("SERVER_URL not found")
         url = ""
     print(f"Downloading sample {id}")
-    sampleUrl = url + "/api/sample/" + id
+    sampleUrl = url + "/api/samples/" + id
     response = requests.get(sampleUrl)
     return response.content
 

@@ -39,7 +39,7 @@ const putRequest = async (endpoint: string, body: BodyInit, notOk: NotOk = () =>
 	fetchRequest(endpoint, { method: 'PUT', body }, notOk);
 
 export const deleteSample = async (id: string) => {
-	await deleteRequest(`sample/${id}`, () => {
+	await deleteRequest(`samples/${id}`, () => {
 		alert('Failed to delete sample.');
 		return false;
 	});
@@ -47,7 +47,7 @@ export const deleteSample = async (id: string) => {
 
 export const updateSlot = async (slot: SlotInsert) => {
 	const response = await putRequest(
-		`slot`,
+		`slots`,
 		JSON.stringify(slot)
 	);
 	if (!response.ok) {
@@ -70,7 +70,7 @@ export const uploadSample = async (file: File, sampleData: SampleInsert) => {
 	formData.append('audio', file);
 	formData.append('data', JSON.stringify(sampleData));
 
-	const response = await postRequest('sample', formData);
+	const response = await postRequest('samples', formData);
 	if (!response.ok) {
 		throw new Error('Failed to upload sample.');
 	}
@@ -79,14 +79,14 @@ export const uploadSample = async (file: File, sampleData: SampleInsert) => {
 };
 
 export const updateSampleMetadata = async (sampleId: string, sample: SampleInsert) => {
-	const response = await patchRequest(`sample/${sampleId}`, JSON.stringify(sample));
+	const response = await patchRequest(`samples/${sampleId}`, JSON.stringify(sample));
 	if (!response.ok) {
 		throw new Error('Failed to update sample metadata.');
 	}
 };
 
 export const getSampleTags = async (sampleId: string) => {
-	const res = await getRequest(`sample/${sampleId}/tags`);
+	const res = await getRequest(`samples/${sampleId}/tags`);
 
 	if (!res.ok) {
 		throw new Error('Failed to fetch sample tags.');
@@ -117,7 +117,7 @@ export const updateSampleTags = async (
 		tagNames,
 		primaryTagName
 	};
-	const response = await postRequest(`sample/${sampleId}/tags`, JSON.stringify(requestBody));
+	const response = await postRequest(`samples/${sampleId}/tags`, JSON.stringify(requestBody));
 	if (!response.ok) {
 		throw new Error('Failed to create tag.');
 	}
@@ -132,7 +132,7 @@ export const getAllTags = async () => {
 };
 
 export const getAllSamples = async () => {
-	const res = await getRequest('sample');
+	const res = await getRequest('samples');
 
 	if (!res.ok) {
 		throw new Error('Failed to fetch samples.');
@@ -141,7 +141,7 @@ export const getAllSamples = async () => {
 };
 
 export const getAllSlots = async () => {
-	const res = await getRequest('slot');
+	const res = await getRequest('slots');
 
 	if (!res.ok) {
 		throw new Error('Failed to fetch slots.');
