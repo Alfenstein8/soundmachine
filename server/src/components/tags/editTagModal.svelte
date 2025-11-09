@@ -4,7 +4,7 @@
 	import * as api from '$lib/client/api';
 	import { syncClient, syncTagAttachments, syncTags } from '$lib/client/sync';
 	import TagSelectComp from '$comp/tags/tagSelect.svelte';
-	import type { TagInsert, TagSelect } from '$schema';
+	import type { TagInsert, TagSelect } from '$types/db';
 	import TagInfo from '$comp/tags/tagInfo.svelte';
 
 	let selectedTags: TagSelect[] = $state([]);
@@ -74,10 +74,10 @@
 		</div>
 		<div class="flex flex-row gap-4">
 			{#if addTagSelected}
-				<button class="btn btn-primary grow" onclick={handeCreate}>Create</button>
+				<button class="btn grow btn-primary" onclick={handeCreate}>Create</button>
 			{:else}
-				<button class="btn btn-primary grow" onclick={handleApply}>Apply</button>
-				<button class="btn btn-warning grow" onclick={handleDelete}>Delete</button>
+				<button class="btn grow btn-primary" onclick={handleApply}>Apply</button>
+				<button class="btn grow btn-warning" onclick={handleDelete}>Delete</button>
 			{/if}
 		</div>
 	</div>

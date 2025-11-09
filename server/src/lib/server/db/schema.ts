@@ -14,8 +14,6 @@ export const samplesRelations = relations(samples, ({ many }) => ({
 	tagsToSamples: many(tagsToSamples)
 }));
 
-export type SampleSelect = typeof samples.$inferSelect;
-export type SampleInsert = typeof samples.$inferInsert;
 
 export const layers = sqliteTable('layers', {
 	id: integer('id').primaryKey(),
@@ -23,8 +21,6 @@ export const layers = sqliteTable('layers', {
 	color: integer('color').notNull().default(8)
 });
 
-export type LayerInsert = typeof layers.$inferInsert;
-export type LayerSelect = typeof layers.$inferSelect;
 
 export const slots = sqliteTable(
 	'slots',
@@ -39,16 +35,12 @@ export const slots = sqliteTable(
 	},
 	(table) => [primaryKey({ columns: [table.layerId, table.position] })]
 );
-export type SlotSelect = typeof slots.$inferSelect;
-export type SlotInsert = typeof slots.$inferInsert;
 
 export const tags = sqliteTable('tags', {
 	name: text('name').primaryKey(),
 	color: integer('color').notNull().default(13)
 });
 
-export type TagSelect = typeof tags.$inferSelect;
-export type TagInsert = typeof tags.$inferInsert;
 
 export const tagsRelations = relations(tags, ({ many }) => ({
 	tagsToSamples: many(tagsToSamples)
@@ -67,5 +59,3 @@ export const tagsToSamples = sqliteTable(
 	(t) => [primaryKey({ columns: [t.tagName, t.sampleId] })]
 );
 
-export type tagAttachmentSelect = typeof tagsToSamples.$inferSelect;
-export type tagAttachmentInsert = typeof tagsToSamples.$inferInsert;

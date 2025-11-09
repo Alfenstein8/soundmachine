@@ -4,7 +4,7 @@
 	import * as api from '$lib/client/api';
 	import Modal from '$comp/modal.svelte';
 	import LayersSelect from '$comp/layers/layersSelect.svelte';
-	import type { LayerSelect } from '$schema';
+	import type { LayerSelect } from '$types/db';
 	import LayersForm from '$comp/layers/layersForm.svelte';
 	import { colors } from '$lib/colors';
 

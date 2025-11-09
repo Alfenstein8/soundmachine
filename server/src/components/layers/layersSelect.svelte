@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { LayerSelect } from '$schema';
+	import type { LayerSelect } from '$types/db';
 	import { layers } from '$stores/globals';
 
 	let {

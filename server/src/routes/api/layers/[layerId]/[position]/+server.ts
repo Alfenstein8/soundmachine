@@ -1,7 +1,8 @@
 import { db } from '$lib/server/db';
-import { layers, slots, type SlotInsert } from '$schema';
+import { layers, slots} from '$schema';
 import { and, eq } from 'drizzle-orm';
 import type { RequestEvent } from './$types';
+import type { SlotInsert } from '$types/db';
 
 export const PUT = async ({ params, request }: RequestEvent) => {
   const layerId = Number(params.layerId);

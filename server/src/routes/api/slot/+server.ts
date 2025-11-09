@@ -1,5 +1,5 @@
 import * as db from '$db';
-import type { SlotSelect } from '$schema';
+import type { SlotSelect } from '$types/db';
 import { json } from '@sveltejs/kit';
 
 export const GET = async () => {

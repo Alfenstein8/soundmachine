@@ -2,7 +2,7 @@
 	import Modal from '$comp/modal.svelte';
 	import { padModal, samples, searchTerm, selectedColor, selectedSlot } from '$stores/globals';
 	import * as api from '$lib/client/api';
-	import type { SlotInsert } from '$schema';
+	import type { SlotInsert } from '$types/db';
 	import { syncSlots } from '$lib/client/sync';
 	import ColorPicker from '$comp/colorPicker.svelte';
 

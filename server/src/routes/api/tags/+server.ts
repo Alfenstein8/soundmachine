@@ -1,5 +1,5 @@
 import * as db from '$db';
-import type { TagSelect } from '$schema';
+import type { TagSelect } from '$types/db';
 import type { RequestEvent } from './$types';
 
 export const GET = async () => {

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { getTagHex } from '$lib/client/utils';
 	import { colors } from '$lib/colors';
-	import type { TagSelect } from '$schema';
+	import type { TagSelect } from '$types/db';
 	import { tags } from '$stores/globals';
 
 	let {

@@ -4,12 +4,10 @@ import {
 	slots,
 	tags,
 	tagsToSamples,
-	type LayerInsert,
-	type SampleInsert,
-	type TagInsert
 } from '$schema';
 import { and, eq, getTableColumns, inArray } from 'drizzle-orm';
 import { db } from '.';
+import type { LayerInsert, SampleInsert, TagInsert } from '$types/db';
 
 // Layers
 export const createLayer = async (layer: LayerInsert) => {

@@ -2,7 +2,7 @@
 	import { getTagHex } from '$lib/client/utils';
 	import { colors } from '$lib/colors';
 	import { showAllTagNames } from '$lib/featureFlags';
-	import type { SampleSelect, TagSelect } from '$schema';
+	import type { SampleSelect, TagSelect } from '$types/db';
 	import { selectedSample, libraryModal, tags, tagAttachments, slots } from '$stores/globals';
 	import CircleStop from '@lucide/svelte/icons/circle-stop';
 	import PlayIcon from '@lucide/svelte/icons/play';

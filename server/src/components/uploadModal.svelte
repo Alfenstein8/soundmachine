@@ -3,7 +3,7 @@
 	import Modal from '$comp/modal.svelte';
 	import { uploadModal } from '$stores/globals';
 	import { onMount } from 'svelte';
-	import type { SampleInsert, TagSelect } from '$schema';
+	import type { SampleInsert, TagSelect } from '$types/db';
 	import TagApply from '$comp/tags/tagApply.svelte';
 	import { syncSamples, syncTagAttachments } from '$lib/client/sync';
 

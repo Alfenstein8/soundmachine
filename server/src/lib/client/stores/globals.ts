@@ -5,7 +5,7 @@ import type {
   SlotSelect,
   tagAttachmentSelect,
   TagSelect
-} from '$schema';
+} from '$types/db';
 import { writable, type Writable } from 'svelte/store';
 
 export const slots: Writable<SlotSelect[]> = writable([]);

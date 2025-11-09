@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { SlotInsert, SlotSelect } from '$schema';
+	import type { SlotInsert, SlotSelect } from '$types/db';
 	import {
 		slots,
 		samples,

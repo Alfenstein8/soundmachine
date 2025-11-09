@@ -1,7 +1,8 @@
 import { db } from '$lib/server/db';
-import { tagsToSamples, tags, type TagSelect, samples, slots } from '$schema';
+import { tagsToSamples, tags, samples, slots } from '$schema';
 import { and, eq, getTableColumns, notInArray } from 'drizzle-orm';
 import type { RequestEvent } from './$types';
+import type { TagSelect } from '$types/db';
 
 const tagColumns = getTableColumns(tags);
 export const GET = async ({ params }: RequestEvent) => {

@@ -1,5 +1,5 @@
 import { colors } from '$lib/colors';
-import type { tagAttachmentSelect, TagSelect } from '$schema';
+import type { tagAttachmentSelect, TagSelect } from '$types/db';
 import { slots, tagAttachments, tags } from '$stores/globals';
 import { get } from 'svelte/store';
 

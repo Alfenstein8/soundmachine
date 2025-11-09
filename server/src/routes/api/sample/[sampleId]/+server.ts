@@ -2,7 +2,7 @@ import { getSample, deleteSample } from '$lib/server/services/storage';
 import * as db from '$db';
 
 import type { RequestEvent } from './$types';
-import type { SampleInsert } from '$schema';
+import type { SampleInsert } from '$types/db';
 
 export async function GET({ params }: RequestEvent) {
 	let file: ArrayBuffer;

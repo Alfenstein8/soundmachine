@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { colors } from '$lib/colors';
-	import type { TagSelect } from '$schema';
+	import type { TagSelect } from '$types/db';
 	import Plus from '@lucide/svelte/icons/plus';
 
 	let {

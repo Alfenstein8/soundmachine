@@ -8,7 +8,7 @@ import type {
 	tagAttachmentSelect,
 	TagInsert,
 	TagSelect
-} from '$schema';
+} from '$types/db';
 
 const API_URL = '/api';
 

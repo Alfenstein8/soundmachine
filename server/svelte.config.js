@@ -18,6 +18,7 @@ const config = {
 			$db: path.resolve("./src/lib/server/db/db.ts"),
 			$schema: path.resolve("./src/lib/server/db/schema.ts"),
 			$stores: path.resolve("./src/lib/client/stores"),
+			$types: path.resolve("./src/lib/types"),
 		}
 	}
 };

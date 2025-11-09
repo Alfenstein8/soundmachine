@@ -1,7 +1,8 @@
 import { db } from '$lib/server/db';
-import { layers, slots, type LayerInsert } from '$schema';
+import { layers, slots} from '$schema';
 import { eq } from 'drizzle-orm';
 import type { RequestEvent } from './$types';
+import type { LayerInsert } from '$types/db';
 
 export const DELETE = async ({ params }: RequestEvent) => {
 	let id: number;

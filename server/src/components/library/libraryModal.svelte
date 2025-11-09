@@ -2,7 +2,7 @@
 	import Modal from '$comp/modal.svelte';
 	import { selectedSample, libraryModal, samples } from '$stores/globals';
 	import * as api from '$lib/client/api';
-	import type { SampleInsert, TagSelect } from '$schema';
+	import type { SampleInsert, TagSelect } from '$types/db';
 	import { syncClient, syncSamples, syncSlots } from '$lib/client/sync';
 	import TagApply from '$comp/tags/tagApply.svelte';
 
