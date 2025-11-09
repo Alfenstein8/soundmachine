@@ -1,5 +1,5 @@
 import { layers, samples, slots } from '$schema';
-import { createInsertSchema } from 'drizzle-valibot';
+import { createInsertSchema, createUpdateSchema } from 'drizzle-valibot';
 import { integer, minValue, number, pipe } from 'valibot';
 export { parse } from 'valibot';
 
@@ -10,3 +10,6 @@ export const layerInsertSchema = createInsertSchema(layers);
 export const slotInsertSchema = createInsertSchema(slots);
 
 export const positionValidator = pipe(number(), integer(), minValue(0));
+
+export const tagInsertSchema = createInsertSchema(layers);
+export const tagUpdateSchema = createUpdateSchema(layers);

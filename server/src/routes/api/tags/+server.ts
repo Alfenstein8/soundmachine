@@ -1,6 +1,7 @@
 import * as db from '$db';
-import type { TagSelect } from '$types/db';
+import type { TagInsert, TagSelect } from '$types/db';
 import type { RequestEvent } from './$types';
+import { parse, tagInsertSchema } from '$lib/server/validators';
 
 export const GET = async () => {
 	let tagList: TagSelect[] = [];
@@ -19,9 +20,9 @@ export const GET = async () => {
 };
 
 export const POST = async ({ request }: RequestEvent) => {
-	let tagData: TagSelect;
+	let tagData: TagInsert;
 	try {
-		tagData = await request.json();
+		tagData = parse(tagInsertSchema, await request.json());
 	} catch {
 		return new Response('Invalid JSON', { status: 400 });
 	}

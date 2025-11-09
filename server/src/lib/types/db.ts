@@ -1,4 +1,6 @@
+import type { tagUpdateSchema } from '$lib/server/validators';
 import { layers, samples, slots, tags, tagsToSamples } from '$schema';
+import type { InferInput } from 'valibot';
 
 export type SampleSelect = typeof samples.$inferSelect;
 export type SampleInsert = typeof samples.$inferInsert;
@@ -10,6 +12,7 @@ export type SlotSelect = typeof slots.$inferSelect;
 export type SlotInsert = typeof slots.$inferInsert;
 
 export type TagSelect = typeof tags.$inferSelect;
+export type TagUpdate = InferInput<typeof tagUpdateSchema>;
 export type TagInsert = typeof tags.$inferInsert;
 
 export type tagAttachmentSelect = typeof tagsToSamples.$inferSelect;

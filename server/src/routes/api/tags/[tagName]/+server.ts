@@ -1,4 +1,5 @@
 import * as db from '$db';
+import { parse, tagUpdateSchema } from '$lib/server/validators';
 import type { RequestEvent } from './$types';
 
 export const DELETE = async ({ params }: RequestEvent) => {
@@ -13,7 +14,7 @@ export const DELETE = async ({ params }: RequestEvent) => {
 
 export const PATCH = async ({ params, request }: RequestEvent) => {
 	try {
-		const newTag = await request.json();
+		const newTag = parse(tagUpdateSchema, await request.json());
 		await db.patchTagByName(params.tagName, newTag);
 
 		return new Response('Tag updated', { status: 200 });

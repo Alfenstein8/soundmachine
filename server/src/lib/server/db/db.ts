@@ -1,7 +1,7 @@
 import { layers, samples, slots, tags, tagsToSamples } from '$schema';
 import { and, eq, getTableColumns, inArray } from 'drizzle-orm';
 import { db } from '.';
-import type { LayerInsert, SampleInsert, SlotInsert, TagInsert } from '$types/db';
+import type { LayerInsert, SampleInsert, SlotInsert, TagInsert, TagUpdate } from '$types/db';
 
 // Layers
 export const createLayer = async (layer: LayerInsert) => {
@@ -96,7 +96,7 @@ export const deleteTagByName = async (tagName: string) => {
 	]);
 };
 
-export const patchTagByName = async (oldTagName: string, newTag: TagInsert) => {
+export const patchTagByName = async (oldTagName: string, newTag: TagUpdate) => {
 	const affectedSamples = await db
 		.select({ id: samples.id })
 		.from(samples)

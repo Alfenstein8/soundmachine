@@ -13,9 +13,6 @@ export const DELETE = async ({ params }: RequestEvent) => {
 		return error(400, 'Invalid position');
 	}
 
-	if (isNaN(position) || position < 0 || !Number.isInteger(position)) {
-		return new Response('Invalid position', { status: 400 });
-	}
 	try {
 		await db.deleteSlot(layerId, position);
 	} catch {
