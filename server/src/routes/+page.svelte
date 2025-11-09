@@ -7,7 +7,7 @@
 	import PadModal from '$comp/launchpad/padModal.svelte';
 	import EditTagModal from '$comp/tags/editTagModal.svelte';
 	import ColorModal from '$comp/colorModal.svelte';
-	import { syncClient } from '$lib/client/sync.js';
+	import { startPeriodicSync, stopPeriodicSync } from '$lib/client/sync.js';
 	import { onMount } from 'svelte';
 	import LayersModal from '$comp/layers/layersModal.svelte';
 	let { data } = $props();
@@ -19,9 +19,11 @@
 	$layers = data.layers;
 
 	onMount(() => {
-		setInterval(() => {
-			syncClient();
-		}, 10000);
+		startPeriodicSync();
+
+		return () => {
+			stopPeriodicSync();
+		};
 	});
 </script>
 
@@ -33,7 +35,7 @@
 <LayersModal />
 
 <!-- <ChooseTheme /> -->
-<div id="split" class="flex flex-col mb-30">
+<div id="split" class="mb-30 flex flex-col">
 	<Launchpad />
 	<Library />
 </div>
