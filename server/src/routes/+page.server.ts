@@ -1,13 +1,12 @@
-import { db } from "$lib/server/db";
-import { layers, samples, slots, tags, tagsToSamples } from "$lib/server/db/schema";
-import type { PageServerLoad } from "./$types";
+import * as db from '$db';
+import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async () => {
   return {
-    samples: await db.select().from(samples),
-    slots: await db.select().from(slots),
-    tags: await db.select().from(tags),
-    tagAttachments: await db.select().from(tagsToSamples),
-    layers: await db.select().from(layers)
-  }
-}
+    samples: await db.getAllSamples(),
+    slots: await db.getAllSlots(),
+    tags: await db.getAllTags(),
+    tagAttachments: await db.getAllTagAttachments(),
+    layers: await db.getAllLayers()
+  };
+};
