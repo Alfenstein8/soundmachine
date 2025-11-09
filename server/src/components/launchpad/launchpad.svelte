@@ -13,7 +13,7 @@
 	import * as api from '$lib/client/api';
 	import { syncSlots } from '$lib/client/sync';
 	import { colors } from '$lib/colors';
-	import Layers from './layers.svelte';
+	import Layers from '$comp/layers/layers.svelte';
 
 	$shownLayer = $layers ? $layers[0] : null;
 

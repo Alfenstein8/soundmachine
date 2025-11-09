@@ -1,11 +1,11 @@
 <script lang="ts">
 	import { editTagModal, selectedColor, tags } from '$stores/globals';
-	import Modal from './modal.svelte';
+	import Modal from '$comp/modal.svelte';
 	import * as api from '$lib/client/api';
 	import { syncClient, syncTagAttachments, syncTags } from '$lib/client/sync';
-	import TagSelectComp from './tagSelect.svelte';
+	import TagSelectComp from '$comp/tags/tagSelect.svelte';
 	import type { TagInsert, TagSelect } from '$schema';
-	import TagInfo from './tagInfo.svelte';
+	import TagInfo from '$comp/tags/tagInfo.svelte';
 
 	let selectedTags: TagSelect[] = $state([]);
 	let tagName = $state('');

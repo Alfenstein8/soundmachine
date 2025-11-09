@@ -1,15 +1,15 @@
 <script lang="ts">
 	import type { SampleSelect } from '$lib/server/db/schema';
 	import UploadButton from '$comp/uploadButton.svelte';
-	import LibraryItem from './libraryItem.svelte';
+	import LibraryItem from '$comp/library/libraryItem.svelte';
 	import Fuse, { type FuseResult } from 'fuse.js';
 	import { editTagModal, samples, searchTerm, tags } from '$stores/globals';
 	import X from '@lucide/svelte/icons/x';
 	import { isSampleUsed, sampleTags } from '$lib/client/utils';
 	import Tag from '@lucide/svelte/icons/tag';
-	import TagSelectComp from './tagSelect.svelte';
+	import TagSelectComp from '$comp/tags/tagSelect.svelte';
 	import type { TagSelect } from '$lib/server/db/schema';
-	import Filters from './filters.svelte';
+	import Filters from '$comp/library/filters.svelte';
 
 	const fuse = new Fuse($samples, {
 		keys: ['name', 'bpm'],

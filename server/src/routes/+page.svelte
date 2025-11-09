@@ -1,15 +1,15 @@
 <script lang="ts">
-	import Library from '$comp/library.svelte';
-	import Launchpad from '$comp/launchpad.svelte';
+	import Library from '$comp/library/library.svelte';
+	import Launchpad from '$comp/launchpad/launchpad.svelte';
 	import { layers, samples, slots, tagAttachments, tags } from '$stores/globals.js';
-	import LibraryModal from '$comp/libraryModal.svelte';
+	import LibraryModal from '$comp/library/libraryModal.svelte';
 	import UploadModal from '$comp/uploadModal.svelte';
-	import PadModal from '$comp/padModal.svelte';
-	import EditTagModal from '$comp/editTagModal.svelte';
+	import PadModal from '$comp/launchpad/padModal.svelte';
+	import EditTagModal from '$comp/tags/editTagModal.svelte';
 	import ColorModal from '$comp/colorModal.svelte';
 	import { syncClient } from '$lib/client/sync.js';
 	import { onMount } from 'svelte';
-	import LayersModal from '$comp/layersModal.svelte';
+	import LayersModal from '$comp/layers/layersModal.svelte';
 	let { data } = $props();
 
 	$slots = data.slots;

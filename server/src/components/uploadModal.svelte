@@ -4,7 +4,7 @@
 	import { uploadModal } from '$stores/globals';
 	import { onMount } from 'svelte';
 	import type { SampleInsert, TagSelect } from '$schema';
-	import TagApply from './tagApply.svelte';
+	import TagApply from '$comp/tags/tagApply.svelte';
 	import { syncSamples, syncTagAttachments } from '$lib/client/sync';
 
 	let fileInput: HTMLInputElement;

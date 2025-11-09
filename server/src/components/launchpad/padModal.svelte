@@ -4,7 +4,7 @@
 	import * as api from '$lib/client/api';
 	import type { SlotInsert } from '$schema';
 	import { syncSlots } from '$lib/client/sync';
-	import ColorPicker from './colorPicker.svelte';
+	import ColorPicker from '$comp/colorPicker.svelte';
 
 	selectedSlot.subscribe((newSlot) => {
 		if (!newSlot) return;

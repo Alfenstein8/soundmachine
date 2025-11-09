@@ -2,10 +2,10 @@
 	import { syncLayers, syncSlots } from '$lib/client/sync';
 	import { layers, layersModal, shownLayer } from '$stores/globals';
 	import * as api from '$lib/client/api';
-	import Modal from './modal.svelte';
-	import LayersSelect from './layersSelect.svelte';
+	import Modal from '$comp/modal.svelte';
+	import LayersSelect from '$comp/layers/layersSelect.svelte';
 	import type { LayerSelect } from '$schema';
-	import LayersForm from './layersForm.svelte';
+	import LayersForm from '$comp/layers/layersForm.svelte';
 	import { colors } from '$lib/colors';
 
 	let selectedLayer: LayerSelect | null = $state($shownLayer);

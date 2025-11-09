@@ -1,5 +1,5 @@
 <script lang="ts">
-	import ColorPicker from './colorPicker.svelte';
+	import ColorPicker from '$comp/colorPicker.svelte';
 
 	let { tagName = $bindable() }: { tagName: string } = $props();
 </script>
