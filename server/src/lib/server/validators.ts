@@ -6,6 +6,7 @@ export { parse } from 'valibot';
 export const sampleInsertSchema = createInsertSchema(samples);
 
 export const layerInsertSchema = createInsertSchema(layers);
+export const layerUpdateSchema = createUpdateSchema(layers);
 
 export const slotInsertSchema = createInsertSchema(slots);
 

@@ -1,7 +1,7 @@
 import * as db from '$db';
 import type { RequestEvent } from './$types';
-import type { LayerInsert } from '$types/db';
-import { parse, layerInsertSchema } from '$lib/server/validators';
+import type { LayerUpdate } from '$types/db';
+import { parse, layerUpdateSchema } from '$lib/server/validators';
 
 export const DELETE = async ({ params }: RequestEvent) => {
 	let id: number;
@@ -20,10 +20,10 @@ export const DELETE = async ({ params }: RequestEvent) => {
 };
 
 export const PATCH = async ({ params, request }: RequestEvent) => {
-	let layer: LayerInsert;
+	let layer: LayerUpdate;
 	let id: number;
 	try {
-		layer = parse(layerInsertSchema, await request.json());
+		layer = parse(layerUpdateSchema, await request.json());
 		id = Number(params.layerId);
 	} catch {
 		return new Response('Invalid request data', { status: 400 });

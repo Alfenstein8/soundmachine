@@ -1,4 +1,4 @@
-import type { tagUpdateSchema } from '$lib/server/validators';
+import type { tagUpdateSchema, layerUpdateSchema } from '$lib/server/validators';
 import { layers, samples, slots, tags, tagsToSamples } from '$schema';
 import type { InferInput } from 'valibot';
 
@@ -6,6 +6,7 @@ export type SampleSelect = typeof samples.$inferSelect;
 export type SampleInsert = typeof samples.$inferInsert;
 
 export type LayerInsert = typeof layers.$inferInsert;
+export type LayerUpdate = InferInput<typeof layerUpdateSchema>;
 export type LayerSelect = typeof layers.$inferSelect;
 
 export type SlotSelect = typeof slots.$inferSelect;

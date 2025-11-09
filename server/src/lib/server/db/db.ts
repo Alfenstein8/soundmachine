@@ -1,7 +1,14 @@
 import { layers, samples, slots, tags, tagsToSamples } from '$schema';
 import { and, eq, getTableColumns, inArray } from 'drizzle-orm';
 import { db } from '.';
-import type { LayerInsert, SampleInsert, SlotInsert, TagInsert, TagUpdate } from '$types/db';
+import type {
+	LayerInsert,
+	LayerUpdate,
+	SampleInsert,
+	SlotInsert,
+	TagInsert,
+	TagUpdate
+} from '$types/db';
 
 // Layers
 export const createLayer = async (layer: LayerInsert) => {
@@ -24,7 +31,7 @@ export const deleteLayer = async (id: number) =>
 		await db.delete(slots).where(eq(slots.layerId, id))
 	]);
 
-export const patchLayer = async (id: number, layer: LayerInsert) => {
+export const patchLayer = async (id: number, layer: LayerUpdate) => {
 	await db.update(layers).set(layer).where(eq(layers.id, id));
 
 	if (layer.id !== undefined) {
