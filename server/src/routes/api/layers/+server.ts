@@ -1,8 +1,8 @@
-import * as db from '$db';
 import { type LayerInsert } from '$types/db';
-import { json } from '@sveltejs/kit';
+import { error, json } from '@sveltejs/kit';
 import type { RequestEvent } from './$types';
-import { createLayer } from '$db';
+import * as db from '$db';
+import { parse, layerInsertSchema } from '$lib/server/validators';
 
 export const GET = async () => {
 	try {
@@ -17,13 +17,13 @@ export const GET = async () => {
 export const POST = async ({ request }: RequestEvent) => {
 	let layer: LayerInsert;
 	try {
-		layer = await request.json();
+		layer = parse(layerInsertSchema, await request.json());
 	} catch {
-		return new Response('Invalid JSON', { status: 400 });
+		return error(400, { message: 'Invalid layer data provided.' });
 	}
 
 	try {
-		await createLayer(layer);
+		await db.createLayer(layer);
 		return new Response('Layer created', { status: 201 });
 	} catch (error) {
 		console.error('Error creating layer:', error);

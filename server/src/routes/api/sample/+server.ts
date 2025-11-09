@@ -1,57 +1,63 @@
 import * as db from '$db';
 import type { RequestEvent } from './$types';
-import type { SampleInsert, SampleSelect } from '$lib/server/db/schema';
+import type { SampleInsert, SampleSelect } from '$types/db';
 import { json, error } from '@sveltejs/kit';
 import { saveSample } from '$lib/server/services/storage';
+import { parse, sampleInsertSchema } from '$lib/server/validators';
 
-const getSampleData = (formData: FormData): SampleInsert => {
-  const sampleDataEntry = formData.get('data');
+const getSampleData = (formData: FormData) => {
+	const sampleDataEntry = formData.get('data');
 
-  if (!sampleDataEntry) {
-    throw error(400, { message: "No sample data provided in 'data' field." });
-  }
+	if (!sampleDataEntry) {
+		throw error(400, { message: "No sample data provided in 'data' field." });
+	}
 
-  return JSON.parse(sampleDataEntry.toString());
+	return JSON.parse(sampleDataEntry.toString());
 };
 
 const getAudioFile = (formData: FormData) => {
-  const fileEntry = formData.get('audio');
+	const fileEntry = formData.get('audio');
 
-  if (!fileEntry || !(fileEntry instanceof File)) {
-    return error(400, { message: "No audio file provided in 'audioFile' field." });
-  }
+	if (!fileEntry || !(fileEntry instanceof File)) {
+		return error(400, { message: "No audio file provided in 'audioFile' field." });
+	}
 
-  return fileEntry;
+	return fileEntry;
 };
 
 export const POST = async ({ request }: RequestEvent) => {
-  let audioFile: File;
-  let sampleData: SampleInsert;
-  let newSample: SampleSelect | null = null;
+	let audioFile: File;
+	let sample: SampleInsert;
+	let newSample: SampleSelect | null = null;
 
-  try {
-    const formData = await request.formData();
+	try {
+		const formData = await request.formData();
 
-    sampleData = getSampleData(formData);
+		const sampleData = getSampleData(formData);
 
-    const res = await db.insertSample(sampleData);
-    newSample = res[0];
+		sample = parse(sampleInsertSchema, sampleData);
+		audioFile = getAudioFile(formData);
+	} catch {
+		return error(400, { message: 'Invalid sample data provided.' });
+	}
 
-    audioFile = getAudioFile(formData);
+	try {
+		const res = await db.insertSample(sample);
+		newSample = res[0];
 
-    await saveSample(newSample.id, audioFile);
-  } catch (e) {
-    console.error('Error processing audio upload:', e);
-    if (newSample?.id) {
-      await db.deleteSample(newSample.id);
-    }
-    return error(500, { message: 'Failed to save audio file.' });
-  }
+		await saveSample(newSample.id, audioFile);
+	} catch (e) {
+		console.error('Error processing audio upload:', e);
+		if (newSample?.id) {
+			await db.deleteSample(newSample.id);
+		}
+		return error(500, { message: 'Failed to save audio file.' });
+	}
 
-  return json(newSample);
+	return json(newSample);
 };
 
 export const GET = async () => {
-  const allSamples = await db.getAllSamples();
-  return json(allSamples);
+	const allSamples = await db.getAllSamples();
+	return json(allSamples);
 };

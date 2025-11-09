@@ -47,7 +47,7 @@ export const deleteSample = async (id: string) => {
 
 export const updateSlot = async (slot: SlotInsert) => {
 	const response = await putRequest(
-		`layers/${slot.layerId}/${slot.position}`,
+		`slot`,
 		JSON.stringify(slot)
 	);
 	if (!response.ok) {

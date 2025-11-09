@@ -61,7 +61,6 @@ export const POST = async ({ params, request }: RequestEvent) => {
 
 			  await db.update(slots).set({ color: color[0].color }).where(eq(slots.sampleId, params.sampleId));
 		  }
-			console.log(data);
       await db.update(samples).set({ primaryTagName }).where(eq(samples.id, params.sampleId));
     } catch {
       return new Response('Failed to update primary tag', { status: 500 });
