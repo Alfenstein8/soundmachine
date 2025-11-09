@@ -1,5 +1,5 @@
 import { samples, slots } from '$schema';
-import { eq } from 'drizzle-orm';
+import { and, eq } from 'drizzle-orm';
 import { db } from '../db';
 import { transcodeToMp3, transcodeToWav } from './transcode';
 import { mkdir } from 'node:fs/promises';
@@ -67,7 +67,7 @@ const deleteFile = (filePath: string) => {
 
 export const deleteSample = async (id: string) => {
 	try {
-		await db.update(slots).set({ sampleId: null, color: null }).where(eq(slots.sampleId, id));
+		await db.delete(slots).where(eq(slots.sampleId, id));
 		await db.delete(samples).where(eq(samples.id, id));
 	} catch {
 		throw new Error('Failed to delete sample record from database');
