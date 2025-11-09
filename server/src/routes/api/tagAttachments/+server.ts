@@ -1,10 +1,7 @@
-import { db } from "$lib/server/db"
-import { tagsToSamples } from "$schema"
-import { json } from "@sveltejs/kit";
+import * as db from '$db';
+import { json } from '@sveltejs/kit';
 
-
-export const GET = async ()=> {
-
-  const tagAttachments = await db.select().from(tagsToSamples);
-  return json(tagAttachments);
-}
+export const GET = async () => {
+	const tagAttachments = await db.getAllTagAttachments();
+	return json(tagAttachments);
+};

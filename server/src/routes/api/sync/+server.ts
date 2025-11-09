@@ -1,15 +1,14 @@
-import { db } from '$lib/server/db';
-import { layers, samples, slots } from '$schema';
+import * as db from '$db';
 
 export const GET = async () => {
-  const resSlots = await db.select().from(slots);
-  const resSamples = await db.select().from(samples);
-  const resLayers = await db.select().from(layers);
+	const resSlots = await db.getAllSlots();
+	const resSamples = await db.getAllSamples();
+	const resLayers = await db.getAllLayers();
 
-  return new Response(JSON.stringify({ slots: resSlots, samples: resSamples, layers: resLayers }), {
-    status: 200,
-    headers: {
-      'Content-Type': 'application/json'
-    }
-  });
+	return new Response(JSON.stringify({ slots: resSlots, samples: resSamples, layers: resLayers }), {
+		status: 200,
+		headers: {
+			'Content-Type': 'application/json'
+		}
+	});
 };
