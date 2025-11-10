@@ -2,7 +2,10 @@ import { getSample, deleteSample } from '$lib/server/services/storage';
 import * as db from '$db';
 
 import type { RequestEvent } from './$types';
-import type { SampleInsert } from '$types/db';
+import type { SampleUpdate } from '$types/db';
+import { parse } from 'valibot';
+import { sampleUpdateSchema } from '$lib/server/validators';
+import { error } from '@sveltejs/kit';
 
 export async function GET({ params }: RequestEvent) {
 	let file: ArrayBuffer;
@@ -33,7 +36,13 @@ export const DELETE = async ({ params }: RequestEvent) => {
 };
 
 export const PATCH = async ({ params, request }: RequestEvent) => {
-	const sample: SampleInsert = await request.json();
+	let sample: SampleUpdate;
+
+	try {
+		sample = parse(sampleUpdateSchema, await request.json());
+	} catch {
+		return error(400);
+	}
 
 	try {
 		await db.patchSample(params.sampleId, sample);

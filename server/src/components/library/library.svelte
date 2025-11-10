@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { SampleSelect } from '$lib/server/db/schema';
+	import type { SampleSelect, TagSelect } from '$types/db';
 	import UploadButton from '$comp/uploadButton.svelte';
 	import LibraryItem from '$comp/library/libraryItem.svelte';
 	import Fuse, { type FuseResult } from 'fuse.js';
@@ -8,7 +8,6 @@
 	import { isSampleUsed, sampleTags } from '$lib/client/utils';
 	import Tag from '@lucide/svelte/icons/tag';
 	import TagSelectComp from '$comp/tags/tagSelect.svelte';
-	import type { TagSelect } from '$lib/server/db/schema';
 	import Filters from '$comp/library/filters.svelte';
 
 	const fuse = new Fuse($samples, {

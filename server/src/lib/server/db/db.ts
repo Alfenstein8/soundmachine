@@ -5,7 +5,9 @@ import type {
 	LayerInsert,
 	LayerUpdate,
 	SampleInsert,
+	SampleUpdate,
 	SlotInsert,
+	tagAttachmentInsert,
 	TagInsert,
 	TagUpdate
 } from '$types/db';
@@ -49,7 +51,7 @@ export const deleteSample = async (id: string) => {
 	await db.delete(samples).where(eq(samples.id, id));
 };
 
-export const patchSample = async (sampleId: string, sample: SampleInsert) => {
+export const patchSample = async (sampleId: string, sample: SampleUpdate) => {
 	if (sample.primaryTagName) {
 		const color = await db.select().from(tags).where(eq(tags.name, sample.primaryTagName)).limit(1);
 
@@ -140,3 +142,13 @@ export const getAllTagAttachments = async () => db.select().from(tagsToSamples);
 
 export const deleteTagAttachmentsBySampleId = async (sampleId: string) =>
 	db.delete(tagsToSamples).where(eq(tagsToSamples.sampleId, sampleId));
+
+export const putTagAttachments = async (TagAttachments: tagAttachmentInsert[]) =>
+	db
+		.insert(tagsToSamples)
+		.values(TagAttachments)
+		.onConflictDoUpdate({
+			target: [tagsToSamples.tagName, tagsToSamples.sampleId],
+			set: tagsToSamples
+		})
+		.returning();

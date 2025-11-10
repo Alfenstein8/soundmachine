@@ -45,23 +45,6 @@ export const deleteSample = async (id: string) => {
 	});
 };
 
-export const updateSlot = async (slot: SlotInsert) => {
-	const response = await putRequest(
-		`slots`,
-		JSON.stringify(slot)
-	);
-	if (!response.ok) {
-		throw new Error(response.statusText);
-	}
-};
-
-export const deleteSlot = async (layerId: number, position: number) => {
-	const response = await deleteRequest(`layers/${layerId}/${position}`);
-	if (!response.ok) {
-		throw new Error('Failed to delete slot.');
-	}
-};
-
 export const removeSampleFromSlot = async (layerId: number, position: number) =>
 	deleteSlot(layerId, position);
 
@@ -94,18 +77,13 @@ export const getSampleTags = async (sampleId: string) => {
 	return res.json() as Promise<TagSelect[]>;
 };
 
-export const createTag = async (tag: TagInsert) => {
-	const response = await postRequest('tags', JSON.stringify(tag));
-	if (!response.ok) {
-		throw new Error('Failed to create tag.');
-	}
-};
+export const getAllSamples = async () => {
+	const res = await getRequest('samples');
 
-export const deleteTag = async (tagName: string) => {
-	const response = await deleteRequest(`tags/${tagName}`);
-	if (!response.ok) {
-		throw new Error('Failed to delete tag.');
+	if (!res.ok) {
+		throw new Error('Failed to fetch samples.');
 	}
+	return res.json() as Promise<SampleSelect[]>;
 };
 
 export const updateSampleTags = async (
@@ -123,30 +101,26 @@ export const updateSampleTags = async (
 	}
 };
 
+export const createTag = async (tag: TagInsert) => {
+	const response = await postRequest('tags', JSON.stringify(tag));
+	if (!response.ok) {
+		throw new Error('Failed to create tag.');
+	}
+};
+
+export const deleteTag = async (tagName: string) => {
+	const response = await deleteRequest(`tags/${tagName}`);
+	if (!response.ok) {
+		throw new Error('Failed to delete tag.');
+	}
+};
+
 export const getAllTags = async () => {
 	const res = await getRequest('tags');
 	if (!res.ok) {
 		throw new Error('Failed to fetch tags.');
 	}
 	return res.json() as Promise<TagSelect[]>;
-};
-
-export const getAllSamples = async () => {
-	const res = await getRequest('samples');
-
-	if (!res.ok) {
-		throw new Error('Failed to fetch samples.');
-	}
-	return res.json() as Promise<SampleSelect[]>;
-};
-
-export const getAllSlots = async () => {
-	const res = await getRequest('slots');
-
-	if (!res.ok) {
-		throw new Error('Failed to fetch slots.');
-	}
-	return res.json() as Promise<SlotSelect[]>;
 };
 
 export const getAllTagAttachments = async () => {
@@ -158,6 +132,37 @@ export const getAllTagAttachments = async () => {
 	return res.json() as Promise<tagAttachmentSelect[]>;
 };
 
+export const updateTag = async (tagName: string, newTag: TagInsert) => {
+	const res = await patchRequest(`tags/${tagName}`, JSON.stringify(newTag));
+
+	if (!res.ok) {
+		throw new Error('Failed to update tag.');
+	}
+};
+
+export const updateSlot = async (slot: SlotInsert) => {
+	const response = await putRequest(`slots`, JSON.stringify(slot));
+	if (!response.ok) {
+		throw new Error(response.statusText);
+	}
+};
+
+export const deleteSlot = async (layerId: number, position: number) => {
+	const response = await deleteRequest(`layers/${layerId}/${position}`);
+	if (!response.ok) {
+		throw new Error('Failed to delete slot.');
+	}
+};
+
+export const getAllSlots = async () => {
+	const res = await getRequest('slots');
+
+	if (!res.ok) {
+		throw new Error('Failed to fetch slots.');
+	}
+	return res.json() as Promise<SlotSelect[]>;
+};
+
 export const getAllLayers = async () => {
 	const res = await getRequest('layers');
 
@@ -165,14 +170,6 @@ export const getAllLayers = async () => {
 		throw new Error('Failed to fetch layers.');
 	}
 	return res.json() as Promise<LayerSelect[]>;
-};
-
-export const updateTag = async (tagName: string, newTag: TagInsert) => {
-	const res = await patchRequest(`tags/${tagName}`, JSON.stringify(newTag));
-
-	if (!res.ok) {
-		throw new Error('Failed to update tag.');
-	}
 };
 
 export const createLayer = async (layer: LayerInsert) => {
