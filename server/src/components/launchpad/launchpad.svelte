@@ -55,7 +55,7 @@
 		class="grid h-80 w-100 grid-cols-8 grid-rows-8 gap-1 sm:h-100 sm:w-150 sm:gap-2.5 lg:h-140 lg:w-200"
 	>
 		{#if $shownLayer}
-			{#each { length: 64 } as _, i (i)}
+			{#each { length: 64 }, i}
 				{@const slot = $slots.find((s) => s.position === i && s.layerId === $shownLayer.id)}
 				{#if slot}
 					<button
