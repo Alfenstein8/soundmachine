@@ -75,7 +75,7 @@
 				{:else}
 					<button
 						class="pad rounded-sm bg-base-100"
-						onclick={()=>handleEmptyPadClick(i)}
+						onclick={() => handleEmptyPadClick(i)}
 						aria-label={`${i} position`}
 					></button>
 				{/if}

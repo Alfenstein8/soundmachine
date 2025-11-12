@@ -7,6 +7,6 @@
 <button
 	class="btn btn-circle"
 	aria-label="Select Color"
-	style="background-color: {$selectedColor ? colors.getHex($selectedColor) : ""};"
+	style="background-color: {$selectedColor ? colors.getHex($selectedColor) : ''};"
 	onclick={() => $colorModal.showModal()}
 ></button>

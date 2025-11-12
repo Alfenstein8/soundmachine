@@ -1,63 +1,63 @@
 import { pickRandom } from './utils';
 
 class Color {
-  code: number;
-  hex: string;
-  contrast: string;
-  constructor(code: number, hex: string, contrast: string) {
-    this.code = code;
-    this.hex = hex;
-    this.contrast = contrast;
-  }
+	code: number;
+	hex: string;
+	contrast: string;
+	constructor(code: number, hex: string, contrast: string) {
+		this.code = code;
+		this.hex = hex;
+		this.contrast = contrast;
+	}
 }
 
 class AddColorResult {
-  constructor(
-    private colorMap: ColorMap,
-    private color: Color
-  ) { }
-  available() {
-    this.colorMap.availableColors.push(this.color);
-    return new AddColorResult(this.colorMap, this.color);
-  }
+	constructor(
+		private colorMap: ColorMap,
+		private color: Color
+	) {}
+	available() {
+		this.colorMap.availableColors.push(this.color);
+		return new AddColorResult(this.colorMap, this.color);
+	}
 
-  layer() {
-    this.colorMap.layerColors.push(this.color);
-    return new AddColorResult(this.colorMap, this.color);
-  }
+	layer() {
+		this.colorMap.layerColors.push(this.color);
+		return new AddColorResult(this.colorMap, this.color);
+	}
 }
 
 class ColorMap {
-  colors: Color[] = [];
-  availableColors: Color[] = [];
-  layerColors: Color[] = [];
-  constructor() { }
+	colors: Color[] = [];
+	availableColors: Color[] = [];
+	layerColors: Color[] = [];
+	constructor() {}
 
-  add(code: number, hex: string, contrast: string) {
-    this.colors.push(new Color(code, hex, contrast));
+	add(code: number, hex: string, contrast: string) {
+		this.colors.push(new Color(code, hex, contrast));
 
-    return new AddColorResult(this, this.colors[this.colors.length - 1]);
-  }
+		return new AddColorResult(this, this.colors[this.colors.length - 1]);
+	}
 
-  getContrast(code: number | null): string {
-    if (code === null) return '#000000';
-    const color = this.colors.find((c) => c.code === code);
-    return color ? color.contrast : '#000000';
-  }
+	getContrast(code: number | null): string {
+		if (code === null) return '#000000';
+		const color = this.colors.find((c) => c.code === code);
+		return color ? color.contrast : '#000000';
+	}
 
-  get randomAvailable(): Color {
-    return pickRandom(this.availableColors);
-  }
+	get randomAvailable(): Color {
+		return pickRandom(this.availableColors);
+	}
 
-  getHex(code: number | null): string {
-    if (code === null) return '#FFFFFF';
-    const color = this.colors.find((c) => c.code === code);
-    return color ? color.hex : '#FFFFFF';
-  }
+	getHex(code: number | null): string {
+		if (code === null) return '#FFFFFF';
+		const color = this.colors.find((c) => c.code === code);
+		return color ? color.hex : '#FFFFFF';
+	}
 
-  [Symbol.iterator]() {
-    return this.availableColors[Symbol.iterator]();
-  }
+	[Symbol.iterator]() {
+		return this.availableColors[Symbol.iterator]();
+	}
 }
 export const colors = new ColorMap();
 

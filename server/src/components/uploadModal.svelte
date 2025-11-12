@@ -22,13 +22,13 @@
 		const trueFileName = fileName || namePlaceholder || 'untitled';
 		const newSample: SampleInsert = {
 			name: trueFileName,
-			bpm: bpm || undefined,
+			bpm: bpm || undefined
 		};
 
 		if (files && files.length > 0) {
 			const file = files[0];
 			try {
-				const resSample  = await api.uploadSample(file, newSample);
+				const resSample = await api.uploadSample(file, newSample);
 
 				await api.updateSampleTags(
 					resSample.id,
@@ -105,9 +105,9 @@
 			/>
 		</div>
 	</div>
-		<TagApply bind:sampleTags bind:primaryTagName/>
-		<br />
-		<button id="uploadButton" class="btn btn-primary" onclick={handeUpload}>Upload</button>
+	<TagApply bind:sampleTags bind:primaryTagName />
+	<br />
+	<button id="uploadButton" class="btn btn-primary" onclick={handeUpload}>Upload</button>
 </Modal>
 
 <style>

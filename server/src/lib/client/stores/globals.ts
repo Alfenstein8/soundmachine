@@ -1,10 +1,10 @@
 import { colors } from '$lib/colors';
 import type {
-  LayerSelect,
-  SampleSelect,
-  SlotSelect,
-  tagAttachmentSelect,
-  TagSelect
+	LayerSelect,
+	SampleSelect,
+	SlotSelect,
+	tagAttachmentSelect,
+	TagSelect
 } from '$types/db';
 import { writable, type Writable } from 'svelte/store';
 

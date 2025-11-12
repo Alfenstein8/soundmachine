@@ -44,7 +44,7 @@
 	const isUsed = (sampleId: string) => $slots.some((slot) => slot.sampleId === sampleId);
 	const sampleColor = () => getTagHex(sample.primaryTagName);
 
-	const isPrimary = (tagName: string) => tagName === sample.primaryTagName
+	const isPrimary = (tagName: string) => tagName === sample.primaryTagName;
 </script>
 
 <div
@@ -94,7 +94,11 @@
 	<div class="flex h-fit w-full flex-wrap justify-start gap-y-2">
 		{#each sampleTags as tag (tag.name)}
 			<span
-				class="mr-1 badge badge-outline {isPrimary(tag.name) && showAllTagNames ? 'border-b-4' : isPrimary(tag.name) ? '' : 'border-2'}"
+				class="mr-1 badge badge-outline {isPrimary(tag.name) && showAllTagNames
+					? 'border-b-4'
+					: isPrimary(tag.name)
+						? ''
+						: 'border-2'}"
 				style="border-color: {colors.getHex(tag.color)}; color: {colors.getHex(tag.color)};"
 			>
 				{isPrimary(tag.name) || showAllTagNames ? tag.name : ''}

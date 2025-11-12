@@ -1,2 +1,1 @@
-
 export const showAllTagNames = false;

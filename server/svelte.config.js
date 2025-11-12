@@ -1,4 +1,4 @@
-import adapter from 'svelte-adapter-bun'
+import adapter from 'svelte-adapter-bun';
 import { vitePreprocess } from '@sveltejs/vite-plugin-svelte';
 import path from 'path';
 
@@ -14,11 +14,11 @@ const config = {
 		// See https://svelte.dev/docs/kit/adapters for more information about adapters.
 		adapter: adapter(),
 		alias: {
-			$comp: path.resolve("./src/components/"),
-			$db: path.resolve("./src/lib/server/db/db.ts"),
-			$schema: path.resolve("./src/lib/server/db/schema.ts"),
-			$stores: path.resolve("./src/lib/client/stores"),
-			$types: path.resolve("./src/lib/types"),
+			$comp: path.resolve('./src/components/'),
+			$db: path.resolve('./src/lib/server/db/db.ts'),
+			$schema: path.resolve('./src/lib/server/db/schema.ts'),
+			$stores: path.resolve('./src/lib/client/stores'),
+			$types: path.resolve('./src/lib/types')
 		}
 	}
 };

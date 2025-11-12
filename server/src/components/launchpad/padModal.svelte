@@ -8,7 +8,7 @@
 
 	selectedSlot.subscribe((newSlot) => {
 		if (!newSlot) return;
-		if(newSlot?.color) $selectedColor = newSlot.color
+		if (newSlot?.color) $selectedColor = newSlot.color;
 	});
 
 	const handleRemove = async () => {
@@ -26,7 +26,7 @@
 	const handleApply = async () => {
 		if (!$selectedSlot) return;
 		const slotPatch: SlotInsert = {
-			...$selectedSlot,
+			...$selectedSlot
 		};
 		slotPatch.color = $selectedColor;
 		try {

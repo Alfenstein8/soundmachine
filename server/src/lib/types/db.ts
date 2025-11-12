@@ -1,7 +1,7 @@
 import type {
-  tagUpdateSchema,
-  layerUpdateSchema,
-  sampleUpdateSchema
+	tagUpdateSchema,
+	layerUpdateSchema,
+	sampleUpdateSchema
 } from '$lib/server/validators';
 import { layers, samples, slots, tags, tagsToSamples } from '$schema';
 import type { InferInput } from 'valibot';

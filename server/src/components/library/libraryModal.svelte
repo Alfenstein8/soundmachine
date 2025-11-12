@@ -53,7 +53,6 @@
 			alert('Failed to update sample.');
 		}
 	};
-
 </script>
 
 <Modal bind:dialog={$libraryModal} title="Edit Sample">
@@ -66,7 +65,7 @@
 			bind:value={bpmInput}
 		/>
 	</div>
-	<TagApply bind:primaryTagName bind:sampleTags/>
+	<TagApply bind:primaryTagName bind:sampleTags />
 	<div class="grid grid-cols-2 gap-4">
 		<button class="btn btn-primary" onclick={handleApply}>Apply</button>
 		<button class="btn btn-warning" onclick={handleDelete}>Delete</button>

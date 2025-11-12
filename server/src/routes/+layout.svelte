@@ -11,7 +11,7 @@
 </svelte:head>
 
 <div data-theme={$theme} class="h-fit bg-transparent">
-{@render children?.()}
+	{@render children?.()}
 </div>
 
 <style>

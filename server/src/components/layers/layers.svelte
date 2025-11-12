@@ -5,7 +5,7 @@
 </script>
 
 <div class="mb-4 flex flex-wrap justify-center gap-1 align-middle">
-	<button class="btn btn-ghost btn-circle" onclick={() => $layersModal.showModal()}>
+	<button class="btn btn-circle btn-ghost" onclick={() => $layersModal.showModal()}>
 		<Layers />
 	</button>
 	<LayersSelect bind:selected={$shownLayer} />

@@ -23,7 +23,6 @@
 		}
 	};
 
-
 	const handleTagRemove = (tagName: string) => {
 		sampleTags = sampleTags.filter((t) => t.name !== tagName);
 	};

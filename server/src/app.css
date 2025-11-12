@@ -1,5 +1,7 @@
 @import 'tailwindcss';
 @plugin "daisyui" {
-	themes: forest --default, all;
+	themes:
+		forest --default,
+		all;
 	logs: false;
 }

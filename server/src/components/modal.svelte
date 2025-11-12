@@ -9,7 +9,7 @@
 </script>
 
 <dialog bind:this={dialog} class="modal">
-	<div class="modal-box flex justify-center flex-col">
+	<div class="modal-box flex flex-col justify-center">
 		<div class="btn absolute top-2 right-2 btn-circle btn-ghost btn-sm">
 			<CloseButton onClick={() => dialog.close()} />
 		</div>
