@@ -8,7 +8,7 @@
 	import CircleStop from '@lucide/svelte/icons/circle-stop';
 	import PlayIcon from '@lucide/svelte/icons/play';
 	import Heart from '@lucide/svelte/icons/heart';
-	import { syncSamples } from '$lib/client/sync';
+	import { syncSamples, syncSlots } from '$lib/client/sync';
 
 	const { sample }: { sample: SampleSelect } = $props();
 	let audioElement: HTMLAudioElement;
@@ -52,7 +52,7 @@
 	const addFavorite = async () => {
 		const samplePatch: SampleUpdate = { favorite: !sample.favorite };
 		await api.updateSampleMetadata(sample.id, samplePatch);
-		await syncSamples();
+		await Promise.all([syncSamples(), syncSlots()]);
 	};
 </script>
 

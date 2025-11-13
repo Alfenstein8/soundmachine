@@ -11,6 +11,7 @@ import type {
 	TagInsert,
 	TagUpdate
 } from '$types/db';
+import { colors } from '$lib/colors';
 
 // Layers
 export const createLayer = async (layer: LayerInsert) => {
@@ -52,13 +53,28 @@ export const deleteSample = async (id: string) => {
 };
 
 export const patchSample = async (sampleId: string, sample: SampleUpdate) => {
-	if (sample.primaryTagName) {
-		const color = await db.select().from(tags).where(eq(tags.name, sample.primaryTagName)).limit(1);
+	const tmpSample = await db
+		.update(samples)
+		.set(sample)
+		.where(eq(samples.id, sampleId))
+		.returning();
+	const newSample = tmpSample[0];
+	if (!newSample.primaryTagName) return;
 
-		await db.update(slots).set({ color: color[0].color }).where(eq(slots.sampleId, sampleId));
+	if (sample.primaryTagName || sample.favorite != undefined) {
+		const temp = await db
+			.select()
+			.from(tags)
+			.where(eq(tags.name, newSample.primaryTagName))
+			.limit(1);
+		let color = temp[0].color;
+
+		if (newSample.favorite) {
+			color = colors.getFav(color)?.code || color;
+		}
+
+		await db.update(slots).set({ color: color }).where(eq(slots.sampleId, sampleId));
 	}
-
-	await db.update(samples).set(sample).where(eq(samples.id, sampleId));
 };
 
 // Slots
@@ -107,17 +123,22 @@ export const deleteTagByName = async (tagName: string) => {
 
 export const patchTagByName = async (oldTagName: string, newTag: TagUpdate) => {
 	const affectedSamples = await db
-		.select({ id: samples.id })
+		.select()
 		.from(samples)
 		.where(eq(samples.primaryTagName, oldTagName));
-	const affectedSampleIds = affectedSamples.map((s) => s.id);
-
-	await db
-		.update(slots)
-		.set({ color: newTag.color })
-		.where(and(eq(slots.useTagColor, true), inArray(slots.sampleId, affectedSampleIds)));
+	const nonFavSampleIds = affectedSamples.filter((s) => !s.favorite).map((s) => s.id);
+	const favSampleIds = affectedSamples.filter((s) => s.favorite).map((s) => s.id);
+	const favColor = newTag.color ? (colors.getFav(newTag.color)?.code ?? 5) : 5;
 
 	await Promise.all([
+		await db
+			.update(slots)
+			.set({ color: newTag.color })
+			.where(and(eq(slots.useTagColor, true), inArray(slots.sampleId, nonFavSampleIds))),
+		await db
+			.update(slots)
+			.set({ color: favColor })
+			.where(and(eq(slots.useTagColor, true), inArray(slots.sampleId, favSampleIds))),
 		await db.update(tags).set(newTag).where(eq(tags.name, oldTagName)),
 		await db
 			.update(tagsToSamples)

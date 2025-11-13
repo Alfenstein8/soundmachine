@@ -18,7 +18,9 @@ export const PATCH = async ({ params, request }: RequestEvent) => {
 		await db.patchTagByName(params.tagName, newTag);
 
 		return new Response('Tag updated', { status: 200 });
-	} catch {
+	} catch (e) {
+		console.error(e);
+
 		return new Response('Failed to update tag', { status: 500 });
 	}
 };
