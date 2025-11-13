@@ -28,7 +28,7 @@ lp: LaunchpadPro | None = None
 def init(_lp: LaunchpadPro):
     global lp
     lp = _lp
-    lp.LedCtrlBpm(10)
+    lp.LedCtrlBpm(100)
     setAll(Color.OFF.value)
 
 
