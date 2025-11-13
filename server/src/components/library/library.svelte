@@ -17,6 +17,7 @@
 	});
 
 	let showUsed = $state(true);
+	let showNonFavorite = $state(true);
 
 	let results: FuseResult<SampleSelect>[] = $state([]);
 
@@ -30,6 +31,11 @@
 		if (!showUsed) {
 			searchCollection = searchCollection.filter((sample) => !isSampleUsed(sample.id));
 		}
+
+		if (!showNonFavorite) {
+			searchCollection = searchCollection.filter((sample) => sample.favorite);
+		}
+
 		if (selectedTags.length >= 0) {
 			searchCollection = searchCollection.filter((sample) =>
 				selectedTags.every((t) => sampleTags(sample.id).some((st) => t.name === st.name))
@@ -77,7 +83,7 @@
 			<Tag />
 		</button>
 		<TagSelectComp tags={$tags} bind:selectedTags ontoggle={() => updateResults($searchTerm)} />
-		<Filters bind:showUsed onchange={() => updateResults()} />
+		<Filters bind:showUsed bind:showNonFavorite onchange={() => updateResults()} />
 	</div>
 	<br class="mb-4" />
 	<div class="flex flex-wrap justify-center-safe gap-4">

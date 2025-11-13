@@ -1,11 +1,14 @@
 <script lang="ts">
+	import * as api from '$lib/client/api';
 	import { getTagHex } from '$lib/client/utils';
 	import { colors } from '$lib/colors';
 	import { showAllTagNames } from '$lib/featureFlags';
-	import type { SampleSelect, TagSelect } from '$types/db';
+	import type { SampleSelect, SampleUpdate, TagSelect } from '$types/db';
 	import { selectedSample, libraryModal, tags, tagAttachments, slots } from '$stores/globals';
 	import CircleStop from '@lucide/svelte/icons/circle-stop';
 	import PlayIcon from '@lucide/svelte/icons/play';
+	import Heart from '@lucide/svelte/icons/heart';
+	import { syncSamples } from '$lib/client/sync';
 
 	const { sample }: { sample: SampleSelect } = $props();
 	let audioElement: HTMLAudioElement;
@@ -45,6 +48,12 @@
 	const sampleColor = () => getTagHex(sample.primaryTagName);
 
 	const isPrimary = (tagName: string) => tagName === sample.primaryTagName;
+
+	const addFavorite = async () => {
+		const samplePatch: SampleUpdate = { favorite: !sample.favorite };
+		await api.updateSampleMetadata(sample.id, samplePatch);
+		await syncSamples();
+	};
 </script>
 
 <div
@@ -65,7 +74,7 @@
 	</audio>
 
 	<!-- Controls -->
-	<div class="mt-2 grid grid-cols-3">
+	<div class="mt-2 flex items-center justify-around">
 		<button
 			class="btn btn-outline"
 			onclick={() => {
@@ -84,6 +93,7 @@
 				<CircleStop color="var(--color-primary)" />
 			</div>
 		</label>
+		<!-- BPM Display -->
 		<div class="flex items-center">
 			{#if sample.bpm}
 				<span class="mr-1 box-border badge w-fit badge-outline text-nowrap">{sample.bpm} BPM</span>
@@ -91,7 +101,14 @@
 		</div>
 	</div>
 	<div class="mb-2"></div>
-	<div class="flex h-fit w-full flex-wrap justify-start gap-y-2">
+	<div class="flex h-fit w-full flex-wrap justify-start gap-x-1 gap-y-2">
+		<button class="h-fit w-fit" onclick={addFavorite}>
+			{#if sample.favorite}
+				<Heart color="var(--color-accent)" fill="var(--color-accent)" />
+			{:else}
+				<Heart />
+			{/if}
+		</button>
 		{#each sampleTags as tag (tag.name)}
 			<span
 				class="mr-1 badge badge-outline {isPrimary(tag.name) && showAllTagNames

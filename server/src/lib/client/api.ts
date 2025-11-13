@@ -3,6 +3,7 @@ import type {
 	LayerSelect,
 	SampleInsert,
 	SampleSelect,
+	SampleUpdate,
 	SlotInsert,
 	SlotSelect,
 	tagAttachmentSelect,
@@ -61,7 +62,7 @@ export const uploadSample = async (file: File, sampleData: SampleInsert) => {
 	return response.json() as Promise<SampleSelect>;
 };
 
-export const updateSampleMetadata = async (sampleId: string, sample: SampleInsert) => {
+export const updateSampleMetadata = async (sampleId: string, sample: SampleUpdate) => {
 	const response = await patchRequest(`samples/${sampleId}`, JSON.stringify(sample));
 	if (!response.ok) {
 		throw new Error('Failed to update sample metadata.');
