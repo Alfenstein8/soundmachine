@@ -37,6 +37,11 @@ def setLight(point: LpPoint, color: int):
         lp.LedCtrlXYByCode(point.x, point.y, color)
 
 
+def pulseLight(point: LpPoint, color: int):
+    if lp is not None:
+        lp.LedCtrlPulseXYByCode(point.x, point.y, color)
+
+
 def setAll(color: int):
     if color < 0 or color > 127:
         print(
@@ -48,6 +53,7 @@ def setAll(color: int):
     if lp is not None:
         # lp.LedCtrlString("je",2,255)
         lp.LedAllOn(color)
+
 
 def setAllSamplesColor(color: int):
     if lp is not None:

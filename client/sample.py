@@ -1,12 +1,12 @@
 import pygame
+from sync import ApiSample
 
 
 class Sample:
-    def __init__(
-        self, sample_path , loop=True, color: int = 0
-    ):
+    def __init__(self, sample_path, sampleData: ApiSample, loop=True, color=5):
         self.audio = pygame.mixer.Sound(sample_path)
         self.color = color
+        self.favorite = sampleData.favorite
 
         self.loop = loop
 

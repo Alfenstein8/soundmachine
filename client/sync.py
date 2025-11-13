@@ -6,7 +6,7 @@ import light
 from storage import deleteUnusedSamples, fileExists, saveSample
 from collections import namedtuple
 
-ApiSample = namedtuple("ApiSample", ["id", "name"])
+ApiSample = namedtuple("ApiSample", ["id", "name", "favorite"])
 ApiSlot = namedtuple("ApiSlot", ["sampleId", "color", "position", "layerId"])
 ApiLayer = namedtuple("ApiLayer", ["id", "color"])
 
@@ -38,15 +38,15 @@ def performSync():
     samplesDict = json["samples"]
     samples: list[ApiSample] = []
     for s in samplesDict:
-        sample = ApiSample(s["id"], s["name"])
+        sample = ApiSample(s["id"], s["name"], s["favorite"])
         samples.append(sample)
 
     syncSamples(samples)
 
     layersDict = json["layers"]
     layers: list[ApiLayer] = []
-    for l in layersDict:
-        layer = ApiLayer(l["id"], l["color"])
+    for lay in layersDict:
+        layer = ApiLayer(lay["id"], lay["color"])
         layers.append(layer)
     return slots, samples, layers
 

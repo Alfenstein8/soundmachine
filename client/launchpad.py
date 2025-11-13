@@ -1,4 +1,3 @@
-from types import LambdaType
 from typing import Callable, Dict
 from layer import Layer
 from point import LpPoint, toSamplePoint, SamplePoint, toLpPoint
@@ -59,7 +58,7 @@ class Launchpad:
             if s.playing():
                 light.setLight(point, light.Color.PLAY.value)
             else:
-                light.setLight(point, s.color)
+                self.setSampleColor(s, p)
 
     def handleControlButton(self, point: LpPoint):
         p = (point.x, point.y)
@@ -107,7 +106,13 @@ class Launchpad:
                 else light.Color.ACTIVE.value
             )
             light.setLight(LpPoint(8, i), c)
-            i+=1
+            i += 1
+
+    def setSampleColor(self, sample: Sample, point: SamplePoint):
+        if sample.favorite:
+            light.pulseLight(toLpPoint(point), sample.color)
+        else:
+            light.setLight(toLpPoint(point), sample.color)
 
     def switchLayer(self, layer: Layer):
         self.stopAllSamples()
@@ -120,14 +125,14 @@ class Launchpad:
                 point = SamplePoint(x, y)
                 lp = toLpPoint(point)
                 if sample is not None:
-                    light.setLight(lp, sample.color)
+                    self.setSampleColor(sample, point)
                 else:
                     light.setLight(lp, light.Color.OFF.value)
         self.setLayerButtonColors(layer.id)
 
     def addSample(self, sample: Sample, point: SamplePoint, layerId: int):
         layer: Layer | None = self.layers.get(layerId)
-        if layer == None:
+        if layer is None:
             return
 
         layer.set_sample(point.x, point.y, sample)
@@ -145,7 +150,7 @@ class Launchpad:
                 continue
             y = slotInfo.position // 8
             x = slotInfo.position % 8
-            sample = Sample(SAMPLE_DIR + f"/{slotInfo.sampleId}.wav")
+            sample = Sample(SAMPLE_DIR + f"/{slotInfo.sampleId}.wav", apiSample)
             if slotInfo.color is not None:
                 sample.color = slotInfo.color
             self.addSample(sample, SamplePoint(x, y), slotInfo.layerId)
