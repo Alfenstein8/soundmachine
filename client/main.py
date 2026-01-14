@@ -34,19 +34,22 @@ def app_process():
             init()
             input.run(lp)
 
-        except Exception as e:
+        except Exception:
             try:
                 if lp:
                     lp.Close()  # Important: try to close gracefully
             except Exception as close_err:
                 print(f"Error during graceful Close: {close_err}")
     except KeyboardInterrupt:
-            exit(CLEAN_EXIT_CODE)
+        exit(CLEAN_EXIT_CODE)
     except SystemExit:
         raise
-    except:
-        exit(1)
+    except Exception as e:
+        print(f"App process failed: {e}")  # This will show up in journalctl
+        import traceback
 
+        traceback.print_exc()
+        exit(1)
 
 
 def supervisor():
@@ -56,23 +59,20 @@ def supervisor():
             p = Process(target=app_process)
             p.start()
             p.join()
-            exit_code = p.exitcode
-            if exit_code == CLEAN_EXIT_CODE:
-                print("Exiting supervisor loop")
-                break
-            else:
-                time.sleep(RECONNECT_DELAY)
+            print(f"Child process exited with exit code {p.exitcode} ")
+            time.sleep(RECONNECT_DELAY)
     except KeyboardInterrupt:
-            print("\nSupervisor received shutdown signal. Terminating application process...")
-            if p != None and p.is_alive():
-                p.terminate() # Forcefully stop the child process
-                p.join()
-            print("Supervisor stopped.")
+        print(
+            "\nSupervisor received shutdown signal. Terminating application process..."
+        )
+        if p is not None and p.is_alive():
+            p.terminate()  # Forcefully stop the child process
+            p.join()
+        print("Supervisor stopped.")
+
 
 if __name__ == "__main__":
     try:
         supervisor()
     except KeyboardInterrupt:
         print("Closing program")
-    print("Something went very wrong")
-
