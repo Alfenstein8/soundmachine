@@ -41,3 +41,4 @@ sudo mkdir  /usr/local/share/alsa
 sudo ln -s /usr/share/alsa/alsa.conf /usr/local/share/alsa/alsa.conf
 ```
 
+![Hej](img/er_diagram.svg)
