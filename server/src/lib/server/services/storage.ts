@@ -1,5 +1,6 @@
 import { transcodeToMp3, transcodeToWav } from './transcode';
-import { mkdir } from 'node:fs/promises';
+import { mkdir, writeFile, readFile, unlink, access } from 'node:fs/promises';
+import { constants } from 'node:fs';
 import * as db from '$db';
 
 const uploadPath = './uploads';
@@ -16,9 +17,17 @@ const isWavFile = (mimeType: string) => {
 const isMp3File = (mimeType: string) => {
 	return mp3MimeTypes.includes(mimeType);
 };
-
+const fileExists = async (path: string) => {
+	try {
+		await access(path, constants.F_OK);
+		return true;
+	} catch {
+		return false;
+	}
+};
 export const saveSample = async (id: string, file: File) => {
-	const audioBuffer = await file.arrayBuffer();
+	const arrayBuffer = await file.arrayBuffer();
+	const audioBuffer = Buffer.from(arrayBuffer);
 	const ori = `${originalsPath}/${id}`;
 	const samp = `${samplesPath}/${id}.wav`;
 	const stream = `${streamsPath}/${id}.mp3`;
@@ -27,15 +36,15 @@ export const saveSample = async (id: string, file: File) => {
 	await mkdir(originalsPath, { recursive: true });
 	await mkdir(streamsPath, { recursive: true });
 
-	Bun.write(ori, audioBuffer);
+	writeFile(ori, audioBuffer);
 
 	if (isWavFile(file.type)) {
-		Bun.write(samp, audioBuffer);
+		writeFile(samp, audioBuffer);
 		transcodeToMp3(ori, stream);
 		return;
 	}
 	if (isMp3File(file.type)) {
-		Bun.write(stream, audioBuffer);
+		writeFile(stream, audioBuffer);
 		transcodeToWav(ori, samp);
 		return;
 	}
@@ -44,23 +53,25 @@ export const saveSample = async (id: string, file: File) => {
 };
 
 export const getSample = async (id: string) => {
-	const file = Bun.file(`${samplesPath}/${id}.wav`);
-	if (!file.exists()) {
+	const path = `${samplesPath}/${id}.wav`;
+
+	if (!(await fileExists(path))) {
 		throw new Error('Sample not found');
 	}
 
-	return file.arrayBuffer();
+	const buffer = await readFile(path);
+	return buffer.buffer;
 };
 
 /**
  * @throws {Error} If the file does not exist
  */
-const deleteFile = (filePath: string) => {
-	const file = Bun.file(filePath);
-	if (!file.exists()) {
+const deleteFile = async (filePath: string) => {
+	if (!(await fileExists(filePath))) {
 		throw new Error('File not found');
 	}
-	file.delete();
+	// Replacement for file.delete()
+	await unlink(filePath);
 };
 
 export const deleteSample = async (id: string) => {

@@ -7,15 +7,12 @@
 		selectedSlot,
 		padModal,
 		tags,
-		shownLayer,
-		layers
+		shownLayer
 	} from '$stores/globals';
 	import * as api from '$lib/client/api';
 	import { syncSlots } from '$lib/client/sync';
 	import { colors } from '$lib/colors';
 	import Layers from '$comp/layers/layers.svelte';
-
-	$shownLayer = $layers ? $layers[0] : null;
 
 	const getSampleName = (slot: SlotSelect) => {
 		return $samples.find((s) => s.id === slot.sampleId)?.name || 'Unknown';
