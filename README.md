@@ -12,7 +12,7 @@ Follow Dev setup for now. But want to create docker image
 The easiest is to use [Mise](https://mise.jdx.dev/).
 It with help you install the deps:
 * Python
-* Bun
+* pnpm
 * uv
 * black
 * git
@@ -22,9 +22,9 @@ Then run `git clone git@github.com:Alfenstein8/soundmachine.git`
 ### Running Server
 1. `cd server`
 2. `mise trust && mise i`
-3. `bun ci`
-4. `bun run db:push` and select yes
-5. `bun  -b run dev`
+3. `pnpm i`
+4. `pnpm db:push` and select yes
+5. `pnpm dev`
 
 #### Troubleshooting
 Nothing yet
