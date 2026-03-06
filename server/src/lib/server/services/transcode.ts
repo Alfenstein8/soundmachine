@@ -8,11 +8,6 @@ const runFfmpeg = (args: string[]): Promise<void> => {
 		// 'ffmpeg' must be in your system PATH
 		const process = spawn('ffmpeg', ['-y', ...args]);
 
-		process.stderr.on('data', (data) => {
-			// FFmpeg logs progress and errors to stderr by default
-			// You can parse this for specific error strings if needed
-		});
-
 		process.on('close', (code) => {
 			if (code === 0) resolve();
 			else reject(new Error(`FFmpeg exited with code ${code}`));
