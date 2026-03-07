@@ -2,8 +2,8 @@ import time
 import requests
 import asyncio
 import os
-import light
-from storage import deleteUnusedSamples, fileExists, saveSample
+import hardware.light as light
+from core.storage import deleteUnusedSamples, fileExists, saveSample
 from collections import namedtuple
 
 ApiSample = namedtuple("ApiSample", ["id", "name", "favorite"])

@@ -8,7 +8,7 @@ uv = "0.10.9"
 
 [tasks.start]
 description = "Start the program"
-run = "uv run main.py"
+run = "uv run src/main.py"
 
 [env]
 SERVER_URL="http://localhost:5173"

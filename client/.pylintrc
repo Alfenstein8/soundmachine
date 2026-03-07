@@ -1,0 +1,7 @@
+# Source - https://stackoverflow.com/a/64555010
+# Posted by Ernesto Elsäßer, modified by community. See post 'Timeline' for change history
+# Retrieved 2026-03-07, License - CC BY-SA 4.0
+
+[MESSAGES CONTROL]
+
+disable=missing-docstring,empty-docstring

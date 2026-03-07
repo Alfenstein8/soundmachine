@@ -1,5 +1,5 @@
-from sample import Sample
-from sync import ApiLayer
+from core.sample import Sample
+from network.sync import ApiLayer
 
 
 class Layer:

@@ -1,6 +1,6 @@
 from enum import Enum
 from launchpad_py import LaunchpadPro
-from point import LpPoint
+from utils.point import LpPoint
 
 
 class Color(Enum):

@@ -1,11 +1,12 @@
+import sys
 import time
 import pygame
-import launchpadSetup
-from launchpad import Launchpad
-import input
-import light
+from hardware import launchpadSetup
+from core.launchpad import Launchpad
+from hardware import input
+from hardware import light
 from multiprocessing import Process
-from sync import ApiSample, ApiSlot, sync
+from network.sync import ApiSample, ApiSlot, sync
 
 CLEAN_EXIT_CODE = 0
 RECONNECT_DELAY = 5  # seconds
@@ -25,7 +26,7 @@ def app_process():
             lp = launchpadSetup.getLaunchpad()
             if lp is None:
                 print("Trying to connect to launchpad")
-                exit(1)
+                sys.exit(1)
 
         try:
             pygame.mixer.init()
@@ -40,7 +41,7 @@ def app_process():
             except Exception as close_err:
                 print(f"Error during graceful Close: {close_err}")
     except KeyboardInterrupt:
-        exit(CLEAN_EXIT_CODE)
+        sys.exit(CLEAN_EXIT_CODE)
     except SystemExit:
         raise
     except Exception as e:
@@ -48,7 +49,7 @@ def app_process():
         import traceback
 
         traceback.print_exc()
-        exit(1)
+        sys.exit(1)
 
 
 def supervisor():

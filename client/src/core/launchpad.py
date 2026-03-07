@@ -1,11 +1,11 @@
 from typing import Callable, Dict
-from layer import Layer
-from point import LpPoint, toSamplePoint, SamplePoint, toLpPoint
-from input import onPress
-from sample import Sample
-import light
-from storage import SAMPLE_DIR
-from sync import ApiLayer, ApiSample, ApiSlot, sync
+from core.layer import Layer
+from utils.point import LpPoint, toSamplePoint, SamplePoint, toLpPoint
+from hardware.input import onPress
+from core.sample import Sample
+import hardware.light as light
+from core.storage import SAMPLE_DIR
+from network.sync import ApiLayer, ApiSample, ApiSlot, sync
 
 
 class ControlButton:

@@ -1,5 +1,5 @@
 import pygame
-from sync import ApiSample
+from network.sync import ApiSample
 
 
 class Sample:
