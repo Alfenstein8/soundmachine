@@ -1,7 +1,7 @@
 import time
 import launchpad_py as launchpad
 from utils.point import LpPoint
-from utils.eventSignal import Signal
+from utils.event_signal import Signal
 
 on_press = Signal()
 on_release = Signal()

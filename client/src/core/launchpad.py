@@ -1,17 +1,16 @@
-from typing import Callable, Dict
+from typing import Callable, Dict, NamedTuple
 from core.layer import Layer
+from core.sample import Sample
+from core.storage import SAMPLE_DIR
 from utils.point import LpPoint, to_sample_point, SamplePoint, to_lp_point
 from hardware.input import on_press
-from core.sample import Sample
 from hardware import light
-from core.storage import SAMPLE_DIR
 from network.sync import ApiLayer, ApiSample, ApiSlot, sync
 
 
-class ControlButton:
-    def __init__(self, func, color: int | None = None):
-        self.color: int | None = color
-        self.func: Callable = func
+class ControlButton(NamedTuple):
+    func: Callable
+    color: int | None = None
 
 
 class Launchpad:
@@ -86,23 +85,23 @@ class Launchpad:
         }
         # Make layer switch buttons
         i = 1
-        for id in self.layers.keys():
+        for layer_id in self.layers.keys():
 
             def make_switch_layer_func(layer_id: int):
                 return lambda: self.switch_layer(self.layers[layer_id])
 
             dics[(8, i)] = ControlButton(
-                make_switch_layer_func(id), light.Color.YELLOW.value
+                make_switch_layer_func(layer_id), light.Color.YELLOW.value
             )
             i += 1
         return dics
 
-    def set_layer_button_colors(self, activeLayerId: int):
+    def set_layer_button_colors(self, active_layer_id: int):
         i: int = 1
-        for id in self.layers.keys():
+        for layer_id in self.layers.keys():
             c = (
-                self.layers[id].color
-                if id != activeLayerId
+                self.layers[layer_id].color
+                if layer_id != active_layer_id
                 else light.Color.ACTIVE.value
             )
             light.set_light(LpPoint(8, i), c)
@@ -144,7 +143,7 @@ class Launchpad:
         for layer_info in layers:
             self.layers[layer_info.id] = Layer(layer_info)
 
-        for index, slot_info in enumerate(slots):
+        for _, slot_info in enumerate(slots):
             api_sample = next((s for s in samples if s.id == slot_info.sampleId), None)
             if slot_info.sampleId is None or api_sample is None:
                 continue

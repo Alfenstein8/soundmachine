@@ -1,18 +1,22 @@
 import sys
+import traceback
 import time
-import pygame
-from hardware import launchpadSetup
-from core.launchpad import Launchpad
-from hardware import input
-from hardware import light
 from multiprocessing import Process
-from network.sync import ApiSample, ApiSlot, sync
+from launchpad_py import LaunchpadPro
+import pygame
+from hardware import launchpad_setup
+from hardware import input as lp_input
+from hardware import light
+from core.launchpad import Launchpad
+from network.sync import sync
 
 CLEAN_EXIT_CODE = 0
 RECONNECT_DELAY = 5  # seconds
 
 
-def init():
+def init(lp: LaunchpadPro):
+    pygame.mixer.init()
+    light.init(lp)
     pad = Launchpad()
     slots, samples, layers = sync()
     pad.load_samples(slots, samples, layers)
@@ -20,20 +24,18 @@ def init():
 
 def app_process():
     try:
-        lp = None
+        lp: LaunchpadPro | None = None
 
         if lp is None:
-            lp = launchpadSetup.get_launchpad()
+            lp = launchpad_setup.get_launchpad()
             if lp is None:
                 print("Trying to connect to launchpad")
                 sys.exit(1)
 
         try:
-            pygame.mixer.init()
-            light.init(lp)
-            init()
-            input.run(lp)
-
+            init(lp)
+            lp_input.run(lp)
+        # pylint: disable=W0703
         except Exception:
             try:
                 if lp:
@@ -42,11 +44,9 @@ def app_process():
                 print(f"Error during graceful Close: {close_err}")
     except KeyboardInterrupt:
         sys.exit(CLEAN_EXIT_CODE)
-    except SystemExit:
-        raise
+    # pylint: disable=W0703
     except Exception as e:
         print(f"App process failed: {e}")  # This will show up in journalctl
-        import traceback
 
         traceback.print_exc()
         sys.exit(1)

@@ -18,7 +18,8 @@ def get_launchpad() -> launchpad.LaunchpadPro | None:
         print("Launchpad Pro connected successfully.")
     else:
         print(
-            "No Launchpad found. Please ensure the device is connected and recognized by your system."
+            "No Launchpad found. Please ensure the device"
+            " is connected and recognized by your system."
         )
         print_mini_ports(lp)
         return None

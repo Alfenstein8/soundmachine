@@ -25,5 +25,4 @@ class Layer:
 
     def __iter__(self):
         for row in self.grid:
-            for sample in row:
-                yield sample
+            yield from row

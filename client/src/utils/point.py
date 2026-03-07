@@ -1,13 +1,14 @@
-class SamplePoint:
-    def __init__(self, x: int, y: int):
-        self.x = x
-        self.y = y
+from typing import NamedTuple
 
 
-class LpPoint:
-    def __init__(self, x: int, y: int):
-        self.x = x
-        self.y = y
+class SamplePoint(NamedTuple):
+    x: int
+    y: int
+
+
+class LpPoint(NamedTuple):
+    x: int
+    y: int
 
 
 def to_sample_point(point: LpPoint) -> SamplePoint:
