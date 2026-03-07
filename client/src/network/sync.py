@@ -3,7 +3,7 @@ import requests
 import asyncio
 import os
 import hardware.light as light
-from core.storage import deleteUnusedSamples, fileExists, saveSample
+from core.storage import delete_unused_samples, file_exists, save_sample
 from collections import namedtuple
 
 ApiSample = namedtuple("ApiSample", ["id", "name", "favorite"])
@@ -13,12 +13,12 @@ ApiLayer = namedtuple("ApiLayer", ["id", "color"])
 
 def syncSamples(samples: list[ApiSample]):
     for sample in samples:
-        if fileExists(sample.id):
+        if file_exists(sample.id):
             continue
         data = getSampleFile(sample.id)
-        saveSample(sample.id, data)
+        save_sample(sample.id, data)
     usedSampleIds = [s.id for s in samples]
-    deleteUnusedSamples(usedSampleIds)
+    delete_unused_samples(usedSampleIds)
 
 
 def performSync():

@@ -3,7 +3,7 @@ from core.layer import Layer
 from utils.point import LpPoint, toSamplePoint, SamplePoint, toLpPoint
 from hardware.input import onPress
 from core.sample import Sample
-import hardware.light as light
+from hardware import light
 from core.storage import SAMPLE_DIR
 from network.sync import ApiLayer, ApiSample, ApiSlot, sync
 
@@ -16,39 +16,39 @@ class ControlButton:
 
 class Launchpad:
     def __init__(self):
-        onPress.connect(self.onPress)
-        self.controlButtons: Dict[tuple[int, int], ControlButton] = {}
-        self.allSamples: list[Sample] = []
-        self.currentLayer: Layer | None = None
+        onPress.connect(self.on_press)
+        self.control_buttons: Dict[tuple[int, int], ControlButton] = {}
+        self.all_samples: list[Sample] = []
+        self.current_layer: Layer | None = None
         self.layers: Dict[int, Layer] = {}
         self.reset()
 
     def reset(self):
-        self.stopAllSamples()
-        self.allSamples = []
+        self.stop_all_samples()
+        self.all_samples = []
         self.layers = {}
         light.setAll(light.Color.OFF.value)
 
-    def setControlButtonColors(self):
-        for (x, y), button in self.controlButtons.items():
+    def set_control_button_colors(self):
+        for (x, y), button in self.control_buttons.items():
             if button.color is not None:
                 light.setLight(LpPoint(x, y), button.color)
 
-    def stopAllSamples(self):
-        for s in self.allSamples:
+    def stop_all_samples(self):
+        for s in self.all_samples:
             s.stop()
 
-    def onPress(self, point: LpPoint):
+    def on_press(self, point: LpPoint):
         p = toSamplePoint(point)
 
         if p.x >= 0 and p.x < 8 and p.y >= 0 and p.y < 8:
-            self.handleSampleButton(point)
+            self.handle_sample_button(point)
         else:
-            self.handleControlButton(point)
+            self.handle_control_button(point)
 
-    def handleSampleButton(self, point):
+    def handle_sample_button(self, point):
         p = toSamplePoint(point)
-        layer = self.currentLayer
+        layer = self.current_layer
         if layer is None:
             return
         s: Sample | None = layer.get_sample(p.x, p.y)
@@ -58,21 +58,21 @@ class Launchpad:
             if s.playing():
                 light.setLight(point, light.Color.PLAY.value)
             else:
-                self.setSampleColor(s, p)
+                self.set_sample_color(s, p)
 
-    def handleControlButton(self, point: LpPoint):
+    def handle_control_button(self, point: LpPoint):
         p = (point.x, point.y)
-        if p in self.controlButtons:
-            cb: ControlButton | None = self.controlButtons.get((point.x, point.y))
+        if p in self.control_buttons:
+            cb: ControlButton | None = self.control_buttons.get((point.x, point.y))
             if cb is not None:
                 cb.func()
 
-    def syncButton(self):
+    def sync_button(self):
         self.reset()
         slots, samples, layers = sync()
-        self.loadSamples(slots, samples, layers)
+        self.load_samples(slots, samples, layers)
 
-    def genControlButtons(self):
+    def gen_control_buttons(self):
         def page1():
             light.showAllColors(False)
 
@@ -82,14 +82,14 @@ class Launchpad:
         dics: Dict = {
             (9, 6): ControlButton(page1, light.Color.CYAN.value),
             (9, 7): ControlButton(page2, light.Color.WHITE.value),
-            (9, 8): ControlButton(self.syncButton),
+            (9, 8): ControlButton(self.sync_button),
         }
         # Make layer switch buttons
         i = 1
         for id in self.layers.keys():
 
             def make_switch_layer_func(layer_id: int):
-                return lambda: self.switchLayer(self.layers[layer_id])
+                return lambda: self.switch_layer(self.layers[layer_id])
 
             dics[(8, i)] = ControlButton(
                 make_switch_layer_func(id), light.Color.YELLOW.value
@@ -97,7 +97,7 @@ class Launchpad:
             i += 1
         return dics
 
-    def setLayerButtonColors(self, activeLayerId: int):
+    def set_layer_button_colors(self, activeLayerId: int):
         i: int = 1
         for id in self.layers.keys():
             c = (
@@ -108,15 +108,15 @@ class Launchpad:
             light.setLight(LpPoint(8, i), c)
             i += 1
 
-    def setSampleColor(self, sample: Sample, point: SamplePoint):
+    def set_sample_color(self, sample: Sample, point: SamplePoint):
         if sample.favorite:
             light.pulseLight(toLpPoint(point), sample.color)
         else:
             light.setLight(toLpPoint(point), sample.color)
 
-    def switchLayer(self, layer: Layer):
-        self.stopAllSamples()
-        self.currentLayer = layer
+    def switch_layer(self, layer: Layer):
+        self.stop_all_samples()
+        self.current_layer = layer
 
         grid = layer.get_grid()
         for y in range(8):
@@ -125,46 +125,46 @@ class Launchpad:
                 point = SamplePoint(x, y)
                 lp = toLpPoint(point)
                 if sample is not None:
-                    self.setSampleColor(sample, point)
+                    self.set_sample_color(sample, point)
                 else:
                     light.setLight(lp, light.Color.OFF.value)
-        self.setLayerButtonColors(layer.id)
+        self.set_layer_button_colors(layer.id)
 
-    def addSample(self, sample: Sample, point: SamplePoint, layerId: int):
-        layer: Layer | None = self.layers.get(layerId)
+    def add_sample(self, sample: Sample, point: SamplePoint, layer_id: int):
+        layer: Layer | None = self.layers.get(layer_id)
         if layer is None:
             return
 
         layer.set_sample(point.x, point.y, sample)
-        self.allSamples.append(sample)
+        self.all_samples.append(sample)
 
-    def loadSamples(
+    def load_samples(
         self, slots: list[ApiSlot], samples: list[ApiSample], layers: list[ApiLayer]
     ):
-        for layerInfo in layers:
-            self.layers[layerInfo.id] = Layer(layerInfo)
+        for layer_info in layers:
+            self.layers[layer_info.id] = Layer(layer_info)
 
-        for index, slotInfo in enumerate(slots):
-            apiSample = next((s for s in samples if s.id == slotInfo.sampleId), None)
-            if slotInfo.sampleId is None or apiSample is None:
+        for index, slot_info in enumerate(slots):
+            api_sample = next((s for s in samples if s.id == slot_info.sampleId), None)
+            if slot_info.sampleId is None or api_sample is None:
                 continue
-            y = slotInfo.position // 8
-            x = slotInfo.position % 8
-            sample = Sample(SAMPLE_DIR + f"/{slotInfo.sampleId}.wav", apiSample)
-            if slotInfo.color is not None:
-                sample.color = slotInfo.color
-            self.addSample(sample, SamplePoint(x, y), slotInfo.layerId)
+            y = slot_info.position // 8
+            x = slot_info.position % 8
+            sample = Sample(SAMPLE_DIR + f"/{slot_info.sampleId}.wav", api_sample)
+            if slot_info.color is not None:
+                sample.color = slot_info.color
+            self.add_sample(sample, SamplePoint(x, y), slot_info.layerId)
 
-        self.controlButtons = self.genControlButtons()
-        self.setControlButtonColors()
+        self.control_buttons = self.gen_control_buttons()
+        self.set_control_button_colors()
 
         # Determine which layer to switch to
-        newCurrentLayer: Layer | None = None
+        new_current_layer: Layer | None = None
         for l in self.layers.values():
-            if self.currentLayer != None and l.id == self.currentLayer.id:
-                newCurrentLayer = l
+            if self.current_layer is not None and l.id == self.current_layer.id:
+                new_current_layer = l
                 break
 
-        if newCurrentLayer is None:
-            newCurrentLayer = next(iter(self.layers.values()))
-        self.switchLayer(newCurrentLayer)
+        if new_current_layer is None:
+            new_current_layer = next(iter(self.layers.values()))
+        self.switch_layer(new_current_layer)

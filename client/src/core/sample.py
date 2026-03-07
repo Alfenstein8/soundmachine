@@ -3,10 +3,10 @@ from network.sync import ApiSample
 
 
 class Sample:
-    def __init__(self, sample_path, sampleData: ApiSample, loop=True, color=5):
+    def __init__(self, sample_path, sample_data: ApiSample, loop=True, color=5):
         self.audio = pygame.mixer.Sound(sample_path)
         self.color = color
-        self.favorite = sampleData.favorite
+        self.favorite = sample_data.favorite
 
         self.loop = loop
 

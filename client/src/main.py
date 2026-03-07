@@ -15,7 +15,7 @@ RECONNECT_DELAY = 5  # seconds
 def init():
     pad = Launchpad()
     slots, samples, layers = sync()
-    pad.loadSamples(slots, samples, layers)
+    pad.load_samples(slots, samples, layers)
 
 
 def app_process():

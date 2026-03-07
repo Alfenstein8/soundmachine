@@ -10,5 +10,11 @@ uv = "0.10.9"
 description = "Start the program"
 run = "uv run src/main.py"
 
+[tasks.format]
+run = "black src"
+
+[tasks.lint]
+run = "pylint src"
+
 [env]
 SERVER_URL="http://localhost:5173"
