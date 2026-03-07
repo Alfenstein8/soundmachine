@@ -7,7 +7,6 @@ import light
 from multiprocessing import Process
 from sync import ApiSample, ApiSlot, sync
 
-
 CLEAN_EXIT_CODE = 0
 RECONNECT_DELAY = 5  # seconds
 

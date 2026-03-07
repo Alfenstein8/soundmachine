@@ -1,6 +1,8 @@
-import  os
+import os
 from os.path import exists
+
 SAMPLE_DIR = "./samples/"
+
 
 def saveSample(id: str, data: bytes):
     """
@@ -20,7 +22,7 @@ def saveSample(id: str, data: bytes):
             print(f"Created sample directory: {SAMPLE_DIR}")
         except OSError as e:
             print(f"Error creating directory {SAMPLE_DIR}: {e}")
-            return # Stop execution if directory creation fails
+            return  # Stop execution if directory creation fails
 
     wavPath = os.path.join(SAMPLE_DIR, id + ".wav")
 
@@ -31,6 +33,7 @@ def saveSample(id: str, data: bytes):
     except IOError as e:
         print(f"Error writing file {wavPath}: {e}")
 
+
 def fileExists(id: str) -> bool:
     """
     Checks if a sample file with the given ID exists in the samples directory.
@@ -40,6 +43,7 @@ def fileExists(id: str) -> bool:
       bool: True if the file exists, False otherwise.
     """
     return exists(os.path.join(SAMPLE_DIR, id + ".wav"))
+
 
 def deleteSampleByFileName(fileName: str):
     """
@@ -57,6 +61,7 @@ def deleteSampleByFileName(fileName: str):
     except Exception as e:
         print(f"Error deleting file {filePath}: {e}")
 
+
 def deleteSampleById(id: str):
     """
     Deletes the sample file with the given ID from the samples directory.
@@ -64,6 +69,7 @@ def deleteSampleById(id: str):
       id (str): The unique identifier for the file (used as the filename).
     """
     deleteSampleByFileName(id + ".wav")
+
 
 def deleteUnusedSamples(usedSampleIds: list[str]):
     """
@@ -78,6 +84,7 @@ def deleteUnusedSamples(usedSampleIds: list[str]):
         sampleId = filename.rsplit(".", 1)[0]  # Remove file extension
         if sampleId not in usedSampleIds:
             deleteSampleByFileName(filename)
+
 
 def deleteAllSamples():
     """
