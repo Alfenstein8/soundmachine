@@ -1,10 +1,10 @@
 import time
 import launchpad_py as launchpad
-from utils.point import LpPoint
+from utils.point import lp_point
 from utils.eventSignal import Signal
 
-onPress = Signal()
-onRelease = Signal()
+on_press = Signal()
+on_release = Signal()
 
 
 def run(lp: launchpad.LaunchpadPro):
@@ -14,8 +14,8 @@ def run(lp: launchpad.LaunchpadPro):
             x, y, state = button_state
 
             if state > 0:
-                onPress.emit(LpPoint(x, y))
+                on_press.emit(lp_point(x, y))
             else:
-                onRelease.emit(LpPoint(x, y))
+                on_release.emit(lp_point(x, y))
 
         time.sleep(0.005)

@@ -1,7 +1,7 @@
 from typing import Callable, Dict
 from core.layer import Layer
-from utils.point import LpPoint, toSamplePoint, SamplePoint, toLpPoint
-from hardware.input import onPress
+from utils.point import lp_point, to_sample_point, SamplePoint, to_lp_point
+from hardware.input import on_press
 from core.sample import Sample
 from hardware import light
 from core.storage import SAMPLE_DIR
@@ -16,7 +16,7 @@ class ControlButton:
 
 class Launchpad:
     def __init__(self):
-        onPress.connect(self.on_press)
+        on_press.connect(self.on_press)
         self.control_buttons: Dict[tuple[int, int], ControlButton] = {}
         self.all_samples: list[Sample] = []
         self.current_layer: Layer | None = None
@@ -27,19 +27,19 @@ class Launchpad:
         self.stop_all_samples()
         self.all_samples = []
         self.layers = {}
-        light.setAll(light.Color.OFF.value)
+        light.set_all(light.Color.OFF.value)
 
     def set_control_button_colors(self):
         for (x, y), button in self.control_buttons.items():
             if button.color is not None:
-                light.setLight(LpPoint(x, y), button.color)
+                light.set_light(lp_point(x, y), button.color)
 
     def stop_all_samples(self):
         for s in self.all_samples:
             s.stop()
 
-    def on_press(self, point: LpPoint):
-        p = toSamplePoint(point)
+    def on_press(self, point: lp_point):
+        p = to_sample_point(point)
 
         if p.x >= 0 and p.x < 8 and p.y >= 0 and p.y < 8:
             self.handle_sample_button(point)
@@ -47,7 +47,7 @@ class Launchpad:
             self.handle_control_button(point)
 
     def handle_sample_button(self, point):
-        p = toSamplePoint(point)
+        p = to_sample_point(point)
         layer = self.current_layer
         if layer is None:
             return
@@ -56,11 +56,11 @@ class Launchpad:
         if s is not None:
             s.toggle()
             if s.playing():
-                light.setLight(point, light.Color.PLAY.value)
+                light.set_light(point, light.Color.PLAY.value)
             else:
                 self.set_sample_color(s, p)
 
-    def handle_control_button(self, point: LpPoint):
+    def handle_control_button(self, point: lp_point):
         p = (point.x, point.y)
         if p in self.control_buttons:
             cb: ControlButton | None = self.control_buttons.get((point.x, point.y))
@@ -74,10 +74,10 @@ class Launchpad:
 
     def gen_control_buttons(self):
         def page1():
-            light.showAllColors(False)
+            light.show_all_colors(False)
 
         def page2():
-            light.showAllColors(True)
+            light.show_all_colors(True)
 
         dics: Dict = {
             (9, 6): ControlButton(page1, light.Color.CYAN.value),
@@ -105,14 +105,14 @@ class Launchpad:
                 if id != activeLayerId
                 else light.Color.ACTIVE.value
             )
-            light.setLight(LpPoint(8, i), c)
+            light.set_light(lp_point(8, i), c)
             i += 1
 
     def set_sample_color(self, sample: Sample, point: SamplePoint):
         if sample.favorite:
-            light.pulseLight(toLpPoint(point), sample.color)
+            light.pulse_light(to_lp_point(point), sample.color)
         else:
-            light.setLight(toLpPoint(point), sample.color)
+            light.set_light(to_lp_point(point), sample.color)
 
     def switch_layer(self, layer: Layer):
         self.stop_all_samples()
@@ -123,11 +123,11 @@ class Launchpad:
             for x in range(8):
                 sample = grid[y][x]
                 point = SamplePoint(x, y)
-                lp = toLpPoint(point)
+                lp = to_lp_point(point)
                 if sample is not None:
                     self.set_sample_color(sample, point)
                 else:
-                    light.setLight(lp, light.Color.OFF.value)
+                    light.set_light(lp, light.Color.OFF.value)
         self.set_layer_button_colors(layer.id)
 
     def add_sample(self, sample: Sample, point: SamplePoint, layer_id: int):

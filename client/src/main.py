@@ -23,7 +23,7 @@ def app_process():
         lp = None
 
         if lp is None:
-            lp = launchpadSetup.getLaunchpad()
+            lp = launchpadSetup.get_launchpad()
             if lp is None:
                 print("Trying to connect to launchpad")
                 sys.exit(1)

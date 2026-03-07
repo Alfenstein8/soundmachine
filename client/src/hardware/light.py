@@ -1,6 +1,6 @@
 from enum import Enum
 from launchpad_py import LaunchpadPro
-from utils.point import LpPoint
+from utils.point import lp_point
 
 
 class Color(Enum):
@@ -22,27 +22,27 @@ class Status(Enum):
     READY = Color.GREEN.value
 
 
-lp: LaunchpadPro | None = None
+LP: LaunchpadPro | None = None
 
 
 def init(_lp: LaunchpadPro):
-    global lp
-    lp = _lp
-    lp.LedCtrlBpm(100)
-    setAll(Color.OFF.value)
+    global LP
+    LP = _lp
+    LP.LedCtrlBpm(100)
+    set_all(Color.OFF.value)
 
 
-def setLight(point: LpPoint, color: int):
-    if lp is not None:
-        lp.LedCtrlXYByCode(point.x, point.y, color)
+def set_light(point: lp_point, color: int):
+    if LP is not None:
+        LP.LedCtrlXYByCode(point.x, point.y, color)
 
 
-def pulseLight(point: LpPoint, color: int):
-    if lp is not None:
-        lp.LedCtrlPulseXYByCode(point.x, point.y, color)
+def pulse_light(point: lp_point, color: int):
+    if LP is not None:
+        LP.LedCtrlPulseXYByCode(point.x, point.y, color)
 
 
-def setAll(color: int):
+def set_all(color: int):
     if color < 0 or color > 127:
         print(
             str(color)
@@ -50,35 +50,35 @@ def setAll(color: int):
         )
         color = 3
 
-    if lp is not None:
+    if LP is not None:
         # lp.LedCtrlString("je",2,255)
-        lp.LedAllOn(color)
+        LP.LedAllOn(color)
 
 
-def setAllSamplesColor(color: int):
-    if lp is not None:
+def set_all_samples_color(color: int):
+    if LP is not None:
         for i in range(8):
             for j in range(8):
-                padNumber = 81 - i * 10 + j
-                lp.LedCtrlRawByCode(padNumber, color)
+                pad_number = 81 - i * 10 + j
+                LP.LedCtrlRawByCode(pad_number, color)
 
 
-def showAllColors(secondPage: bool = False):
-    if lp is not None:
-        lp.LedCtrlRawByCode(98, 5)
+def show_all_colors(second_page: bool = False):
+    if LP is not None:
+        LP.LedCtrlRawByCode(98, 5)
         for i in range(8):
             for j in range(8):
-                colorCode = i * 8 + j + 64 * secondPage
-                padNumber = 81 - i * 10 + j
+                color_code = i * 8 + j + 64 * second_page
+                pad_number = 81 - i * 10 + j
 
-                lp.LedCtrlRawByCode(padNumber, colorCode)
+                LP.LedCtrlRawByCode(pad_number, color_code)
 
 
-def setStatus(status: Status):
-    statusButton = 10
-    if lp is not None:
-        lp.LedCtrlRawByCode(statusButton, 0)
+def set_status(status: Status):
+    status_button = 10
+    if LP is not None:
+        LP.LedCtrlRawByCode(status_button, 0)
         if status.value == Status.READY.value:
-            lp.LedCtrlRawByCode(statusButton, status.value)
+            LP.LedCtrlRawByCode(status_button, status.value)
             return
-        lp.LedCtrlFlashByCode(statusButton, status.value)
+        LP.LedCtrlFlashByCode(status_button, status.value)

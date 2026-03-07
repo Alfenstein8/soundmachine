@@ -1,51 +1,50 @@
 import time
-import requests
-import asyncio
 import os
-import hardware.light as light
-from core.storage import delete_unused_samples, file_exists, save_sample
 from collections import namedtuple
+import requests
+from hardware import light
+from core.storage import delete_unused_samples, file_exists, save_sample
 
 ApiSample = namedtuple("ApiSample", ["id", "name", "favorite"])
 ApiSlot = namedtuple("ApiSlot", ["sampleId", "color", "position", "layerId"])
 ApiLayer = namedtuple("ApiLayer", ["id", "color"])
 
 
-def syncSamples(samples: list[ApiSample]):
+def sync_samples(samples: list[ApiSample]):
     for sample in samples:
         if file_exists(sample.id):
             continue
-        data = getSampleFile(sample.id)
+        data = get_sample_file(sample.id)
         save_sample(sample.id, data)
-    usedSampleIds = [s.id for s in samples]
-    delete_unused_samples(usedSampleIds)
+    used_sample_ids = [s.id for s in samples]
+    delete_unused_samples(used_sample_ids)
 
 
-def performSync():
+def perform_sync():
     url = os.getenv("SERVER_URL")
     if url is None:
         print("SERVER_URL not found")
         url = ""
-    sync = url + "/api/sync"
-    response = requests.get(sync)
+    sync_url = url + "/api/sync"
+    response = requests.get(sync_url)
     json = response.json()
-    slotsDict = json["slots"]
+    slots_dict = json["slots"]
     slots: list[ApiSlot] = []
-    for s in slotsDict:
+    for s in slots_dict:
         slot = ApiSlot(s["sampleId"], s["color"], s["position"], s["layerId"])
         slots.append(slot)
 
-    samplesDict = json["samples"]
+    samples_dict = json["samples"]
     samples: list[ApiSample] = []
-    for s in samplesDict:
+    for s in samples_dict:
         sample = ApiSample(s["id"], s["name"], s["favorite"])
         samples.append(sample)
 
-    syncSamples(samples)
+    sync_samples(samples)
 
-    layersDict = json["layers"]
+    layers_dict = json["layers"]
     layers: list[ApiLayer] = []
-    for lay in layersDict:
+    for lay in layers_dict:
         layer = ApiLayer(lay["id"], lay["color"])
         layers.append(layer)
     return slots, samples, layers
@@ -59,26 +58,26 @@ def sync():
     layers: list[ApiLayer] = []
     while not synced:
         try:
-            light.setStatus(light.Status.SYNCING)
-            slots, samples, layers = performSync()
+            light.set_status(light.Status.SYNCING)
+            slots, samples, layers = perform_sync()
             synced = True
         except Exception:
-            light.setStatus(light.Status.NO_INTERNET)
+            light.set_status(light.Status.NO_INTERNET)
             time.sleep(5)
 
-    light.setStatus(light.Status.READY)
+    light.set_status(light.Status.READY)
     print("Sync complete.")
     return slots, samples, layers
 
 
-def getSampleFile(id: str) -> bytes:
+def get_sample_file(id: str) -> bytes:
     url = os.getenv("SERVER_URL")
     if url is None:
         print("SERVER_URL not found")
         url = ""
     print(f"Downloading sample {id}")
-    sampleUrl = url + "/api/samples/" + id
-    response = requests.get(sampleUrl)
+    sample_url = url + "/api/samples/" + id
+    response = requests.get(sample_url)
     return response.content
 
 

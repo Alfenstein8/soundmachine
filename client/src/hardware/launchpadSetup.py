@@ -1,17 +1,16 @@
 import launchpad_py as launchpad
-import sys
 
 
-def printMiniPorts(launchpad: launchpad.LaunchpadPro):
+def print_mini_ports(lp: launchpad.LaunchpadPro):
     print("\n--- Available MIDI Ports ---")
     try:
-        launchpad.ListAll()
+        lp.ListAll()
     except Exception as e:
         print(f"Could not list MIDI ports: {e}")
     print("----------------------------\n")
 
 
-def getLaunchpad() -> launchpad.LaunchpadPro | None:
+def get_launchpad() -> launchpad.LaunchpadPro | None:
     print("--- Launchpad Drum Pad Initializing ---")
     lp = launchpad.LaunchpadPro()
     if lp.Check(0):
@@ -21,7 +20,7 @@ def getLaunchpad() -> launchpad.LaunchpadPro | None:
         print(
             "No Launchpad found. Please ensure the device is connected and recognized by your system."
         )
-        printMiniPorts(lp)
+        print_mini_ports(lp)
         return None
 
     lp.ButtonFlush()
