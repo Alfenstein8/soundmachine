@@ -1,6 +1,6 @@
 from enum import Enum
 from launchpad_py import LaunchpadPro
-from utils.point import lp_point
+from utils.point import LpPoint
 
 
 class Color(Enum):
@@ -32,12 +32,12 @@ def init(_lp: LaunchpadPro):
     set_all(Color.OFF.value)
 
 
-def set_light(point: lp_point, color: int):
+def set_light(point: LpPoint, color: int):
     if LP is not None:
         LP.LedCtrlXYByCode(point.x, point.y, color)
 
 
-def pulse_light(point: lp_point, color: int):
+def pulse_light(point: LpPoint, color: int):
     if LP is not None:
         LP.LedCtrlPulseXYByCode(point.x, point.y, color)
 

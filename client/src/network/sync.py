@@ -26,7 +26,7 @@ def perform_sync():
         print("SERVER_URL not found")
         url = ""
     sync_url = url + "/api/sync"
-    response = requests.get(sync_url)
+    response = requests.get(sync_url, timeout=10)
     json = response.json()
     slots_dict = json["slots"]
     slots: list[ApiSlot] = []
@@ -70,14 +70,14 @@ def sync():
     return slots, samples, layers
 
 
-def get_sample_file(id: str) -> bytes:
+def get_sample_file(sample_id: str) -> bytes:
     url = os.getenv("SERVER_URL")
     if url is None:
         print("SERVER_URL not found")
         url = ""
-    print(f"Downloading sample {id}")
-    sample_url = url + "/api/samples/" + id
-    response = requests.get(sample_url)
+    print(f"Downloading sample {sample_id}")
+    sample_url = url + "/api/samples/" + sample_id
+    response = requests.get(sample_url, timeout=10)
     return response.content
 
 

@@ -1,6 +1,6 @@
 from typing import Callable, Dict
 from core.layer import Layer
-from utils.point import lp_point, to_sample_point, SamplePoint, to_lp_point
+from utils.point import LpPoint, to_sample_point, SamplePoint, to_lp_point
 from hardware.input import on_press
 from core.sample import Sample
 from hardware import light
@@ -32,13 +32,13 @@ class Launchpad:
     def set_control_button_colors(self):
         for (x, y), button in self.control_buttons.items():
             if button.color is not None:
-                light.set_light(lp_point(x, y), button.color)
+                light.set_light(LpPoint(x, y), button.color)
 
     def stop_all_samples(self):
         for s in self.all_samples:
             s.stop()
 
-    def on_press(self, point: lp_point):
+    def on_press(self, point: LpPoint):
         p = to_sample_point(point)
 
         if p.x >= 0 and p.x < 8 and p.y >= 0 and p.y < 8:
@@ -60,7 +60,7 @@ class Launchpad:
             else:
                 self.set_sample_color(s, p)
 
-    def handle_control_button(self, point: lp_point):
+    def handle_control_button(self, point: LpPoint):
         p = (point.x, point.y)
         if p in self.control_buttons:
             cb: ControlButton | None = self.control_buttons.get((point.x, point.y))
@@ -105,7 +105,7 @@ class Launchpad:
                 if id != activeLayerId
                 else light.Color.ACTIVE.value
             )
-            light.set_light(lp_point(8, i), c)
+            light.set_light(LpPoint(8, i), c)
             i += 1
 
     def set_sample_color(self, sample: Sample, point: SamplePoint):

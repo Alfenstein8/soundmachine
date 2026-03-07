@@ -7,4 +7,4 @@
 disable=missing-docstring,empty-docstring
 
 [MASTER]
-init-hook='import sys; sys.path.append("./src")'
+init-hook='import sys; import os; sys.path.append("./src"); [sys.path.append(p) for p in ["./.venv/lib/python3.14/site-packages", "./.venv/lib64/python3.14/site-packages"] if os.path.exists(p)]'
