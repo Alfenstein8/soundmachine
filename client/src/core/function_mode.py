@@ -5,4 +5,5 @@ class FunctionMode(Enum):
     NORMAL = 0
     DELETE = 1
     FAVORITE = 2
-    MOVE = 3
+    SYNC = 3
+    MOVE = 4

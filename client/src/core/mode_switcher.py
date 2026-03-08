@@ -5,9 +5,9 @@ from core.mode import Mode
 from core.modes.delete import DeleteMode
 from core.modes.favorite import FavoriteMode
 from core.modes.normal import NormalMode
+from core.modes.sync import SyncMode
 from hardware import light
 from hardware.input import on_press
-from network.sync import sync
 from utils.point import LpPoint, to_sample_point
 
 
@@ -20,24 +20,23 @@ class ModeSwitcher:
     def __init__(self, launchpad: Launchpad):
         on_press.connect(self.on_press)
         self.lp = launchpad
-        self.control_buttons: Dict[tuple[int, int], ControlButton] = (
-            self.gen_control_buttons()
+        self.layer_buttons: Dict[tuple[int, int], ControlButton] = (
+            self.gen_layer_buttons()
         )
         self.modes: list[Mode] = [
             NormalMode(self.lp, self.switch_mode),
-            DeleteMode(self.lp, self.switch_mode),
-            FavoriteMode(self.lp, self.switch_mode),
+            DeleteMode(self.lp, self.switch_mode, LpPoint(9, 4)),
+            FavoriteMode(self.lp, self.switch_mode, LpPoint(9, 6)),
+            SyncMode(self.lp, self.switch_mode, LpPoint(9, 8)),
         ]
         self.current_mode: Mode = self.modes[FunctionMode.NORMAL.value]
-        self.set_control_button_colors()
-
-    def reset(self):
-        self.lp.reset()
-        self.set_control_button_colors()
+        self.set_button_colors()
 
     def switch_mode(self, new_mode: FunctionMode):
         self.current_mode.on_exit()
+        self.current_mode.after_exit()
         self.current_mode = self.modes[new_mode.value]
+        self.current_mode.before_enter()
         self.current_mode.on_enter()
 
     def on_press(self, point: LpPoint):
@@ -50,37 +49,24 @@ class ModeSwitcher:
 
     def handle_control_button(self, point: LpPoint):
         p = (point.x, point.y)
-        if p in self.control_buttons:
-            cb: ControlButton | None = self.control_buttons.get((point.x, point.y))
+        if p in self.layer_buttons:
+            cb: ControlButton | None = self.layer_buttons.get((point.x, point.y))
             if cb is not None:
                 cb.func()
 
-    def sync_button(self):
-        self.reset()
-        slots, samples, layers = sync()
-        self.lp.load_samples(slots, samples, layers)
+        for m in self.modes:
+            if m.point == point:
+                self.mode_press(FunctionMode(self.modes.index(m)))
 
-    def mode_press(self, mode: FunctionMode, point: LpPoint):
+    def mode_press(self, mode: FunctionMode):
         if self.current_mode == self.modes[mode.value]:
             self.switch_mode(FunctionMode.NORMAL)
-            light.set_light(point, light.Color.OFF.value)
         else:
             self.switch_mode(mode)
-            light.set_light(point, light.Color.ACTIVE.value)
 
-    def gen_control_buttons(self):
+    def gen_layer_buttons(self):
 
-        dics: Dict = {
-            (9, 4): ControlButton(
-                lambda: self.mode_press(FunctionMode.DELETE, LpPoint(9, 4)),
-                light.Color.RED.value,
-            ),
-            (9, 5): ControlButton(
-                lambda: self.mode_press(FunctionMode.FAVORITE, LpPoint(9, 5)),
-                light.Color.RED.value,
-            ),
-            (9, 8): ControlButton(self.sync_button),
-        }
+        dics: Dict = {}
         # Make layer switch buttons
         i = 1
         for layer_id in self.lp.layers.keys():
@@ -92,7 +78,10 @@ class ModeSwitcher:
             i += 1
         return dics
 
-    def set_control_button_colors(self):
-        for (x, y), button in self.control_buttons.items():
+    def set_button_colors(self):
+        for (x, y), button in self.layer_buttons.items():
             if button.color is not None:
                 light.set_light(LpPoint(x, y), button.color)
+        for m in self.modes:
+            if m.point is not None:
+                light.set_light(m.point, m.color.value)
