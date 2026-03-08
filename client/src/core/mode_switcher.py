@@ -4,6 +4,7 @@ from core.launchpad import Launchpad
 from core.mode import Mode
 from core.modes.delete import DeleteMode
 from core.modes.favorite import FavoriteMode
+from core.modes.move import MoveMode
 from core.modes.normal import NormalMode
 from core.modes.sync import SyncMode
 from hardware import light
@@ -28,6 +29,7 @@ class ModeSwitcher:
             DeleteMode(self.lp, self.switch_mode, LpPoint(9, 4)),
             FavoriteMode(self.lp, self.switch_mode, LpPoint(9, 6)),
             SyncMode(self.lp, self.switch_mode, LpPoint(9, 8)),
+            MoveMode(self.lp, self.switch_mode, LpPoint(9, 2)),
         ]
         self.current_mode: Mode = self.modes[FunctionMode.NORMAL.value]
         self.set_button_colors()

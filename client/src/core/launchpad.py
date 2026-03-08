@@ -87,8 +87,9 @@ class Launchpad:
             return
 
         for s in self.all_samples:
-            s.favorite = favorite
-            self.set_sample_color(s, s.point)
+            if s.id == sample.id:
+                s.favorite = favorite
+                self.set_sample_color(s, s.point)
 
     def load_samples(
         self, slots: list[ApiSlot], samples: list[ApiSample], layers: list[ApiLayer]
