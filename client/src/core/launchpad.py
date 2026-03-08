@@ -89,7 +89,8 @@ class Launchpad:
         for s in self.all_samples:
             if s.id == sample.id:
                 s.favorite = favorite
-                self.set_sample_color(s, s.point)
+                if self.current_layer and s.layer_id == self.current_layer.id:
+                    self.set_sample_color(s, s.point)
 
     def load_samples(
         self, slots: list[ApiSlot], samples: list[ApiSample], layers: list[ApiLayer]
@@ -104,7 +105,10 @@ class Launchpad:
             y = slot_info.position // 8
             x = slot_info.position % 8
             sample = Sample(
-                SAMPLE_DIR + slot_info.sampleId + ".wav", api_sample, SamplePoint(x, y)
+                SAMPLE_DIR + slot_info.sampleId + ".wav",
+                api_sample,
+                SamplePoint(x, y),
+                slot_info.layerId,
             )
             if slot_info.color is not None:
                 sample.color = slot_info.color

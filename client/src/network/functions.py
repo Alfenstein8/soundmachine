@@ -1,6 +1,9 @@
 import os
 import requests
 
+from core.sample import Sample
+from utils.point import position_to_index
+
 
 def remove_slot(layer_id: int, slot_id: int):
     url = os.getenv("SERVER_URL")
@@ -11,7 +14,8 @@ def remove_slot(layer_id: int, slot_id: int):
     response = requests.delete(delete_url, timeout=10)
     if response.status_code != 204:
         print(
-            f"Failed to delete slot with id {str(slot_id)}: {response.status_code} - {response.text}"
+            f"Failed to delete slot with id {str(slot_id)}:"
+            " {response.status_code} - {response.text}"
         )
 
 
@@ -29,5 +33,29 @@ def set_favorite(sample_id: str, favorite: bool):
 
     if response.status_code != 204:
         print(
-            f"Failed to update sample with id {str(sample_id)}: {response.status_code} - {response.text}"
+            f"Failed to update sample with id {str(sample_id)}: "
+            "{response.status_code} - {response.text}"
+        )
+
+
+def add_slot(sample: Sample):
+    url = os.getenv("SERVER_URL")
+    if url is None:
+        print("SERVER_URL not found")
+        url = ""
+    put_url = url + "/api/slots"
+    response = requests.put(
+        put_url,
+        json={
+            "sampleId": sample.id,
+            "position": position_to_index(sample.point),
+            "layerId": sample.layer_id,
+            "color": sample.color,
+        },
+        timeout=10,
+    )
+    if response.status_code != 204:
+        print(
+            f"Failed to add slot for sample with id {str(sample.id)}:"
+            " {response.status_code} - {response.text}"
         )

@@ -9,14 +9,15 @@ class Sample:
         sample_path,
         sample_data: ApiSample,
         point: SamplePoint,
+        layer_id: int,
         loop=True,
-        color=5,
     ):
         self.audio = pygame.mixer.Sound(sample_path)
-        self.color = color
-        self.favorite = sample_data.favorite
-        self.id = sample_data.id
-        self.point = point
+        self.color: int = 5
+        self.favorite: bool = sample_data.favorite
+        self.id: str = sample_data.id
+        self.layer_id: int = layer_id
+        self.point: SamplePoint = point
 
         self.loop = loop
 
