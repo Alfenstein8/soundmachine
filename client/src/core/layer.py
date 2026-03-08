@@ -11,6 +11,9 @@ class Layer:
     def set_sample(self, x: int, y: int, sample: Sample) -> None:
         self.grid[y][x] = sample
 
+    def remove_sample(self, x: int, y: int) -> None:
+        self.grid[y][x] = None
+
     def get_sample(self, x: int, y: int) -> Sample | None:
         return self.grid[y][x]
 

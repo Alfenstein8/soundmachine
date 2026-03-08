@@ -3,6 +3,7 @@ from core.function_mode import FunctionMode
 from core.launchpad import Launchpad
 from core.mode import Mode
 from core.modes.delete import DeleteMode
+from core.modes.favorite import FavoriteMode
 from core.modes.normal import NormalMode
 from hardware import light
 from hardware.input import on_press
@@ -22,7 +23,11 @@ class ModeSwitcher:
         self.control_buttons: Dict[tuple[int, int], ControlButton] = (
             self.gen_control_buttons()
         )
-        self.modes: list[Mode] = [NormalMode(self.lp), DeleteMode(self.lp)]
+        self.modes: list[Mode] = [
+            NormalMode(self.lp, self.switch_mode),
+            DeleteMode(self.lp, self.switch_mode),
+            FavoriteMode(self.lp, self.switch_mode),
+        ]
         self.current_mode: Mode = self.modes[FunctionMode.NORMAL.value]
         self.set_control_button_colors()
 
@@ -55,23 +60,25 @@ class ModeSwitcher:
         slots, samples, layers = sync()
         self.lp.load_samples(slots, samples, layers)
 
+    def mode_press(self, mode: FunctionMode, point: LpPoint):
+        if self.current_mode == self.modes[mode.value]:
+            self.switch_mode(FunctionMode.NORMAL)
+            light.set_light(point, light.Color.OFF.value)
+        else:
+            self.switch_mode(mode)
+            light.set_light(point, light.Color.ACTIVE.value)
+
     def gen_control_buttons(self):
-        def page1():
-            light.show_all_colors(False)
-
-        def page2():
-            light.show_all_colors(True)
-
-        def delete_mode():
-            if self.current_mode == self.modes[FunctionMode.DELETE.value]:
-                self.switch_mode(FunctionMode.NORMAL)
-            else:
-                self.switch_mode(FunctionMode.DELETE)
 
         dics: Dict = {
-            (9, 5): ControlButton(delete_mode, light.Color.RED.value),
-            (9, 6): ControlButton(page1, light.Color.CYAN.value),
-            (9, 7): ControlButton(page2, light.Color.WHITE.value),
+            (9, 4): ControlButton(
+                lambda: self.mode_press(FunctionMode.DELETE, LpPoint(9, 4)),
+                light.Color.RED.value,
+            ),
+            (9, 5): ControlButton(
+                lambda: self.mode_press(FunctionMode.FAVORITE, LpPoint(9, 5)),
+                light.Color.RED.value,
+            ),
             (9, 8): ControlButton(self.sync_button),
         }
         # Make layer switch buttons

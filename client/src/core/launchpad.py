@@ -1,3 +1,4 @@
+from time import sleep
 from typing import Dict
 from core.layer import Layer
 from core.sample import Sample
@@ -65,6 +66,30 @@ class Launchpad:
         layer.set_sample(point.x, point.y, sample)
         self.all_samples.append(sample)
 
+    def remove_sample(self, point: SamplePoint, layer_id: int):
+        layer: Layer | None = self.layers.get(layer_id)
+        if layer is None:
+            return
+        sample = layer.get_sample(point.x, point.y)
+        if sample is not None:
+            sample.stop()
+            self.all_samples.remove(sample)
+            layer.remove_sample(point.x, point.y)
+            light.set_light(to_lp_point(point), light.Color.OFF.value)
+
+    def set_favorite(self, point: SamplePoint, layer_id: int, favorite: bool):
+        layer: Layer | None = self.layers.get(layer_id)
+        if layer is None:
+            return
+        sample = layer.get_sample(point.x, point.y)
+
+        if sample is None:
+            return
+
+        for s in self.all_samples:
+            s.favorite = favorite
+            self.set_sample_color(s, s.point)
+
     def load_samples(
         self, slots: list[ApiSlot], samples: list[ApiSample], layers: list[ApiLayer]
     ):
@@ -77,7 +102,9 @@ class Launchpad:
                 continue
             y = slot_info.position // 8
             x = slot_info.position % 8
-            sample = Sample(SAMPLE_DIR + f"/{slot_info.sampleId}.wav", api_sample)
+            sample = Sample(
+                SAMPLE_DIR + slot_info.sampleId + ".wav", api_sample, SamplePoint(x, y)
+            )
             if slot_info.color is not None:
                 sample.color = slot_info.color
             self.add_sample(sample, SamplePoint(x, y), slot_info.layerId)

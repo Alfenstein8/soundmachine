@@ -1,11 +1,16 @@
 from abc import abstractmethod
+from typing import Callable
+from core.function_mode import FunctionMode
+from core.launchpad import Launchpad
 from utils.point import LpPoint
 
 
 class Mode:
-    @abstractmethod
-    def __init__(self, launchpad):
-        pass
+    def __init__(
+        self, launchpad: Launchpad, switch_mode: Callable[[FunctionMode], None]
+    ):
+        self.lp = launchpad
+        self.switch_mode = switch_mode
 
     @abstractmethod
     def on_press(self, point: LpPoint):

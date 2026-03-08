@@ -1,12 +1,22 @@
 import pygame
 from network.types import ApiSample
+from utils.point import SamplePoint
 
 
 class Sample:
-    def __init__(self, sample_path, sample_data: ApiSample, loop=True, color=5):
+    def __init__(
+        self,
+        sample_path,
+        sample_data: ApiSample,
+        point: SamplePoint,
+        loop=True,
+        color=5,
+    ):
         self.audio = pygame.mixer.Sound(sample_path)
         self.color = color
         self.favorite = sample_data.favorite
+        self.id = sample_data.id
+        self.point = point
 
         self.loop = loop
 

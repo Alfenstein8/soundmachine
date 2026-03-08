@@ -1,4 +1,3 @@
-from core.launchpad import Launchpad
 from core.mode import Mode
 from core.sample import Sample
 from hardware import light
@@ -6,9 +5,6 @@ from utils.point import LpPoint, to_sample_point
 
 
 class NormalMode(Mode):
-    def __init__(self, launchpad: Launchpad):
-        self.lp = launchpad
-
     def on_enter(self):
         print("Entered normal mode")
 
