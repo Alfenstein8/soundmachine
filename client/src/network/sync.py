@@ -1,13 +1,9 @@
 import time
 import os
-from collections import namedtuple
 import requests
 from hardware import light
 from core.storage import delete_unused_samples, file_exists, save_sample
-
-ApiSample = namedtuple("ApiSample", ["id", "name", "favorite"])
-ApiSlot = namedtuple("ApiSlot", ["sampleId", "color", "position", "layerId"])
-ApiLayer = namedtuple("ApiLayer", ["id", "color"])
+from network.types import ApiLayer, ApiSample, ApiSlot
 
 
 def sync_samples(samples: list[ApiSample]):

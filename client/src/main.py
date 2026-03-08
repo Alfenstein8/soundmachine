@@ -4,6 +4,7 @@ import time
 from multiprocessing import Process
 from launchpad_py import LaunchpadPro
 import pygame
+from core.mode_switcher import ModeSwitcher
 from hardware import launchpad_setup
 from hardware import input as lp_input
 from hardware import light
@@ -20,6 +21,7 @@ def init(lp: LaunchpadPro):
     pad = Launchpad()
     slots, samples, layers = sync()
     pad.load_samples(slots, samples, layers)
+    ModeSwitcher(pad)
 
 
 def app_process():

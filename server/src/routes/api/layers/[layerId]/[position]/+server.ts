@@ -6,6 +6,7 @@ import type { RequestEvent } from './$types';
 export const DELETE = async ({ params }: RequestEvent) => {
 	const layerId = Number(params.layerId);
 	let position = Number(params.position);
+	console.log('Deleting slot at position', position, 'in layer', layerId);
 
 	try {
 		position = parse(positionValidator, position);

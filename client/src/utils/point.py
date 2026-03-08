@@ -17,3 +17,7 @@ def to_sample_point(point: LpPoint) -> SamplePoint:
 
 def to_lp_point(track_point: SamplePoint) -> LpPoint:
     return LpPoint(track_point.x, track_point.y + 1)
+
+
+def position_to_index(sample_point: SamplePoint) -> int:
+    return sample_point.y * 8 + sample_point.x
