@@ -68,7 +68,7 @@
 
 	<!-- Audio Progress Bar -->
 	<progress class="progress progress-primary" {value} {max}></progress>
-	<audio bind:this={audioElement} loop bind:currentTime bind:duration preload="auto">
+	<audio bind:this={audioElement} loop bind:currentTime bind:duration preload="none">
 		<source src={`/api/samples/${sample.id}`} type="audio/wav" />
 		Your browser does not support the audio element.
 	</audio>
