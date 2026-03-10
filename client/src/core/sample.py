@@ -3,7 +3,8 @@ from network.types import ApiSample
 from utils.point import SamplePoint
 
 
-class Sample:
+class Sample:  # pylint: disable=too-many-instance-attributes
+    # pylint: disable=too-many-arguments, too-many-positional-arguments
     def __init__(
         self,
         sample_path,

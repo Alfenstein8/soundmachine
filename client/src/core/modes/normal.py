@@ -1,6 +1,6 @@
 from core.mode import Mode
 from core.sample import Sample
-from hardware import light
+from hardware.light import light, Color
 from utils.point import LpPoint, to_sample_point
 
 
@@ -21,6 +21,6 @@ class NormalMode(Mode):
         if s is not None:
             s.toggle()
             if s.playing():
-                light.set_light(point, light.Color.PLAY.value)
+                light.set_light(point, Color.PLAY.value)
             else:
                 self.lp.set_sample_color(s, p)

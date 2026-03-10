@@ -4,7 +4,7 @@ from core.sample import Sample
 from core.storage import SAMPLE_DIR
 from network.types import ApiLayer, ApiSample, ApiSlot
 from utils.point import LpPoint, SamplePoint, to_lp_point
-from hardware import light
+from hardware.light import light, Color
 
 
 class Launchpad:
@@ -18,7 +18,7 @@ class Launchpad:
         self.stop_all_samples()
         self.all_samples = []
         self.layers = {}
-        light.set_all(light.Color.OFF.value)
+        light.set_all(Color.OFF.value)
 
     def stop_all_samples(self):
         for s in self.all_samples:
@@ -27,13 +27,14 @@ class Launchpad:
     def set_layer_button_colors(self, active_layer_id: int):
         i: int = 1
         for layer_id, layer in self.layers.items():
-            c = (
-                layer.color
-                if layer_id != active_layer_id
-                else light.Color.ACTIVE.value
-            )
+            c = layer.color if layer_id != active_layer_id else Color.ACTIVE.value
             light.set_light(LpPoint(8, i), c)
             i += 1
+
+    def get_sample_by_point(self, point: SamplePoint) -> Sample | None:
+        if self.current_layer is None:
+            return None
+        return self.current_layer.get_sample(point.x, point.y)
 
     def set_sample_color(self, sample: Sample, point: SamplePoint):
         if sample.favorite:
@@ -49,7 +50,7 @@ class Launchpad:
         for s in self.all_samples:
             same_as_playing = any(ps.id == s.id for ps in playing_samples)
             if same_as_playing:
-                s.set_volume(s.volume+change)
+                s.set_volume(s.volume + change)
         return playing_samples
 
     def switch_layer(self, layer: Layer):
@@ -65,7 +66,7 @@ class Launchpad:
                 if sample is not None:
                     self.set_sample_color(sample, point)
                 else:
-                    light.set_light(lp, light.Color.OFF.value)
+                    light.set_light(lp, Color.OFF.value)
         self.set_layer_button_colors(layer.id)
 
     def add_sample(self, sample: Sample, point: SamplePoint, layer_id: int):
@@ -85,7 +86,7 @@ class Launchpad:
             sample.stop()
             self.all_samples.remove(sample)
             layer.remove_sample(point.x, point.y)
-            light.set_light(to_lp_point(point), light.Color.OFF.value)
+            light.set_light(to_lp_point(point), Color.OFF.value)
 
     def set_favorite(self, point: SamplePoint, layer_id: int, favorite: bool):
         layer: Layer | None = self.layers.get(layer_id)

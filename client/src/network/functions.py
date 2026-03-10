@@ -60,6 +60,7 @@ def add_slot(sample: Sample):
             " {response.status_code} - {response.text}"
         )
 
+
 def update_sample(sample: Sample):
     url = os.getenv("SERVER_URL")
     if url is None:

@@ -1,7 +1,7 @@
 import time
 import os
 import requests
-from hardware import light
+from hardware.light import light, Status
 from core.storage import delete_unused_samples, file_exists, save_sample
 from network.types import ApiLayer, ApiSample, ApiSlot
 
@@ -54,14 +54,14 @@ def sync():
     layers: list[ApiLayer] = []
     while not synced:
         try:
-            light.set_status(light.Status.SYNCING)
+            light.set_status(Status.SYNCING)
             slots, samples, layers = perform_sync()
             synced = True
         except Exception:
-            light.set_status(light.Status.NO_INTERNET)
+            light.set_status(Status.NO_INTERNET)
             time.sleep(5)
 
-    light.set_status(light.Status.READY)
+    light.set_status(Status.READY)
     print("Sync complete.")
     return slots, samples, layers
 

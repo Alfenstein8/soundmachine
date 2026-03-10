@@ -5,10 +5,10 @@ from multiprocessing import Process
 from launchpad_py import LaunchpadPro
 import pygame
 from core.mode_switcher import ModeSwitcher
+from core.launchpad import Launchpad
 from hardware import launchpad_setup
 from hardware import input as lp_input
-from hardware import light
-from core.launchpad import Launchpad
+from hardware.light import light
 from network.sync import sync
 
 CLEAN_EXIT_CODE = 0

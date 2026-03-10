@@ -3,7 +3,7 @@ from core.function_mode import FunctionMode
 from core.launchpad import Launchpad
 from core.mode import Mode
 from core.sample import Sample
-from hardware import light
+from hardware.light import light, Color
 from network.functions import add_slot, remove_slot
 from utils.point import LpPoint, SamplePoint, position_to_index, to_sample_point
 
@@ -14,7 +14,7 @@ class MoveMode(Mode):
         launchpad: Launchpad,
         switch_mode: Callable[[FunctionMode], None],
         point: LpPoint | None = None,
-        color: light.Color = light.Color.RED,
+        color: Color = Color.RED,
     ):
         super().__init__(launchpad, switch_mode, point, color)
         self.selected_sample: tuple[Sample, SamplePoint, int] | None = None
@@ -37,8 +37,8 @@ class MoveMode(Mode):
         if sample is not None and self.selected_sample is None:
             self.selected_sample = (sample, p, layer.id)
             if self.point is not None:
-                light.set_light(self.point, light.Color.GREEN.value)
-                light.set_light(point, light.Color.ACTIVE.value)
+                light.set_light(self.point, Color.GREEN.value)
+                light.set_light(point, Color.ACTIVE.value)
             return
 
         if sample is None and self.selected_sample is not None:

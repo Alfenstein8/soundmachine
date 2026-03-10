@@ -2,7 +2,7 @@ from abc import abstractmethod
 from typing import Callable
 from core.function_mode import FunctionMode
 from core.launchpad import Launchpad
-from hardware import light
+from hardware.light import light, Color
 from utils.point import LpPoint
 
 
@@ -12,7 +12,7 @@ class Mode:
         launchpad: Launchpad,
         switch_mode: Callable[[FunctionMode], None],
         point: LpPoint | None = None,
-        color: light.Color = light.Color.RED,
+        color: Color = Color.RED,
     ):
         self.lp = launchpad
         self.switch_mode = switch_mode
@@ -25,7 +25,7 @@ class Mode:
 
     def before_enter(self):
         if self.point is not None:
-            light.set_light(self.point, light.Color.ACTIVE.value)
+            light.set_light(self.point, Color.ACTIVE.value)
 
     @abstractmethod
     def on_enter(self):

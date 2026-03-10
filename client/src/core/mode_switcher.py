@@ -7,7 +7,7 @@ from core.modes.favorite import FavoriteMode
 from core.modes.move import MoveMode
 from core.modes.normal import NormalMode
 from core.modes.sync import SyncMode
-from hardware import light
+from hardware.light import light, Color
 from hardware.input import on_press
 from network.functions import update_sample
 from utils.point import LpPoint, to_sample_point
@@ -75,14 +75,20 @@ class ModeSwitcher:
 
     def gen_layer_buttons(self):
         dics: Dict = {
-            (4,9): ControlButton(lambda: self.change_volume(10), light.Color.VOLUME_UP.value),
-            (3,9): ControlButton(lambda: self.change_volume(-10), light.Color.VOLUME_DOWN.value),
+            (4, 9): ControlButton(
+                lambda: self.change_volume(10), Color.VOLUME_UP.value
+            ),
+            (3, 9): ControlButton(
+                lambda: self.change_volume(-10), Color.VOLUME_DOWN.value
+            ),
         }
         # Make layer switch buttons
         i = 1
         for layer_id in self.lp.layers.keys():
+
             def make_switch_layer_func(layer_id: int):
                 return lambda: self.lp.switch_layer(self.lp.layers[layer_id])
+
             dics[(8, i)] = ControlButton(make_switch_layer_func(layer_id))
             i += 1
         return dics
