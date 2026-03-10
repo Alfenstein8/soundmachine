@@ -1,0 +1,1 @@
+ALTER TABLE `samples` ADD `volume` integer DEFAULT 50 NOT NULL;

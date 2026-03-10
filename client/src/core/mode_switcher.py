@@ -9,6 +9,7 @@ from core.modes.normal import NormalMode
 from core.modes.sync import SyncMode
 from hardware import light
 from hardware.input import on_press
+from network.functions import update_sample
 from utils.point import LpPoint, to_sample_point
 
 
@@ -43,7 +44,6 @@ class ModeSwitcher:
 
     def on_press(self, point: LpPoint):
         p = to_sample_point(point)
-
         if p.x >= 0 and p.x < 8 and p.y >= 0 and p.y < 8:
             self.current_mode.on_press(point)
         else:
@@ -66,16 +66,23 @@ class ModeSwitcher:
         else:
             self.switch_mode(mode)
 
-    def gen_layer_buttons(self):
+    def change_volume(self, change: int):
+        samples = self.lp.change_volume(change)
+        if samples is None:
+            return
+        for s in samples:
+            update_sample(s)
 
-        dics: Dict = {}
+    def gen_layer_buttons(self):
+        dics: Dict = {
+            (4,9): ControlButton(lambda: self.change_volume(10), light.Color.VOLUME_UP.value),
+            (3,9): ControlButton(lambda: self.change_volume(-10), light.Color.VOLUME_DOWN.value),
+        }
         # Make layer switch buttons
         i = 1
         for layer_id in self.lp.layers.keys():
-
             def make_switch_layer_func(layer_id: int):
                 return lambda: self.lp.switch_layer(self.lp.layers[layer_id])
-
             dics[(8, i)] = ControlButton(make_switch_layer_func(layer_id))
             i += 1
         return dics

@@ -14,6 +14,8 @@ class Color(Enum):
     PLAY = 3
     ACTIVE = 3
     OFF = 0
+    VOLUME_UP = 13
+    VOLUME_DOWN = 5
 
 
 class Status(Enum):

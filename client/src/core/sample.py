@@ -19,6 +19,9 @@ class Sample:
         self.layer_id: int = layer_id
         self.point: SamplePoint = point
 
+        self.volume: int
+        self.set_volume(sample_data.volume)
+
         self.loop = loop
 
     def playing(self) -> bool:
@@ -38,3 +41,7 @@ class Sample:
             self.stop()
         else:
             self.play()
+
+    def set_volume(self, volume: int):
+        self.volume = max(0, min(100, volume))
+        self.audio.set_volume(volume / 100)

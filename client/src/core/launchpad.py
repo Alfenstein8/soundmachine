@@ -1,4 +1,3 @@
-from time import sleep
 from typing import Dict
 from core.layer import Layer
 from core.sample import Sample
@@ -27,9 +26,9 @@ class Launchpad:
 
     def set_layer_button_colors(self, active_layer_id: int):
         i: int = 1
-        for layer_id in self.layers.keys():
+        for layer_id, layer in self.layers.items():
             c = (
-                self.layers[layer_id].color
+                layer.color
                 if layer_id != active_layer_id
                 else light.Color.ACTIVE.value
             )
@@ -41,6 +40,17 @@ class Launchpad:
             light.pulse_light(to_lp_point(point), sample.color)
         else:
             light.set_light(to_lp_point(point), sample.color)
+
+    # Change volume of the active/player samples
+    def change_volume(self, change: int):
+        if self.current_layer is None:
+            return None
+        playing_samples = self.current_layer.get_playing_samples()
+        for s in self.all_samples:
+            same_as_playing = any(ps.id == s.id for ps in playing_samples)
+            if same_as_playing:
+                s.set_volume(s.volume+change)
+        return playing_samples
 
     def switch_layer(self, layer: Layer):
         self.stop_all_samples()

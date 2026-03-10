@@ -7,15 +7,24 @@ class Layer:
         self.id = layer.id
         self.color = layer.color
         self.grid: list[list[Sample | None]] = [[None] * 8 for _ in range(8)]
+        self.samples: list[Sample] = []
 
     def set_sample(self, x: int, y: int, sample: Sample) -> None:
         self.grid[y][x] = sample
+        self.samples.append(sample)
 
     def remove_sample(self, x: int, y: int) -> None:
+        sample = self.get_sample(x, y)
+        if sample is None:
+            return
+        self.samples.remove(sample)
         self.grid[y][x] = None
 
     def get_sample(self, x: int, y: int) -> Sample | None:
         return self.grid[y][x]
+
+    def get_playing_samples(self) -> list[Sample]:
+        return [s for s in self.samples if s.playing()]
 
     def get_row(self, y: int) -> list[Sample | None]:
         return self.grid[y]

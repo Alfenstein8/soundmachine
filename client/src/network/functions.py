@@ -59,3 +59,24 @@ def add_slot(sample: Sample):
             f"Failed to add slot for sample with id {str(sample.id)}:"
             " {response.status_code} - {response.text}"
         )
+
+def update_sample(sample: Sample):
+    url = os.getenv("SERVER_URL")
+    if url is None:
+        print("SERVER_URL not found")
+        url = ""
+    patch_url = url + "/api/samples/" + str(sample.id)
+    response = requests.patch(
+        patch_url,
+        json={
+            "favorite": sample.favorite,
+            "color": sample.color,
+            "volume": sample.volume,
+        },
+        timeout=10,
+    )
+    if response.status_code != 204:
+        print(
+            f"Failed to update sample with id {str(sample.id)}: "
+            "{response.status_code} - {response.text}"
+        )

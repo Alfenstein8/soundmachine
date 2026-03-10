@@ -33,7 +33,7 @@ def perform_sync():
     samples_dict = json["samples"]
     samples: list[ApiSample] = []
     for s in samples_dict:
-        sample = ApiSample(s["id"], s["name"], s["favorite"])
+        sample = ApiSample(s["id"], s["name"], s["favorite"], s["volume"])
         samples.append(sample)
 
     sync_samples(samples)

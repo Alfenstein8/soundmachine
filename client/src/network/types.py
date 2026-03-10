@@ -5,6 +5,7 @@ class ApiSample(NamedTuple):
     id: str
     name: str
     favorite: bool
+    volume: int
 
 
 class ApiSlot(NamedTuple):

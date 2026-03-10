@@ -8,7 +8,8 @@ export const samples = sqliteTable('samples', {
 	name: text('name').notNull(),
 	bpm: integer('bpm'),
 	primaryTagName: text('primary_tag_name').references(() => tags.name),
-	favorite: integer({ mode: 'boolean' }).notNull().default(false)
+	favorite: integer({ mode: 'boolean' }).notNull().default(false),
+	volume: integer('volume').notNull().default(50)
 });
 
 export const samplesRelations = relations(samples, ({ many }) => ({
