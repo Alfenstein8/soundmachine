@@ -1,5 +1,5 @@
-import * as db from '$db';
-import { parse, tagUpdateSchema } from '$lib/server/validators';
+import * as db from '#db';
+import { parse, tagUpdateSchema } from '#lib/server/validators.ts';
 import type { RequestEvent } from './$types';
 
 export const DELETE = async ({ params }: RequestEvent) => {

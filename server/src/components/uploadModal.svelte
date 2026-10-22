@@ -1,11 +1,11 @@
 <script lang="ts">
-	import * as api from '$lib/client/api';
-	import Modal from '$comp/modal.svelte';
-	import { uploadModal } from '$stores/globals';
+	import * as api from '#lib/client/api.ts';
+	import Modal from '#comp/modal.svelte';
+	import { uploadModal } from '#stores/globals.ts';
 	import { onMount } from 'svelte';
-	import type { SampleInsert, TagSelect } from '$types/db';
-	import TagApply from '$comp/tags/tagApply.svelte';
-	import { syncSamples, syncTagAttachments } from '$lib/client/sync';
+	import type { SampleInsert, TagSelect } from '#types/db.ts';
+	import TagApply from '#comp/tags/tagApply.svelte';
+	import { syncSamples, syncTagAttachments } from '#lib/client/sync.ts';
 
 	let fileInput: HTMLInputElement;
 	let fileName = $state('');

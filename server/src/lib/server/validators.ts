@@ -1,4 +1,4 @@
-import { layers, samples, slots, tagsToSamples } from '$schema';
+import { layers, samples, slots, tagsToSamples } from '#schema';
 import { createInsertSchema, createUpdateSchema } from 'drizzle-valibot';
 import { integer, minValue, number, pipe } from 'valibot';
 export { parse } from 'valibot';

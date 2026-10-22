@@ -1,8 +1,8 @@
-import * as db from '$db';
-import type { SlotInsert, SlotSelect } from '$types/db';
+import * as db from '#db';
+import type { SlotInsert, SlotSelect } from '#types/db.ts';
 import { json } from '@sveltejs/kit';
 import type { RequestEvent } from './$types';
-import { parse, slotInsertSchema } from '$lib/server/validators';
+import { parse, slotInsertSchema } from '#lib/server/validators.ts';
 
 export const GET = async () => {
 	let allSlots: SlotSelect[];

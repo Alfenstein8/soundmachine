@@ -1,7 +1,7 @@
 import { transcodeToMp3, transcodeToWav } from './transcode';
 import { mkdir, writeFile, readFile, unlink, access } from 'node:fs/promises';
 import { constants } from 'node:fs';
-import * as db from '$db';
+import * as db from '#db';
 
 const uploadPath = './uploads';
 const samplesPath = `${uploadPath}/samples`;

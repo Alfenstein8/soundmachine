@@ -1,8 +1,8 @@
-import { type LayerInsert } from '$types/db';
+import { type LayerInsert } from '#types/db.ts';
 import { error, json } from '@sveltejs/kit';
 import type { RequestEvent } from './$types';
-import * as db from '$db';
-import { parse, layerInsertSchema } from '$lib/server/validators';
+import * as db from '#db';
+import { parse, layerInsertSchema } from '#lib/server/validators.ts';
 
 export const GET = async () => {
 	try {

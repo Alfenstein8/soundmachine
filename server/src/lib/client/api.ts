@@ -9,7 +9,7 @@ import type {
 	tagAttachmentSelect,
 	TagInsert,
 	TagSelect
-} from '$types/db';
+} from '#types/db.ts';
 
 const API_URL = '/api';
 

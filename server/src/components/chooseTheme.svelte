@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { theme, themes } from '$stores/theme';
+	import { theme, themes } from '#stores/theme.ts';
 </script>
 
 <select bind:value={$theme}>

@@ -1,4 +1,4 @@
-import type { SlotSelect } from '$types/db';
+import type { SlotSelect } from '#types/db.ts';
 
 export const pickRandom = <T>(arr: T[]): T => arr[Math.floor(Math.random() * arr.length)];
 

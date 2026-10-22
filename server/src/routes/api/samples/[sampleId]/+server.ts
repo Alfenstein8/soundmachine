@@ -1,10 +1,10 @@
-import { getSample, deleteSample } from '$lib/server/services/storage';
-import * as db from '$db';
+import { getSample, deleteSample } from '#lib/server/services/storage.ts';
+import * as db from '#db';
 
 import type { RequestEvent } from './$types';
-import type { SampleUpdate } from '$types/db';
+import type { SampleUpdate } from '#types/db.ts';
 import { parse } from 'valibot';
-import { sampleUpdateSchema } from '$lib/server/validators';
+import { sampleUpdateSchema } from '#lib/server/validators.ts';
 import { error } from '@sveltejs/kit';
 
 export async function GET({ params }: RequestEvent) {

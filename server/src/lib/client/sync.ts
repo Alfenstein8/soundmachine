@@ -1,5 +1,5 @@
-import { tags, samples, slots, tagAttachments, layers } from '$stores/globals';
-import * as api from '$lib/client/api';
+import { tags, samples, slots, tagAttachments, layers } from '#stores/globals.ts';
+import * as api from '#lib/client/api.ts';
 
 let syncInterval: NodeJS.Timeout;
 const interval = 10000;

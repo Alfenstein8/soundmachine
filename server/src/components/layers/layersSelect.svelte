@@ -1,6 +1,6 @@
 <script lang="ts">
-	import type { LayerSelect } from '$types/db';
-	import { layers } from '$stores/globals';
+	import type { LayerSelect } from '#types/db.ts';
+	import { layers } from '#stores/globals.ts';
 
 	let {
 		selected = $bindable(),

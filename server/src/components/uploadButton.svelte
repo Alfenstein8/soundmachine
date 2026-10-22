@@ -1,6 +1,6 @@
 <script lang="ts">
-	import UploadModal from '$comp/uploadModal.svelte';
-	import { uploadModal } from '$stores/globals';
+	import UploadModal from '#comp/uploadModal.svelte';
+	import { uploadModal } from '#stores/globals.ts';
 </script>
 
 <div id="uploadButton">

@@ -1,5 +1,5 @@
-import * as db from '$db';
-import type { ServerInit } from '@sveltejs/kit';
+import * as db from '#db';
+import type { ServerInit } from '@sveltejs/kit/hooks';
 
 export const init: ServerInit = async () => {
 	if ((await db.getAllLayers()).length > 0) {

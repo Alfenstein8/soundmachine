@@ -1,6 +1,6 @@
-import { colors } from '$lib/colors';
-import type { tagAttachmentSelect, TagSelect } from '$types/db';
-import { slots, tagAttachments, tags } from '$stores/globals';
+import { colors } from '#lib/colors.ts';
+import type { tagAttachmentSelect, TagSelect } from '#types/db.ts';
+import { slots, tagAttachments, tags } from '#stores/globals.ts';
 import { get } from 'svelte/store';
 
 export const isFirefox = (): boolean => navigator.userAgent.search('Firefox') > -1;

@@ -1,10 +1,10 @@
 <script lang="ts">
-	import Modal from '$comp/modal.svelte';
-	import { padModal, samples, searchTerm, selectedColor, selectedSlot } from '$stores/globals';
-	import * as api from '$lib/client/api';
-	import type { SlotInsert } from '$types/db';
-	import { syncSlots } from '$lib/client/sync';
-	import ColorPicker from '$comp/colorPicker.svelte';
+	import Modal from '#comp/modal.svelte';
+	import { padModal, samples, searchTerm, selectedColor, selectedSlot } from '#stores/globals.ts';
+	import * as api from '#lib/client/api.ts';
+	import type { SlotInsert } from '#types/db.ts';
+	import { syncSlots } from '#lib/client/sync.ts';
+	import ColorPicker from '#comp/colorPicker.svelte';
 
 	selectedSlot.subscribe((newSlot) => {
 		if (!newSlot) return;

@@ -1,4 +1,4 @@
-import { layers, samples, slots, tags, tagsToSamples } from '$schema';
+import { layers, samples, slots, tags, tagsToSamples } from '#schema';
 import { and, eq, getTableColumns, inArray } from 'drizzle-orm';
 import { db } from '.';
 import type {
@@ -10,8 +10,8 @@ import type {
 	tagAttachmentInsert,
 	TagInsert,
 	TagUpdate
-} from '$types/db';
-import { colors } from '$lib/colors';
+} from '#types/db.ts';
+import { colors } from '#lib/colors.ts';
 
 // Layers
 export const createLayer = async (layer: LayerInsert) => {

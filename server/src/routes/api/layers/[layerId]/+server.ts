@@ -1,7 +1,7 @@
-import * as db from '$db';
+import * as db from '#db';
 import type { RequestEvent } from './$types';
-import type { LayerUpdate } from '$types/db';
-import { parse, layerUpdateSchema } from '$lib/server/validators';
+import type { LayerUpdate } from '#types/db.ts';
+import { parse, layerUpdateSchema } from '#lib/server/validators.ts';
 
 export const DELETE = async ({ params }: RequestEvent) => {
 	let id: number;

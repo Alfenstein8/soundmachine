@@ -1,8 +1,8 @@
 <script lang="ts">
-	import { getTagHex } from '$lib/client/utils';
-	import { colors } from '$lib/colors';
-	import type { TagSelect } from '$types/db';
-	import { tags } from '$stores/globals';
+	import { getTagHex } from '#lib/client/utils.ts';
+	import { colors } from '#lib/colors.ts';
+	import type { TagSelect } from '#types/db.ts';
+	import { tags } from '#stores/globals.ts';
 
 	let {
 		primaryTagName = $bindable(),

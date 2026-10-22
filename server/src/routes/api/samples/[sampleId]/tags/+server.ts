@@ -1,6 +1,6 @@
-import * as db from '$db';
+import * as db from '#db';
 import type { RequestEvent } from './$types';
-import type { TagSelect } from '$types/db';
+import type { TagSelect } from '#types/db.ts';
 import { error } from '@sveltejs/kit';
 
 export const GET = async ({ params }: RequestEvent) => {

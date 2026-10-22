@@ -1,11 +1,11 @@
-import { colors } from '$lib/colors';
+import { colors } from '#lib/colors.ts';
 import type {
 	LayerSelect,
 	SampleSelect,
 	SlotSelect,
 	tagAttachmentSelect,
 	TagSelect
-} from '$types/db';
+} from '#types/db.ts';
 import { writable, type Writable } from 'svelte/store';
 
 export const slots: Writable<SlotSelect[]> = writable([]);

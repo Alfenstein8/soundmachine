@@ -1,12 +1,12 @@
 <script lang="ts">
-	import { syncLayers, syncSlots } from '$lib/client/sync';
-	import { layers, layersModal, shownLayer } from '$stores/globals';
-	import * as api from '$lib/client/api';
-	import Modal from '$comp/modal.svelte';
-	import LayersSelect from '$comp/layers/layersSelect.svelte';
-	import type { LayerSelect } from '$types/db';
-	import LayersForm from '$comp/layers/layersForm.svelte';
-	import { colors } from '$lib/colors';
+	import { syncLayers, syncSlots } from '#lib/client/sync.ts';
+	import { layers, layersModal, shownLayer } from '#stores/globals.ts';
+	import * as api from '#lib/client/api.ts';
+	import Modal from '#comp/modal.svelte';
+	import LayersSelect from '#comp/layers/layersSelect.svelte';
+	import type { LayerSelect } from '#types/db.ts';
+	import LayersForm from '#comp/layers/layersForm.svelte';
+	import { colors } from '#lib/colors.ts';
 
 	let selectedLayer: LayerSelect | null = $state($shownLayer);
 	let addButtonSelected: boolean = $state(false);

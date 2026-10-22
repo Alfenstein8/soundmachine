@@ -1,6 +1,6 @@
-import * as db from '$db';
-import { tagAttachmentInsertSchema } from '$lib/server/validators';
-import type { tagAttachmentInsert } from '$types/db';
+import * as db from '#db';
+import { tagAttachmentInsertSchema } from '#lib/server/validators.ts';
+import type { tagAttachmentInsert } from '#types/db.ts';
 import { error, json } from '@sveltejs/kit';
 import { array, parse } from 'valibot';
 import type { RequestEvent } from './$types';

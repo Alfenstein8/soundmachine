@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { SlotInsert, SlotSelect } from '$types/db';
+	import type { SlotInsert, SlotSelect } from '#types/db.ts';
 	import {
 		slots,
 		samples,
@@ -8,11 +8,11 @@
 		padModal,
 		tags,
 		shownLayer
-	} from '$stores/globals';
-	import * as api from '$lib/client/api';
-	import { syncSlots } from '$lib/client/sync';
-	import { colors } from '$lib/colors';
-	import Layers from '$comp/layers/layers.svelte';
+	} from '#stores/globals.ts';
+	import * as api from '#lib/client/api.ts';
+	import { syncSlots } from '#lib/client/sync.ts';
+	import { colors } from '#lib/colors.ts';
+	import Layers from '#comp/layers/layers.svelte';
 
 	const getSampleName = (slot: SlotSelect) => {
 		return $samples.find((s) => s.id === slot.sampleId)?.name || 'Unknown';

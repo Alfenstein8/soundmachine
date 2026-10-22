@@ -1,10 +1,10 @@
-import * as db from '$db';
-import type { TagInsert, TagSelect } from '$types/db';
+import * as db from '#db';
+import type { TagInsert, TagSelect } from '#types/db.ts';
 import type { RequestEvent } from './$types';
-import { parse, tagInsertSchema } from '$lib/server/validators';
+import { parse, tagInsertSchema } from '#lib/server/validators.ts';
 
 export const GET = async () => {
-	let tagList: TagSelect[] = [];
+	let tagList: TagSelect[];
 	try {
 		tagList = await db.getAllTags();
 	} catch {

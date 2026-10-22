@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { colors } from '$lib/colors';
-	import { colorModal, selectedColor } from '$stores/globals';
+	import { colors } from '#lib/colors.ts';
+	import { colorModal, selectedColor } from '#stores/globals.ts';
 	import Modal from './modal.svelte';
 </script>
 

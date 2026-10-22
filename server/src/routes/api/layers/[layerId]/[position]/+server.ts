@@ -1,5 +1,5 @@
-import * as db from '$db';
-import { parse, positionValidator } from '$lib/server/validators';
+import * as db from '#db';
+import { parse, positionValidator } from '#lib/server/validators.ts';
 import { error } from '@sveltejs/kit';
 import type { RequestEvent } from './$types';
 

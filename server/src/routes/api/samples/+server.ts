@@ -1,9 +1,9 @@
-import * as db from '$db';
+import * as db from '#db';
 import type { RequestEvent } from './$types';
-import type { SampleInsert, SampleSelect } from '$types/db';
+import type { SampleInsert, SampleSelect } from '#types/db.ts';
 import { json, error } from '@sveltejs/kit';
-import { saveSample } from '$lib/server/services/storage';
-import { parse, sampleInsertSchema } from '$lib/server/validators';
+import { saveSample } from '#lib/server/services/storage.ts';
+import { parse, sampleInsertSchema } from '#lib/server/validators.ts';
 
 const getSampleData = (formData: FormData) => {
 	const sampleDataEntry = formData.get('data');

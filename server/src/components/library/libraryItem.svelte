@@ -1,14 +1,14 @@
 <script lang="ts">
-	import * as api from '$lib/client/api';
-	import { getTagHex } from '$lib/client/utils';
-	import { colors } from '$lib/colors';
-	import { showAllTagNames } from '$lib/featureFlags';
-	import type { SampleSelect, SampleUpdate, TagSelect } from '$types/db';
-	import { selectedSample, libraryModal, tags, tagAttachments, slots } from '$stores/globals';
+	import * as api from '#lib/client/api.ts';
+	import { getTagHex } from '#lib/client/utils.ts';
+	import { colors } from '#lib/colors.ts';
+	import { showAllTagNames } from '#lib/featureFlags.ts';
+	import type { SampleSelect, SampleUpdate, TagSelect } from '#types/db.ts';
+	import { selectedSample, libraryModal, tags, tagAttachments, slots } from '#stores/globals.ts';
 	import CircleStop from '@lucide/svelte/icons/circle-stop';
 	import PlayIcon from '@lucide/svelte/icons/play';
 	import Heart from '@lucide/svelte/icons/heart';
-	import { syncSamples, syncSlots } from '$lib/client/sync';
+	import { syncSamples, syncSlots } from '#lib/client/sync.ts';
 
 	const { sample }: { sample: SampleSelect } = $props();
 	let audioElement: HTMLAudioElement;
