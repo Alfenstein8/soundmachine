@@ -11,7 +11,8 @@ def remove_slot(layer_id: int, slot_id: int):
         print("SERVER_URL not found")
         url = ""
     delete_url = url + f"/api/layers/{str(layer_id)}/{str(slot_id)}"
-    response = requests.delete(delete_url, timeout=10)
+    # A JSON body keeps SvelteKit's form CSRF check from rejecting the request
+    response = requests.delete(delete_url, json={}, timeout=10)
     if response.status_code != 204:
         print(
             f"Failed to delete slot with id {str(slot_id)}:"
