@@ -44,7 +44,7 @@ class ModeSwitcher:
 
     def on_press(self, point: LpPoint):
         p = to_sample_point(point)
-        if p.x >= 0 and p.x < 8 and p.y >= 0 and p.y < 8:
+        if 0 <= p.x < 8 and 0 <= p.y < 8:
             self.current_mode.on_press(point)
         else:
             self.handle_control_button(point)
